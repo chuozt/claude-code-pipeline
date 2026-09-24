@@ -1,0 +1,5 @@
+# Hook and tool scripts must keep LF endings: `bash` on macOS/Linux fails on a CRLF script
+# ($'\r': command not found), and a Windows checkout with core.autocrlf would otherwise
+# convert them. Applies to this folder only, so it never touches the project's own rules.
+*.sh text eol=lf
+*.py text eol=lf

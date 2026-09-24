@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "enabledPlugins": {
+    "unity@claude-plugins-official": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session-start.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.sh\" pre-edit",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.sh\" pre-bash",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/validate-commit.sh\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__unity-editor-mcp__eval|mcp__unity-editor-mcp__run_script|mcp__unity-mcp__Unity_RunCommand",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.sh\" pre-eval",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.sh\" post-edit",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git rev-parse*)",
+      "Bash(git show*)",
+      "Bash(git ls-files*)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(wc *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(cat *)",
+      "Bash(unity --version*)",
+      "Bash(unity status*)",
+      "Bash(unity doctor*)",
+      "Bash(unity mcp configure --list*)",
+      "Bash(unity pipeline list*)",
+      "Bash(unity command)",
+      "Bash(unity command --no-banner)",
+      "mcp__unity-api__search_unity_api",
+      "mcp__unity-api__get_method_signature",
+      "mcp__unity-api__get_namespace",
+      "mcp__unity-api__get_class_reference",
+      "mcp__unity-api__get_deprecation_warnings"
+    ],
+    "ask": [
+      "Bash(unity command delete_asset*)",
+      "mcp__unity-editor-mcp__delete_asset"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)",
+      "Bash(git commit --amend*)",
+      "Bash(git rebase*)",
+      "Bash(sudo *)",
+      "Bash(unity build*)",
+      "Bash(unity run*)",
+      "Bash(unity install*)",
+      "Bash(unity uninstall*)",
+      "Bash(unity self-uninstall*)",
+      "Bash(unity upgrade*)",
+      "Bash(unity command build*)",
+      "Bash(unity command switch_build_target*)",
+      "Bash(unity command set_player_settings*)",
+      "Bash(unity command set_quality_settings*)",
+      "Bash(unity command set_tags_layers*)",
+      "Bash(unity command set_graphics_settings*)",
+      "Bash(unity command set_physics_settings*)",
+      "Bash(unity command set_time_settings*)",
+      "Bash(unity command set_input_settings*)",
+      "Bash(unity command set_audio_settings*)",
+      "Bash(unity command set_build_settings*)",
+      "mcp__unity-editor-mcp__build",
+      "mcp__unity-editor-mcp__switch_build_target",
+      "mcp__unity-editor-mcp__set_player_settings",
+      "mcp__unity-editor-mcp__set_quality_settings",
+      "mcp__unity-editor-mcp__set_tags_layers",
+      "mcp__unity-editor-mcp__set_graphics_settings",
+      "mcp__unity-editor-mcp__set_physics_settings",
+      "mcp__unity-editor-mcp__set_time_settings",
+      "mcp__unity-editor-mcp__set_input_settings",
+      "mcp__unity-editor-mcp__set_audio_settings",
+      "mcp__unity-editor-mcp__set_build_settings",
+      "mcp__unity-mcp__Unity_DeleteScript",
+      "mcp__unity-mcp__Unity_PackageManager_ExecuteAction",
+      "Read(**/.env*)",
+      "Edit(**/Library/**)",
+      "Edit(**/ProjectSettings/**)",
+      "Edit(**/Packages/com.unity.pipeline/**)",
+      "Edit(**/*.meta)",
+      "Write(**/*.meta)"
+    ]
+  }
+}
