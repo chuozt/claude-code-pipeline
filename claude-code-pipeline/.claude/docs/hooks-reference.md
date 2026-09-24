@@ -12,7 +12,7 @@ Every command goes through `${CLAUDE_PROJECT_DIR}`, so it works whatever the cur
 | `guard.sh pre-bash` → `unity_guard.py` | PreToolUse (`Bash`) | Refuses deleting/renaming `.meta`, wiping `Library/`, touching `ProjectSettings/` or the package manifest, force push, switching branches, rebase, `unity build/run/install`, and asset deletion inside `unity eval` | **blocks** (exit 2) |
 | `guard.sh pre-eval` → `unity_guard.py` | PreToolUse (bridge `eval` / `run_script` / `Unity_RunCommand`) | Refuses `AssetDatabase.DeleteAsset`, `File.Delete` and the like inside eval code, which would skip the reference scan | **blocks** (exit 2) |
 | `validate-commit.sh` | PreToolUse (`Bash`) | Only for `git commit`: a new asset staged without its `.meta` is refused; the default branch, `ProjectSettings/` or a third-party SDK folder makes the developer confirm | **blocks** / **asks** |
-| `track-prompt-start.sh` / `track-prompt-stop.sh` | UserPromptSubmit / Stop | Prompt timing (opt-in, `/track-prompt-duration`) | log only |
+| `track-prompt-start.sh` / `track-prompt-stop.sh` | UserPromptSubmit / Stop | Prompt timing (opt-in, `/track-prompt-duration`) | Stop prints `{"systemMessage": …}`: the developer sees the duration at the end of that same turn |
 
 ## Rules for writing a hook here
 
@@ -20,6 +20,9 @@ Every command goes through `${CLAUDE_PROJECT_DIR}`, so it works whatever the cur
   (`hookSpecificOutput.permissionDecision` for PreToolUse). Anything printed with exit 0 on a
   tool hook is lost; any other non-zero code counts as "carry on". A hook that only warns must
   therefore exit 2 on PostToolUse, or ask/deny on PreToolUse. [INFERRED: Claude Code hooks docs]
+- **To show the developer a line without involving Claude**, print a JSON object with
+  `systemMessage` (exit 0). A `Stop` hook's `systemMessage` appears in the transcript; its
+  plain stdout does not. [VERIFIED: code.claude.com/docs/en/hooks, Stop decision control]
 - **Fail open, but visibly.** An internal error must never block a session, and a hook that
   cannot run (no Python) must say so once at session start instead of vanishing.
 - **Never call `python` directly.** On Windows it is often the Microsoft Store stub (exit 49,

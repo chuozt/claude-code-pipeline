@@ -1,18 +1,13 @@
 #!/bin/bash
-# UserPromptSubmit hook — records the turn's start time, and reports the PREVIOUS turn.
+# UserPromptSubmit hook — records the turn's start time; the Stop hook reports it.
 #
-# Why it reports the previous turn: Claude Code discards the `Stop` hook's stdout
-# (it only reaches the debug log), so there is no way to show a duration at the
-# moment that turn ends. `UserPromptSubmit` stdout IS handed to Claude. So the Stop
-# hook writes its result to a scratch file and this hook reads it on the next turn.
+# Prints nothing: stdout here is handed to Claude as context. (The first version relayed
+# the previous turn's duration from here, one turn late; the Stop hook now shows it
+# itself through `systemMessage`.)
 #
-# Visible consequence: the duration appears at the START of the following turn,
-# exactly one turn late.
-#
-# NO history is kept. Measure and display within the running session only. The two
-# files below are the handoff between the two hooks — they are separate processes, so
-# a file is unavoidable — but they live OUTSIDE the project, in the OS temp directory,
-# keyed by session_id, and are deleted immediately after being read.
+# NO history is kept. The start marker below is the handoff between the two hooks —
+# they are separate processes, so a file is unavoidable — but it lives OUTSIDE the
+# project, in the OS temp directory, keyed by session_id, and the Stop hook deletes it.
 
 # Milliseconds since the epoch. BSD date (macOS) has no %N and prints it literally;
 # fall back to whole seconds there.
@@ -42,10 +37,7 @@ mkdir -p "$TRACK_DIR" 2>/dev/null || exit 0
 
 printf '%s %s\n' "$PROMPT_ID" "$(now_ms)" > "$TRACK_DIR/current"
 
-# Hand the previous turn's result to Claude, then delete it so it is not reported twice.
-if [ -f "$TRACK_DIR/last" ]; then
-    cat "$TRACK_DIR/last"
-    rm -f "$TRACK_DIR/last"
-fi
+# A result left behind by the old one-turn-late version would otherwise sit there forever.
+rm -f "$TRACK_DIR/last"
 
 exit 0

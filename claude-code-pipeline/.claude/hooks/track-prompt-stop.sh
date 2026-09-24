@@ -1,12 +1,13 @@
 #!/bin/bash
-# Stop hook — Claude has just finished a turn. Compute the duration and leave it for
-# the next turn's UserPromptSubmit hook to pick up.
+# Stop hook — Claude has just finished a turn. Compute the duration and show it NOW.
 #
-# This hook's stdout is shown to NOBODY (Claude Code only pushes it to the debug log),
-# so never print a result here expecting a human to see it.
+# Plain stdout from a Stop hook only reaches the debug log, but a JSON object with
+# `systemMessage` is displayed in the transcript (code.claude.com/docs/en/hooks, Stop
+# decision control). So the duration is printed as that JSON at the end of the turn it
+# measures, instead of being relayed to the next turn as the first version did.
 #
-# NO history is written to any file: measure, show it in the session, done. The handoff
-# lives in the OS temp directory, keyed by session_id.
+# NO history is written to any file: measure, show it in the session, done. The start
+# marker lives in the OS temp directory, keyed by session_id, and is deleted here.
 #
 # Never exit non-zero: exit 2 would BLOCK Claude from ending the turn, causing a loop.
 
@@ -61,7 +62,8 @@ else
     HUMAN="${SEC}.${TENTHS}s"
 fi
 
-printf '⏱ Previous turn took %s.\n' "$HUMAN" > "$TRACK_DIR/last"
-
 rm -f "$TRACK_DIR/current"
+
+# HUMAN holds only digits, spaces, '.', 'm' and 's', so it needs no JSON escaping.
+printf '{"systemMessage":"⏱ This turn took %s."}\n' "$HUMAN"
 exit 0

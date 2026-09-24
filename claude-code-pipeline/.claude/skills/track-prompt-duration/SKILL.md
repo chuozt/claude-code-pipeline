@@ -40,26 +40,29 @@ Two hooks `[VERIFIED: code.claude.com/docs/en/hooks]`:
 ⚠️ **`Stop` is not the end of the session** — that is `SessionEnd`.
 (`.claude/docs/hooks-reference/hook-input-schemas.md` gets this wrong.)
 
-## The duration appears ONE TURN LATE — a limitation, not a bug
+## The duration appears at the end of the same turn
 
-Claude Code **discards** the `Stop` hook's stdout (debug log only, shown to neither the
-developer nor Claude). So there is no way to print the duration at the moment that turn ends.
+A `Stop` hook's **plain** stdout goes to the debug log only, but a JSON object with
+`systemMessage` is displayed in the transcript `[VERIFIED: code.claude.com/docs/en/hooks,
+Stop decision control]`. So `track-prompt-stop.sh` prints
 
-The workaround: `Stop` leaves the result in the scratch file → the **next** turn's
-`UserPromptSubmit` reads it and hands it to Claude.
+```json
+{"systemMessage":"⏱ This turn took 42.3s."}
+```
 
-**Consequence**: the last turn of a session is never reported — there is no following turn to
-report it, and no history to look back at. Accepting that is the price of keeping no files.
+and the developer sees it right after the turn it measures, including the last turn of a
+session.
 
-## What Claude does when it sees a ⏱ line
+⚠️ The first version relayed the duration through a scratch file to the **next** turn's
+`UserPromptSubmit`, so every report arrived one prompt late. Do not bring that back: the
+start hook now prints nothing (its stdout would be injected into Claude's context) and
+deletes any leftover `last` file from the old version.
 
-At the start of a turn, if a line like `⏱ Previous turn took ...` appears in context:
+## What Claude does about timing
 
-**Reprint that exact line at the start of the answer, then work normally.** One line, no
-commentary, no judgements about fast/slow unless the developer asks.
-
-No such line → say nothing about timing. **Never invent a duration** — if the hook did not
-report one, Claude has no way to know it.
+Nothing. The harness shows the ⏱ line itself; Claude does not reprint it, comment on it, or
+judge fast/slow unless the developer asks. **Never invent a duration** — Claude has no way to
+know one the hook did not report.
 
 ## `on` — enable
 
@@ -134,9 +137,12 @@ plainly that nothing is stored, and **do not go digging through old files or est
   cycle, not just one script:
   ```bash
   P='{"prompt_id":"p1","session_id":"s1"}'
-  printf '%s' "$P" | bash .claude/hooks/track-prompt-start.sh
+  printf '%s' "$P" | bash .claude/hooks/track-prompt-start.sh   # → must print nothing
   sleep 2
   printf '%s' "$P" | bash .claude/hooks/track-prompt-stop.sh
-  printf '%s' '{"prompt_id":"p2","session_id":"s1"}' | bash .claude/hooks/track-prompt-start.sh
-  # → must print: ⏱ Previous turn took 2.0s.
+  # → must print valid JSON: {"systemMessage":"⏱ This turn took 2.0s."}
+  printf '%s' '{"prompt_id":"pX","session_id":"s1"}' | bash .claude/hooks/track-prompt-stop.sh
+  # → mismatched or missing start: must print nothing and exit 0
   ```
+- **Stop's stdout must be one JSON object and nothing else.** A stray `echo` before it turns
+  the whole output into plain text, which lands in the debug log and the ⏱ line disappears.
