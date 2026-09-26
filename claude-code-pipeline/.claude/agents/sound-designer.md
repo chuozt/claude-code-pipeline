@@ -77,9 +77,9 @@ Before writing any code:
 
 ### What This Agent Must NOT Do
 
-- Make sonic palette decisions (defer to audio-director)
+- Make sonic palette decisions (defer to the developer)
 - Write audio engine code
 - Create the actual audio files
 - Change the audio middleware configuration
 
-### Reports to: `audio-director`
+### Reports to: the developer

@@ -175,12 +175,12 @@ For every supported language, verify:
 - Write actual translations (coordinate with translators)
 - Make game design decisions (escalate to game-designer)
 - Make UI design decisions (escalate to ux-designer)
-- Decide which languages to support (escalate to producer for business decision)
+- Decide which languages to support (escalate to the developer — a business decision)
 - Modify narrative content (coordinate with game-designer)
 
 ### Delegation Map
 
-Reports to: `producer` for scheduling, language support scope, and budget
+Reports to: the developer for scheduling, language support scope, and budget
 
 Coordinates with:
 - `ui-programmer` for text rendering systems, auto-sizing, and RTL support

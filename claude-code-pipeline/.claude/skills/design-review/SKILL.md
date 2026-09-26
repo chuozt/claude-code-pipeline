@@ -10,7 +10,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion
 
 Extract `--depth [full|lean|solo]` if present. Default is `full` when no flag is given.
 
-**Note**: `--depth` controls the *analysis depth* of this skill (how many specialist agents are spawned). It is independent of the global review mode in `production/review-mode.txt`, which controls director gate spawning. These are two different concepts — `--depth` is about how thoroughly *this* skill analyses the document.
+**Note**: `--depth` controls the *analysis depth* of this skill (how many specialist agents are spawned). It is about how thoroughly *this* skill analyses the document.
 
 - **`full`**: Complete review — all phases + specialist agent delegation (Phase 3b)
 - **`lean`**: All phases, no specialist agents — faster, single-session analysis
@@ -71,7 +71,7 @@ Evaluate against the Design Document Standard checklist:
 **This phase is MANDATORY in full mode.** Do not skip it.
 
 **Before spawning any agents**, print this notice:
-> "Full review: spawning specialist agents in parallel. This typically takes 8–15 minutes. Use `--review lean` for faster single-session analysis."
+> "Full review: spawning specialist agents in parallel. This typically takes 8–15 minutes. Use `--depth lean` for faster single-session analysis."
 
 ### Step 1 — Identify all domains the GDD touches
 
@@ -82,12 +82,12 @@ Read the GDD and identify every domain present. A GDD can touch multiple domains
 | Costs, prices, drops, rewards, economy | `economy-designer` |
 | Combat stats, damage, health, DPS | `game-designer`, `systems-designer` |
 | AI behaviour, pathfinding, targeting | `gameplay-programmer` |
-| Level layout, spawning, wave structure | `level-designer` |
+| Level layout, spawning, wave structure | `game-designer`, `systems-designer` |
 | Player progression, XP, unlocks | `economy-designer`, `game-designer` |
 | UI, HUD, menus, player-facing displays | `ux-designer`, `ui-programmer` |
-| Dialogue, quests, story, lore | `creative-director` |
+| Dialogue, quests, story, lore | `game-designer`, `localization-lead` |
 | Animation, feel, timing, juice | `gameplay-programmer` |
-| Audio cues, music triggers | `audio-director` |
+| Audio cues, music triggers | `sound-designer` |
 | Performance, draw calls, memory | `performance-analyst` |
 | Engine-specific patterns or APIs | Primary engine specialist (from `.claude/docs/technical-preferences.md`) |
 | Acceptance criteria, test coverage | `qa-lead` |
@@ -120,18 +120,17 @@ Issue all Task calls simultaneously. Do NOT spawn one at a time.
 
 - **`qa-lead`**: Review every acceptance criterion. Flag any that are not independently testable — phrases like "feels balanced", "works correctly", "performs well" are not ACs. Suggest concrete rewrites for any that fail this test.
 
-### Step 3 — Senior lead review
+### Step 3 — Synthesis
 
-After all specialists respond, spawn `creative-director` as the **senior reviewer**:
-- Provide: the GDD, all specialist findings, any disagreements between them
-- Ask: "Synthesise these findings. What are the most important issues? Do you agree with the specialists? What is your overall verdict on this design?"
-- The creative-director's synthesis becomes the **final verdict** in Phase 4.
+After all specialists respond, synthesise their findings in the main session: rank the
+issues by impact, note where you disagree with a specialist and why, and give the overall
+verdict. That synthesis is the **final verdict** in Phase 4 — the developer adjudicates it.
 
 ### Step 4 — Surface disagreements
 
-If specialists disagree with each other or with the creative-director, do NOT silently pick one view. Present the disagreement explicitly in Phase 4 so the user can adjudicate.
+If specialists disagree with each other or with the synthesis, do NOT silently pick one view. Present the disagreement explicitly in Phase 4 so the user can adjudicate.
 
-Mark every finding with its source: `[game-designer]`, `[economy-designer]`, `[creative-director]` etc.
+Mark every finding with its source: `[game-designer]`, `[economy-designer]`, `[synthesis]` etc.
 
 ---
 
@@ -163,8 +162,8 @@ Present both sides — do not silently resolve.]
 ### Nice-to-Have
 [Minor improvements, low priority.]
 
-### Senior Verdict [creative-director]
-[Creative director's synthesis and overall assessment.]
+### Synthesis
+[Ranked issues and overall assessment across all specialists.]
 
 ### Scope Signal
 Estimate implementation scope based on: dependency count, formula count,
@@ -173,7 +172,7 @@ systems touched, and whether new ADRs are required.
 - **M** — moderate complexity, 1-2 formulas, 3-6 dependencies
 - **L** — multi-system integration, 3+ formulas, may require new ADR
 - **XL** — cross-cutting concern, 5+ dependencies, multiple new ADRs likely
-Label clearly: "Rough scope signal: M (producer should verify before sprint planning)"
+Label clearly: "Rough scope signal: M (the developer should verify before planning)"
 
 ### Verdict: [APPROVED / NEEDS REVISION / MAJOR REVISION NEEDED]
 ```
@@ -229,7 +228,7 @@ If yes, append an entry in this format:
 Scope signal: [S/M/L/XL]
 Specialists: [list]
 Blocking items: [count] | Recommended: [count]
-Summary: [2-3 sentence summary of key findings from creative-director verdict]
+Summary: [2-3 sentence summary of key findings from the synthesis]
 Prior verdict resolved: [Yes / No / First review]
 ```
 

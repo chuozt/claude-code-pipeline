@@ -3,7 +3,7 @@ name: create-architecture
 model: claude-opus-5-5
 effort: medium
 description: "Guided, section-by-section authoring of the master architecture document for the game. Reads all GDDs, the systems index, existing ADRs, and the engine reference library to produce a complete architecture blueprint before any code is written. Engine-version-aware: flags knowledge gaps and validates decisions against the pinned engine version."
-argument-hint: "[focus-area: full | layers | data-flow | api-boundaries | adr-audit] [--review full|lean|solo]"
+argument-hint: "[focus-area: full | layers | data-flow | api-boundaries | adr-audit]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash, AskUserQuestion, Task
 agent: technical-director
@@ -19,13 +19,6 @@ It sits between design and implementation, and must exist before sprint planning
 
 **Distinct from `/architecture-decision`**: ADRs record individual point decisions.
 This skill creates the whole-system blueprint that gives ADRs their context.
-
-Resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 **Argument modes:**
 - **No argument / `full`**: Full guided walkthrough — all sections, start to finish
@@ -336,36 +329,29 @@ derived from the game concept, GDDs, and technical preferences]
 
 ---
 
-## Phase 7b: Technical Director Sign-Off + Lead Programmer Feasibility Review
+## Phase 7b: Technical Sign-Off
 
 After writing the master architecture document, perform an explicit sign-off before handoff.
 
-**Step 1 — Technical Director self-review** (this skill runs as technical-director):
+**Step 1 — Self-review** (this skill runs as technical-director). Check the completed
+document against:
+1. Every technical requirement from the baseline is covered by an architectural decision.
+2. Every HIGH risk engine domain is explicitly addressed or flagged as an open question.
+3. API boundaries are clean, minimal, and implementable.
+4. Foundation-layer ADR gaps are resolved before implementation begins.
 
-Apply gate **TD-ARCHITECTURE** (`.claude/docs/director-gates.md`) as a self-review. Check all four criteria from that gate definition against the completed document.
+Verdict: APPROVE, CONCERNS [list], or REJECT [blockers that must be resolved before coding starts].
 
-**Review mode check** — apply before spawning LP-FEASIBILITY:
-- `solo` → skip. Note: "LP-FEASIBILITY skipped — Solo mode." Proceed to Phase 8 handoff.
-- `lean` → skip (not a PHASE-GATE). Note: "LP-FEASIBILITY skipped — Lean mode." Proceed to Phase 8 handoff.
-- `full` → spawn as normal.
+**Step 2 — Present the assessment to the user:**
 
-**Step 2 — Spawn `lead-programmer` via Task using gate LP-FEASIBILITY (`.claude/docs/director-gates.md`):**
-
-Pass: architecture document path, technical requirements baseline summary, ADR list.
-
-**Step 3 — Present both assessments to the user:**
-
-Show the Technical Director assessment and Lead Programmer verdict side by side.
-
-Use `AskUserQuestion` — "Technical Director and Lead Programmer have reviewed the architecture. How would you like to proceed?"
+Use `AskUserQuestion` — "The architecture has been reviewed. How would you like to proceed?"
 Options: `Accept — proceed to handoff` / `Revise flagged items first` / `Discuss specific concerns`
 
-**Step 4 — Record sign-off in the architecture document:**
+**Step 3 — Record sign-off in the architecture document:**
 
 Update the Document Status section:
 ```
-- Technical Director Sign-Off: [date] — APPROVED / APPROVED WITH CONDITIONS
-- Lead Programmer Feasibility: FEASIBLE / CONCERNS ACCEPTED / REVISED
+- Technical Sign-Off: [date] — APPROVED / APPROVED WITH CONDITIONS
 ```
 
 Ask: "May I update the Document Status section in `docs/architecture/architecture.md` with the sign-off?"

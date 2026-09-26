@@ -1,7 +1,7 @@
 ---
 name: brainstorm
 description: "Guided ideation from no idea (or a vague theme) to a structured game concept document — pillars, core loop, player fantasy, scope. Use when typing /brainstorm or saying 'help me come up with a game', 'I have a vague idea', 'develop this concept'."
-argument-hint: "[genre or theme hint, or 'open'] [--review full|lean|solo]"
+argument-hint: "[genre or theme hint, or 'open']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, Task, AskUserQuestion
 ---
@@ -10,12 +10,7 @@ When this skill is invoked:
 
 1. **Parse the argument** for an optional genre/theme hint (e.g., `roguelike`,
    `space survival`, `cozy farming`). If `open` or no argument, start from
-   scratch. Also resolve the review mode (once, store for all gate spawns this run):
-   1. If `--review [full|lean|solo]` was passed → use that
-   2. Else read `production/review-mode.txt` → use that value
-   3. Else → default to `lean`
-
-   See `.claude/docs/director-gates.md` for the full check pattern.
+   scratch.
 
 2. **Check for existing concept work**:
    - Read `design/gdd/game-concept.md` if it exists (resume, don't restart)
@@ -196,27 +191,6 @@ If the user selects B, C, or D, make the revision, then use `AskUserQuestion` ag
 
 Repeat until the user selects [A] Lock these in.
 
-**Review mode check** — apply before spawning CD-PILLARS and AD-CONCEPT-VISUAL:
-- `solo` → skip both. Note: "CD-PILLARS skipped — Solo mode. AD-CONCEPT-VISUAL skipped — Solo mode." Proceed to Phase 5.
-- `lean` → skip both (not PHASE-GATEs). Note: "CD-PILLARS skipped — Lean mode. AD-CONCEPT-VISUAL skipped — Lean mode." Proceed to Phase 5.
-- `full` → spawn as normal.
-
-**After pillars and anti-pillars are agreed, spawn BOTH `creative-director` AND `art-director` via Task in parallel before moving to Phase 5. Issue both Task calls simultaneously — do not wait for one before starting the other.**
-
-- **`creative-director`** — gate **CD-PILLARS** (`.claude/docs/director-gates.md`)
-  Pass: full pillar set with design tests, anti-pillars, core fantasy, unique hook.
-
-- **`art-director`** — gate **AD-CONCEPT-VISUAL** (`.claude/docs/director-gates.md`)
-  Pass: game concept elevator pitch, full pillar set with design tests, target platform (if known), any reference games or visual touchstones the user mentioned.
-
-Collect both verdicts, then present them together using a two-tab `AskUserQuestion`:
-- Tab **"Pillars"**: present creative-director feedback. Options mirror the standard CD-PILLARS handling — `Lock in as-is` / `Revise [specific pillar]` / `Discuss further`.
-- Tab **"Visual anchor"**: present the art-director's 2-3 named visual direction options. Options: each named direction (one per option) + `Combine elements across directions` + `Describe my own direction`.
-
-The user's selected visual anchor (the named direction or their custom description) is stored as the **Visual Identity Anchor** — it will be written into the game-concept document and becomes the foundation of the art bible.
-
-If the creative-director returns CONCERNS or REJECT on pillars, resolve pillar issues before asking for the visual anchor selection — visual direction should flow from confirmed pillars.
-
 ---
 
 ### Phase 5: Player Type Validation
@@ -249,28 +223,6 @@ Ground the concept in reality:
 - **Biggest risks**: Technical risks, design risks, market risks
 - **Scope tiers**: What's the full vision vs. what ships if time runs out?
 
-**Review mode check** — apply before spawning TD-FEASIBILITY:
-- `solo` → skip. Note: "TD-FEASIBILITY skipped — Solo mode." Proceed directly to scope tier definition.
-- `lean` → skip (not a PHASE-GATE). Note: "TD-FEASIBILITY skipped — Lean mode." Proceed directly to scope tier definition.
-- `full` → spawn as normal.
-
-**After identifying biggest technical risks, spawn `technical-director` via Task using gate TD-FEASIBILITY (`.claude/docs/director-gates.md`) before scope tiers are defined.**
-
-Pass: core loop description, platform target, engine choice (or "undecided"), list of identified technical risks.
-
-Present the assessment to the user. If HIGH RISK, offer to revisit scope before finalising. If CONCERNS, note them and continue.
-
-**Review mode check** — apply before spawning PR-SCOPE:
-- `solo` → skip. Note: "PR-SCOPE skipped — Solo mode." Proceed to document generation.
-- `lean` → skip (not a PHASE-GATE). Note: "PR-SCOPE skipped — Lean mode." Proceed to document generation.
-- `full` → spawn as normal.
-
-**After scope tiers are defined, spawn `producer` via Task using gate PR-SCOPE (`.claude/docs/director-gates.md`).**
-
-Pass: full vision scope, MVP definition, timeline estimate, team size.
-
-Present the assessment to the user. If UNREALISTIC, offer to adjust the MVP definition or scope tiers before writing the document.
-
 ---
 
 4. **Generate the game concept document** using the template at
@@ -278,14 +230,10 @@ Present the assessment to the user. If UNREALISTIC, offer to adjust the MVP defi
    brainstorm conversation, including the MDA analysis, player motivation
    profile, and flow state design sections.
 
-   **Include a Visual Identity Anchor section** in the game concept document with:
-   - The selected visual direction name
-   - The one-line visual rule
-   - The 2-3 supporting visual principles with their design tests
-   - The color philosophy summary
-
-   This section is the seed of the art bible — it captures the "everything must
-   move" decision before it can be forgotten between sessions.
+   If the user described a visual direction during the conversation, record it in
+   the concept's **Visual Identity Anchor** section (direction name, one-line visual
+   rule, colour philosophy). Otherwise leave that section `UNDEFINED` — art direction
+   belongs to the studio's artists, not to this skill.
 
 5. Use `AskUserQuestion` for write approval:
 - Prompt: "Game concept is ready. May I write it to `design/gdd/game-concept.md`?"
@@ -304,17 +252,15 @@ If yes, generate the document using the template at `.claude/docs/templates/game
 6. **Suggest next steps** (in this order — this is the professional studio
    pre-production pipeline). List ALL steps — do not abbreviate or truncate:
    1. "Run `/project-overview`, then fill the stack in `project_setup.md` §1"
-   2. "Run `/art-bible` to create the visual identity specification — do this BEFORE writing GDDs. The art bible gates asset production and shapes technical architecture decisions (rendering, VFX, UI systems)."
-   3. "Use `/design-review design/gdd/game-concept.md` to validate concept completeness before going downstream"
-   4. "Discuss vision with the `creative-director` agent for pillar refinement"
-   5. "Decompose the concept into individual systems with `/map-systems` — maps dependencies, assigns priorities, and creates the systems index"
-   5. "Author per-system GDDs with `/design-system` — guided, section-by-section GDD writing for each system identified in step 4"
-   6. "Plan the technical architecture with `/create-architecture` — produces the master architecture blueprint and Required ADR list"
-   7. "Record key architectural decisions with `/architecture-decision (×N)` — write one ADR per decision in the Required ADR list from `/create-architecture`"
-   8. "Review the whole design set with `/review-all-gdds` before committing to production"
-   9. "Prototype the riskiest system with `/prototype [core-mechanic]` — validate the core loop before full implementation"
-   10. "Run `/playtest-report` after the prototype to validate the core hypothesis"
-   11. "If validated, agree the first milestone with the developer and move to implementation (`.claude/workflow.md`)"
+   2. "Use `/design-review design/gdd/game-concept.md` to validate concept completeness before going downstream"
+   3. "Decompose the concept into individual systems with `/map-systems` — maps dependencies, assigns priorities, and creates the systems index"
+   4. "Author per-system GDDs with `/design-system` — guided, section-by-section GDD writing for each system identified in step 3"
+   5. "Plan the technical architecture with `/create-architecture` — produces the master architecture blueprint and Required ADR list"
+   6. "Record key architectural decisions with `/architecture-decision (×N)` — write one ADR per decision in the Required ADR list from `/create-architecture`"
+   7. "Review the whole design set with `/review-all-gdds` before committing to production"
+   8. "Prototype the riskiest system with `/prototype [core-mechanic]` — validate the core loop before full implementation"
+   9. "Run `/playtest-report` after the prototype to validate the core hypothesis"
+   10. "If validated, agree the first milestone with the developer and move to implementation (`.claude/workflow.md`)"
 
 7. **Output a summary** with the chosen concept's elevator pitch, pillars,
    primary player type, engine recommendation, biggest risk, and file path.
@@ -338,8 +284,7 @@ append this notice to the current response before continuing:
 
 After the game concept is written, follow the pre-production pipeline in order:
 1. `/project-overview` — snapshot the project, then fill the stack in `project_setup.md` §1
-2. `/art-bible` — establish visual identity before writing any GDDs
-3. `/map-systems` — decompose the concept into individual systems with dependencies
-4. `/design-system [first-system]` — author per-system GDDs in dependency order
-5. `/create-architecture` — produce the master architecture blueprint
-6. `/review-all-gdds` — cross-check every GDD before committing to production
+2. `/map-systems` — decompose the concept into individual systems with dependencies
+3. `/design-system [first-system]` — author per-system GDDs in dependency order
+4. `/create-architecture` — produce the master architecture blueprint
+5. `/review-all-gdds` — cross-check every GDD before committing to production

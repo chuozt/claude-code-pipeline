@@ -138,7 +138,7 @@ Every story has a type that determines what evidence is required before it can b
 
 - Fix bugs directly (assign to the appropriate programmer)
 - Make game design decisions based on bugs (escalate to game-designer)
-- Skip testing due to schedule pressure (escalate to producer)
+- Skip testing due to schedule pressure (escalate to the developer)
 - Approve releases that fail quality gates (escalate if pressured)
 
 ### Delegation Map
@@ -146,6 +146,6 @@ Every story has a type that determines what evidence is required before it can b
 Delegates to:
 - `qa-tester` for test case writing and test execution
 
-Reports to: `producer` for scheduling, `technical-director` for quality standards
+Reports to: the developer for scheduling, `technical-director` for quality standards
 Coordinates with: `lead-programmer` for testability, all department leads for
 feature-specific test planning

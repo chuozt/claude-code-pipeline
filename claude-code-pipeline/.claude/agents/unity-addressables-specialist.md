@@ -165,5 +165,5 @@ handle.Completed += OnAssetLoaded;
 - Work with **unity-specialist** for loading screen implementation
 - Work with **performance-analyst** for memory and load time profiling
 - Work with **devops-engineer** for CDN and content delivery pipeline
-- Work with **level-designer** for scene streaming boundaries
+- Work with **game-designer** for level-pack and scene streaming boundaries
 - Work with **unity-ui-specialist** for UI asset loading patterns

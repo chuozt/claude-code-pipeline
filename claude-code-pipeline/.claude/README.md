@@ -50,7 +50,7 @@ If you find a real contradiction, fix the lower document rather than adding a th
 | `.claude/kb/` | Unity 6 + middleware reference. `kb/unity/` is the main set, `kb/goc/` the studio's own notes. |
 | `.claude/docs/` | Phase guides, templates, hook reference, workflow catalogue. |
 | `.claude/templates/` | Short project-local templates (bug report, mechanic GDD, session state). |
-| `.claude/hooks/` | Safety hooks wired in `settings.json` (`docs/hooks-reference.md`). `unity_guard` needs Python; without it the session-start hook says the guard is inactive. |
+| `.claude/hooks/` | Safety hooks wired in `settings.json` (`docs/hooks-reference.md`). All hooks are plain bash — no Python or `jq` needed. |
 | `.claude/tools/` | Tools the kit ships with (currently the xlsx→markdown parser). |
 | `.claude/reference/` | Theory the skills treat as law — the resource-flow difficulty framework. |
 
@@ -59,7 +59,8 @@ If you find a real contradiction, fix the lower document rather than adding a th
 ## The Pipeline — 1A/1B/2/3/4
 
 Run `/gd-workflow-help` for the full table with expected outputs and a "you are here" marker.
-The short version:
+**Who does what** — developer vs game designer, hand-overs, the weekly level loop — is in
+`docs/team-workflow.md` (Vietnamese: `team-workflow.vi.md`). The short version:
 
 ```
 Phase 1A  idea → architecture       (developer track)
@@ -98,8 +99,8 @@ project root, creating each folder the first time it is actually needed.
 
 | Path | Written by | Holds |
 |---|---|---|
-| `design/` | `gd-*`, `design-system`, `art-bible` | GDDs, pipeline specs, entity registry, UX, art bible |
-| `production/` | `start` (review-mode.txt), `playtest-report`, QA agents; `stage.txt` by hand | review mode, project stage, playtest reports, QA evidence |
+| `design/` | `gd-*`, `design-system`, `ux-design` | GDDs, pipeline specs, entity registry, UX |
+| `production/` | `playtest-report`, QA agents; `stage.txt` by hand | project stage, playtest reports, QA evidence |
 | `docs/` | `create-architecture`, developers | architecture, ADRs, research, engine reference |
 | `docs/features/` | developers | living feature docs next to the code |
 | `docs/_session/active.md` | every multi-step skill and agent, developers | **the one session-state file** — read by the session-start hook and after every compaction (`context.md` §1) |

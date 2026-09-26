@@ -66,7 +66,6 @@ simulate against) finished first.
 |---|---|
 | `/architecture-decision` | Creates an Architecture Decision Record (ADR) documenting a significant technical decision, its context, al… |
 | `/architecture-review` | Validates completeness and consistency of the project architecture against all GDDs |
-| `/art-bible` | Guided, section-by-section Art Bible authoring |
 | `/commit` | Commit the current changes in this Unity repo, including a review pass for unexpected changes and a commit … |
 | `/consistency-check` | Scan all GDDs against the entity registry to detect cross-document inconsistencies: same entity with differ… |
 | `/create-control-manifest` | After architecture is complete, produces a flat actionable rules sheet for programmers — what you must do, … |
@@ -117,7 +116,7 @@ Vietnamese user guide with one example per skill, kit + plugin:
 
 The upstream kit this was derived from also carried a story/sprint/QA production track
 (`/create-epics`, `/create-stories`, `/dev-story`, `/gate-check`, `/sprint-plan`, `/adopt`,
-`/story-done`, `/story-readiness`, `/qa-plan`, `/team-*`…). Those were removed because their
+`/story-done`, `/story-readiness`, `/qa-plan`, `/team-*`…) and its director hierarchy (creative, art and audio directors, producer, director gates, review modes). Those were removed because their
 chain was incomplete and half the commands did not exist.
 
 If a document in `.claude/docs/` still mentions one of them, treat the mention as historical.

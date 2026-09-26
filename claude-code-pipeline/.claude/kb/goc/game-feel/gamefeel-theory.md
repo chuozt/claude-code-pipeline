@@ -38,7 +38,7 @@ For any impact event (hit, landing, explosion), Jacob identifies three non-negot
 
 ### Sensation Vocabulary
 
-Use these when prompting the Game Designer or Art Director to define a mechanic's feel:
+Use these when prompting the game designer or the artists to define a mechanic's feel:
 
 | Sensation | Characteristics |
 |-----------|----------------|

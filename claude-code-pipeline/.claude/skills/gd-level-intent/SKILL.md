@@ -14,7 +14,8 @@ profile).
 `level-definition.md`. Run it and any level with its own intent **overrides** the tier default
 — per-level intent beats the tier profile.
 
-**In**: the designer's xlsx / docx / md file · **Out**: `design/pipeline/level-intent.md`
+**In**: the designer's xlsx / docx / md file · **Out**: `design/pipeline/level-intent.md` +
+the **designed** curve per level in `design/pipeline/level-curves.md`
 
 ## 0. Load context
 
@@ -85,6 +86,26 @@ Structure:
 Keep the designer's **exact words** next to the translation — when a generated result is not
 what they wanted, that is how you tell a translation error from a generator error.
 
+## 3b. Draw the designed curve
+
+For every level with an intent, turn "Target curve" into a chart the designer can check by eye,
+in `design/pipeline/level-curves.md`, following `.claude/docs/templates/level-difficulty-curve.md`:
+
+1. File missing → create it from the template (header, How To Read, Tolerances with every value
+   `UNDEFINED`, Reference Shapes). Never fill a tolerance yourself — ask the designer.
+2. Start from the tier's reference shape (framework §8), then move the peaks, valleys and rest
+   points to where the designer's words put them. Write **20 values** (5%…100%, 0.0–1.0, one
+   decimal) — the only thing the chart is drawn from.
+3. Plot them with ● on the 11-row grid, one column per 5% mark, and put the designer's rhythm
+   description in their own words under the chart. Leave the **Measured** row empty —
+   `/gd-level-audit` fills it.
+4. A level whose block already exists: replace only the **Designed** row and the ● marks, never
+   a Measured row.
+
+Show the charts with the level-intent draft and ask for both in one approval: *"Does each curve
+look like what you meant?"* The chart is how the designer catches a translation error before a
+single level is generated.
+
 ## 4. Handoff to gd-level-gen
 
 State clearly at the end:
@@ -92,6 +113,8 @@ State clearly at the end:
   **overridden**; absent levels use the default.
 - If the designer's source changes (different hash) → re-run this skill before the next
   generation batch.
+- After generation, `/gd-level-audit` plots the measured curve next to each designed one in
+  `level-curves.md`.
 
 ## Next
 

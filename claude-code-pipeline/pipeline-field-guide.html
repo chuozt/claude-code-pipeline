@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Pipeline Field Guide</title>
+<!-- Source of pipeline-field-guide.pdf — a two-page cheatsheet. Details: .claude/docs/team-workflow.vi.md.
+     Output paths come from each skill's SKILL.md; example names (booster, ice-block…) are illustrative.
+     Regenerate after editing:
+     msedge --headless=new --disable-gpu --no-pdf-header-footer --user-data-dir=<empty temp folder>
+            --print-to-pdf=<absolute path>\pipeline-field-guide.pdf file:///<absolute path>/pipeline-field-guide.html
+     (the temp --user-data-dir is required while Edge is open; the PDF appears a moment after msedge exits) -->
+<style>
+  :root {
+    --bg: #111820; --card: #19222c; --line: #2b3643; --text: #d7dee6; --muted: #8b98a6;
+    --dev: #e0a458; --gd: #6cc4a4; --opt: #a893e0; --code: #c9b8f2; --file: #9fb6c9;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font: 9.2pt/1.38 "Segoe UI", system-ui, sans-serif; }
+  .page { width: 210mm; height: 297mm; padding: 11mm 12mm 9mm; position: relative; overflow: hidden;
+    break-after: page; }
+  .page:last-child { break-after: auto; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; }
+  h1 { font: 600 24pt/1 "Cascadia Mono", Consolas, monospace; margin: 0; }
+  h1 span { color: var(--gd); }
+  .bar { width: 18mm; height: 1mm; border-radius: 1mm; margin: 2mm 0 1.5mm;
+    background: linear-gradient(90deg, var(--dev), var(--gd)); }
+  .sub { color: var(--muted); font-size: 8.6pt; }
+  .legend { display: flex; gap: 3.5mm; font-size: 8.2pt; color: var(--muted); }
+  .legend i { display: inline-block; width: 2.4mm; height: 2.4mm; border-radius: 50%; margin-right: 1mm; vertical-align: -.2mm; }
+  h2 { font-size: 8pt; letter-spacing: 1.3px; text-transform: uppercase; color: var(--muted); margin: 4mm 0 1.8mm; }
+  .c { font-family: "Cascadia Mono", Consolas, monospace; font-size: 8.6pt; color: var(--code); white-space: nowrap; }
+  .grid { display: grid; gap: 2.6mm; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--card); border: 1px solid var(--line); border-top: 1mm solid var(--line);
+    border-radius: 2mm; padding: 2.4mm 3mm; }
+  .dev { border-top-color: var(--dev); } .gd { border-top-color: var(--gd); } .opt { border-top-color: var(--opt); }
+  .who { font: 600 7.3pt "Cascadia Mono", Consolas, monospace; letter-spacing: .5px; }
+  .dev .who { color: var(--dev); } .gd .who { color: var(--gd); } .opt .who { color: var(--opt); }
+  .t { display: block; font-size: 10.2pt; font-weight: 600; margin: .4mm 0 1.2mm; }
+  /* one skill = [n] command ········ [output chip]
+                     what it does (muted)            */
+  .card { counter-reset: s; }
+  .dir { font-size: 7.8pt; color: var(--muted); margin: -.4mm 0 1.4mm; }
+  .dir .c { font-size: 7.8pt; color: var(--file); }
+  .sk { counter-increment: s; display: grid; grid-template-columns: 4.4mm 1fr; column-gap: 1.8mm;
+    padding: 1.2mm 0; border-top: 1px solid #222c37; }
+  .sk:first-of-type, .dir + .sk { border-top: 0; }
+  .sk::before { content: counter(s); grid-row: span 2; width: 4.2mm; height: 4.2mm; border-radius: 50%;
+    background: #243040; color: var(--muted); font-size: 7pt; font-weight: 600; display: grid; place-items: center; }
+  .sk.nonum::before { visibility: hidden; }
+  .sk .top { display: flex; justify-content: space-between; align-items: center; gap: 1.5mm; flex-wrap: wrap; }
+  .sk .top .c { font-size: 8.4pt; font-weight: 600; }
+  .g3 .sk .top { flex-direction: column; align-items: flex-start; gap: .6mm; }
+  .sk .d { grid-column: 2; color: var(--muted); font-size: 8.2pt; line-height: 1.3; }
+  .f { font: 7.2pt "Cascadia Mono", Consolas, monospace; color: var(--file); white-space: nowrap;
+    background: #1f2a36; border: 1px solid #2f3d4d; border-radius: 1mm; padding: .15mm 1.3mm; }
+  .f.none { font-family: "Segoe UI", sans-serif; font-style: italic; color: var(--muted); border-style: dashed; }
+  .li { padding: 1mm 0; border-top: 1px solid #222c37; color: var(--muted); }
+  .li:first-of-type { border-top: 0; }
+  .note { margin-top: 1.6mm; padding: 1.3mm 2.2mm; border-radius: 1.2mm; font-size: 8.2pt;
+    background: #1d2621; border: 1px dashed #2c6150; }
+  .arrow { text-align: center; color: var(--muted); font-size: 8.4pt; margin: 1.6mm 0; }
+  .arrow b { color: var(--gd); }
+  .sync { display: flex; gap: 3mm; justify-content: center; flex-wrap: wrap; margin: 1.6mm 0 0; font-size: 8.4pt; }
+  .sync > span { background: #1c1f2b; border: 1px solid #3b3560; border-radius: 3mm; padding: .8mm 2.8mm; }
+  .sync > span::before { content: "☐ "; color: var(--opt); }
+  .when { font-size: 7.4pt; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .what { margin: .7mm 0 1mm; font-weight: 600; }
+  .rules { margin: 0; padding: 0; list-style: none; counter-reset: r; }
+  .rules li { counter-increment: r; display: flex; gap: 2mm; align-items: baseline; padding: 1mm 0; }
+  .rules li::before { content: counter(r); flex: none; width: 4.4mm; height: 4.4mm; border-radius: 50%;
+    background: var(--gd); color: var(--bg); font-weight: 700; font-size: 7.4pt; display: grid; place-items: center; }
+  .kit .d { display: block; margin-top: .7mm; color: var(--muted); font-size: 8.2pt; }
+  footer { position: absolute; left: 12mm; right: 12mm; bottom: 5.5mm; display: flex; justify-content: space-between;
+    color: var(--muted); font-size: 7.6pt; border-top: 1px solid var(--line); padding-top: 1.6mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================ PAGE 1 ============================ -->
+<section class="page">
+  <header>
+    <div>
+      <h1>Pipeline Field <span>Guide</span></h1>
+      <div class="bar"></div>
+      <div class="sub">Dev và game designer làm song song — bàn giao bằng file, không qua chat.</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--dev)"></i>Dev</span>
+      <span><i style="background:var(--gd)"></i>Game designer</span>
+      <span><i style="background:var(--opt)"></i>Chỉ khi muốn đo</span>
+    </div>
+  </header>
+
+  <h2>Phase 0 · Khởi động — song song</h2>
+  <div class="grid g2">
+    <div class="card dev"><div class="who">DEV</div><span class="t">Dựng base project</span>
+      <div class="sk"><div class="top"><span class="c">/project-overview</span><span class="f none">không ghi file</span></div>
+        <div class="d">Xem dự án đang có gì, rồi dev tự điền CLAUDE.md</div></div>
+      <div class="sk"><div class="top"><span class="c">/reverse-document</span><span class="f">design/gdd/*.md</span></div>
+        <div class="d">Đã có code sẵn thì dựng lại docs từ code</div></div>
+    </div>
+    <div class="card gd"><div class="who">GD</div><span class="t">Viết concept</span>
+      <div class="sk"><div class="top"><span class="c">/brainstorm</span><span class="f">design/gdd/game-concept.md</span></div>
+        <div class="d">Từ ý tưởng thành concept — hoặc tự viết tay</div></div>
+      <div class="sk nonum"><div class="top"><span class="c">.xlsx</span><span class="f">gdd-sync → design/gdd/</span></div>
+        <div class="d">Workbook của GD — nguồn sự thật, để đâu tuỳ dự án</div></div>
+    </div>
+  </div>
+  <div class="arrow">↓ cả hai duyệt <b>game-concept.md</b> mới sang Phase 1</div>
+
+  <h2 style="margin-top:0">Phase 1 · 1A ∥ 1B — không ai chờ ai</h2>
+  <div class="grid g2">
+    <div class="card dev"><div class="who">1A · DEV</div><span class="t">Từ ý tưởng → kiến trúc</span>
+      <div class="dir">File vào <span class="c">design/gdd/</span> (1–2) · <span class="c">docs/architecture/</span> (3–4)</div>
+      <div class="sk"><div class="top"><span class="c">/map-systems</span><span class="f">systems-index.md</span></div>
+        <div class="d">Tách concept thành các system</div></div>
+      <div class="sk"><div class="top"><span class="c">/design-system</span><span class="f">booster.md</span></div>
+        <div class="d">Mỗi system một GDD</div></div>
+      <div class="sk"><div class="top"><span class="c">/create-architecture</span><span class="f">architecture.md</span></div>
+        <div class="d">Tách Model/View, liệt kê ADR cần viết</div></div>
+      <div class="sk"><div class="top"><span class="c">/architecture-decision</span><span class="f">adr-0001-event-bus.md</span></div>
+        <div class="d">Ghi từng quyết định kỹ thuật</div></div>
+      <div class="note">Chỉ dev chạy. Số liệu lấy từ docs của GD; chưa có thì ghi <span class="c">[PLACEHOLDER]</span> để GD chốt sau.</div>
+    </div>
+    <div class="card gd"><div class="who">1B · GD · bật /gd-mode</div><span class="t">Định nghĩa độ khó</span>
+      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-map-flow</span><span class="f">flow-map.md</span></div>
+        <div class="d">INPUT / MID / OUTPUT — <b style="color:var(--text)">luôn chạy đầu tiên</b></div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-core-difficulty</span><span class="f">difficulty-model.md</span></div>
+        <div class="d">Game khó vì đâu, win rate mục tiêu</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-difficulty</span><span class="f">mechanics/ice-block.md</span></div>
+        <div class="d">Chạy một lần cho mỗi mechanic</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-object-mix</span><span class="f">mechanic-object-mix.md</span></div>
+        <div class="d">Một vật mang được những mechanic nào</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">mechanic-mix.md</span></div>
+        <div class="d">Mechanic nào đi chung một level</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">level-definition.md</span></div>
+        <div class="d">Máy được tự sinh những gì</div></div>
+    </div>
+  </div>
+
+  <div class="arrow">↓ <b>họp đồng bộ</b> trước Phase 2</div>
+  <div class="sync">
+    <span>Model không dính <span class="c">UnityEngine</span></span>
+    <span>GD ký duyệt file độ khó</span>
+    <span>Mỗi mechanic có file trong <span class="c">mechanics/</span></span>
+  </div>
+
+  <h2>4 luật thứ tự</h2>
+  <div class="card">
+    <ol class="rules" style="display:grid;grid-template-columns:1fr 1fr;column-gap:6mm">
+      <li><span><b>1A và 1B độc lập</b> — chạy song song</span></li>
+      <li><span><span class="c">/gd-map-flow</span> luôn chạy đầu tiên ở 1B</span></li>
+      <li><span>Xong cả 2 ma trận mix rồi mới <span class="c">/gd-level-definition</span></span></li>
+      <li><span>Phase 2 chặn Phase 3 — <b>không bot thì không đo</b></span></li>
+    </ol>
+  </div>
+
+  <footer><span>Chi tiết: <span class="c">.claude/docs/team-workflow.vi.md</span></span><span>1 / 2</span></footer>
+</section>
+
+<!-- ============================ PAGE 2 ============================ -->
+<section class="page">
+  <h2 style="margin-top:0">Phase 2 → 3 → 4 · Chỉ cần khi muốn đo</h2>
+  <div class="grid g3">
+    <div class="card opt"><div class="who">PHASE 2</div><span class="t">Dạy bot chơi</span>
+      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-bot-playstyle</span><span class="f">bot-playstyle.md</span></div>
+        <div class="d">GD mô tả thế nào là "chơi giỏi"</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-prototype-sim</span><span class="f">&lt;Game&gt;.Sim</span></div>
+        <div class="d">Dev dựng sim C# thuần + test</div></div>
+    </div>
+    <div class="card opt"><div class="who">PHASE 3</div><span class="t">Sinh &amp; đo level</span>
+      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-intent</span><span class="f">level-curves.md ●</span></div>
+        <div class="d">GD muốn mỗi level ra sao</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-gen</span><span class="f">folder riêng</span></div>
+        <div class="d">Sinh level JSON, lọc bằng bot</div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-audit</span><span class="f">level-curves.md ○</span></div>
+        <div class="d">Đo cả bộ level, báo cáo cần sửa gì</div></div>
+    </div>
+    <div class="card opt"><div class="who">PHASE 4</div><span class="t">Khớp người chơi thật</span>
+      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-calibrate</span><span class="f">calibration/2026-10-01.md</span></div>
+        <div class="d">Sau soft launch: so số bot với người chơi thật, rồi quay lại Phase 3</div></div>
+    </div>
+  </div>
+
+  <h2>Vòng level mỗi tuần (Phase 3)</h2>
+  <div class="grid g4">
+    <div class="card gd"><div class="when">Đầu tuần · GD</div><div class="what">Viết intent · duyệt ●</div>
+      <span class="c">/gd-level-intent</span></div>
+    <div class="card dev"><div class="when">Giữa tuần · Dev</div><div class="what">Sinh + đo · vẽ ○</div>
+      <span class="c">/gd-level-gen</span><br><span class="c">/gd-level-audit</span></div>
+    <div class="card gd"><div class="when">Cuối tuần · GD</div><div class="what">Giữ / sửa từng level</div>
+      <span class="sub">đọc</span> <span class="c">level-curves.md</span></div>
+    <div class="card"><div class="when">Hằng ngày · cả hai</div><div class="what">Merge vào develop</div>
+      <span class="c">gd</span> <span class="sub">và</span> <span class="c">feature/*</span></div>
+  </div>
+
+  <h2>Đọc đường độ khó · level-curves.md</h2>
+  <div class="card" style="display:grid;grid-template-columns:1.35fr 1fr;gap:4mm;align-items:center">
+    <svg viewBox="0 0 340 112" width="100%" role="img" aria-label="Designed vs measured pressure curve">
+      <g stroke="#2b3643"><line x1="10" y1="18" x2="330" y2="18"/><line x1="10" y1="58" x2="330" y2="58"/>
+        <line x1="10" y1="98" x2="330" y2="98" stroke="#445263"/></g>
+      <g fill="#8b98a6" font-size="8" font-family="Segoe UI, sans-serif">
+        <text x="10" y="109">bắt đầu level</text><text x="290" y="109">kết thúc</text><text x="296" y="13">sắp thua</text></g>
+      <polyline fill="none" stroke="#6cc4a4" stroke-width="2.4" stroke-linejoin="round"
+        points="10,90 26,82 42,74 58,74 74,66 90,66 106,58 122,58 138,50 154,50 170,42 186,42 202,34 218,42 234,50 250,58 266,66 282,74 298,82 314,82"/>
+      <polyline fill="none" stroke="#a893e0" stroke-width="2.4" stroke-dasharray="4 3" stroke-linejoin="round"
+        points="10,98 26,82 42,66 58,66 74,66 90,66 106,66 122,66 138,66 154,50 170,50 186,50 202,34 218,34 234,34 250,50 266,66 282,66 298,82 314,82"/>
+    </svg>
+    <div>
+      <div class="legend" style="margin-bottom:1.5mm"><span><b style="color:var(--gd)">●</b> GD muốn</span>
+        <span><b style="color:var(--opt)">○</b> bot đo được</span></div>
+      <div class="li">Cao hơn = gần thua hơn</div>
+      <div class="li">So <b style="color:var(--text)">hình dạng</b>: đỉnh ở đâu, cao bao nhiêu, mấy đỉnh</div>
+      <div class="li">Lệch quá ngưỡng GD đặt → sửa level</div>
+    </div>
+  </div>
+
+  <h2>Ai ghi file nào</h2>
+  <div class="grid g4">
+    <div class="card gd"><div class="who">GD</div><span class="c">game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/pipeline/*</span></div>
+    <div class="card dev"><div class="who">DEV</div><span class="c">design/gdd/*</span><br><span class="c">docs/architecture/*</span><br><span class="c">Assets/**</span></div>
+    <div class="card"><div class="who" style="color:var(--muted)">CẢ HAI</div><span class="c">level-curves.md</span><br><span class="sub">GD ghi ● · dev ghi ○</span></div>
+    <div class="card"><div class="who" style="color:var(--muted)">KHÔNG BAO GIỜ</div><span class="sub">Dev quyết độ khó, giá, màu · GD sửa code</span></div>
+  </div>
+
+  <h2>Lệnh dùng hằng ngày</h2>
+  <div class="grid g4 kit">
+    <div class="card dev"><span class="c">/use-mcp once</span><span class="d">Cho Claude chạm Unity Editor 1 lần. Mặc định tắt.</span></div>
+    <div class="card"><span class="c">/dev-brief on</span><span class="d">Trả lời ngắn. Chốt bằng <span class="c">1A 2B</span> · <span class="c">ok</span>.</span></div>
+    <div class="card gd"><span class="c">/gd-mode</span><span class="d">GD nói chuyện bằng trải nghiệm, không đọc code.</span></div>
+    <div class="card"><span class="c">/gd-workflow-help</span><span class="d">Đang ở bước nào, bước tiếp là gì.</span></div>
+  </div>
+
+  <footer><span>Tên file dạng <span class="c">booster</span>, <span class="c">ice-block</span> chỉ là ví dụ</span><span>Lệch gì thì <span class="c">.claude/</span> thắng · 2 / 2</span></footer>
+</section>
+
+</body>
+</html>

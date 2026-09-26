@@ -14,12 +14,6 @@ if [ -n "$BRANCH" ]; then
     git log --oneline -5 2>/dev/null | sed 's/^/  /'
 fi
 
-# The safety guard needs a real Python; without one it lets everything through. Say so once.
-if ! bash "$(dirname "${BASH_SOURCE[0]}")/guard.sh" --probe; then
-    echo "!! No working Python (python3 / python / py) found - unity_guard is INACTIVE:"
-    echo "   .meta / .prefab / .unity edits and destructive commands are NOT blocked this session."
-fi
-
 # New assets missing their .meta. Only Assets/ and Packages/ carry .meta files; cut -c4-
 # keeps paths with spaces whole (awk '{print $2}' split them).
 MISSING=$(git status --porcelain --untracked-files=all 2>/dev/null \

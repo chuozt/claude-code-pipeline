@@ -1,7 +1,7 @@
 ---
 name: map-systems
 description: "Break a game concept into its individual systems, map the dependencies between them, set the design order, and write the systems index that the GDDs follow. Use when typing /map-systems or saying 'what systems does this game need', 'break the concept down', 'systems list'."
-argument-hint: "[next | system-name] [--review full|lean|solo]"
+argument-hint: "[next | system-name]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, TodoWrite, Task
 ---
@@ -16,13 +16,6 @@ Two modes:
   to create or update the systems index.
 - **`next`**: `/map-systems next` — Pick the highest-priority undesigned system
   from the index and hand off to `/design-system` (Phase 6).
-
-Also resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 ---
 
@@ -144,17 +137,6 @@ Show the dependency map as a layered list. Highlight:
 Use `AskUserQuestion` to ask: "Does this dependency ordering look right? Any
 dependencies I'm missing or that should be removed?"
 
-**Review mode check** — apply before spawning TD-SYSTEM-BOUNDARY:
-- `solo` → skip. Note: "TD-SYSTEM-BOUNDARY skipped — Solo mode." Proceed to priority assignment.
-- `lean` → skip (not a PHASE-GATE). Note: "TD-SYSTEM-BOUNDARY skipped — Lean mode." Proceed to priority assignment.
-- `full` → spawn as normal.
-
-**After dependency mapping is approved, spawn `technical-director` via Task using gate TD-SYSTEM-BOUNDARY (`.claude/docs/director-gates.md`) before proceeding to priority assignment.**
-
-Pass: the dependency map summary, layer assignments, bottleneck systems list, any circular dependency resolutions.
-
-Present the assessment. If REJECT, revise the system boundaries with the user before moving to priority assignment. If CONCERNS, note them inline in the systems index and continue.
-
 ---
 
 ## Phase 4: Priority Assignment (Collaborative)
@@ -187,17 +169,6 @@ requires it — without [system], the 30-second loop can't function."
 - "Foundation for all economy decisions — players must understand upgrade costs to make meaningful placement choices"
 
 Pure technical necessity ("X depends on Y") is insufficient alone when the system directly shapes player experience.
-
-**Review mode check** — apply before spawning PR-SCOPE:
-- `solo` → skip. Note: "PR-SCOPE skipped — Solo mode." Proceed to writing the systems index.
-- `lean` → skip (not a PHASE-GATE). Note: "PR-SCOPE skipped — Lean mode." Proceed to writing the systems index.
-- `full` → spawn as normal.
-
-**After priorities are approved, spawn `producer` via Task using gate PR-SCOPE (`.claude/docs/director-gates.md`) before writing the index.**
-
-Pass: total system count per milestone tier, estimated implementation volume per tier (system count × average complexity), team size, stated project timeline.
-
-Present the assessment. If UNREALISTIC, offer to revise priority tier assignments before writing the index. If CONCERNS, note them and continue.
 
 ### Step 4c: Determine Design Order
 
@@ -235,17 +206,6 @@ Present a summary of the document:
 Ask: "May I write the systems index to `design/gdd/systems-index.md`?"
 
 Wait for approval. Write the file only after "yes."
-
-**Review mode check** — apply before spawning CD-SYSTEMS:
-- `solo` → skip. Note: "CD-SYSTEMS skipped — Solo mode." Proceed to Phase 7 next steps.
-- `lean` → skip (not a PHASE-GATE). Note: "CD-SYSTEMS skipped — Lean mode." Proceed to Phase 7 next steps.
-- `full` → spawn as normal.
-
-**After the systems index is written, spawn `creative-director` via Task using gate CD-SYSTEMS (`.claude/docs/director-gates.md`).**
-
-Pass: systems index path, game pillars and core fantasy (from `design/gdd/game-concept.md`), MVP priority tier system list.
-
-Present the assessment. If REJECT, revise the system set with the user before GDD authoring begins. If CONCERNS, record them in the systems index as a `> **Creative Director Note**` at the top of the relevant tier section.
 
 ### Step 5c: Update Session State
 
@@ -321,10 +281,10 @@ After the systems index is created (or after designing some systems), present ne
 - "Systems index is written. What would you like to do next?"
   - [A] Design all undesigned systems — run `/design-system` with no argument
   - [A2] Design just one system first — run `/design-system [first-system-in-order]`
-  - [B] Ask a director to review the index first — ask `creative-director` or `technical-director` to validate the system set before committing to 10+ GDD sessions
+  - [B] Ask `technical-director` to review the index first — validate the system set before committing to 10+ GDD sessions
   - [C] Stop here for this session
 
-**The director review option ([B]) is worth highlighting**: having a Creative Director or Technical Director review the completed systems index before starting GDD authoring catches scope issues, missing systems, and boundary problems before they're locked in across many documents. It is optional but recommended for new projects.
+**The review option ([B]) is worth highlighting**: having `technical-director` review the completed systems index before starting GDD authoring catches scope issues, missing systems, and boundary problems before they're locked in across many documents. It is optional but recommended for new projects.
 
 After any individual GDD is completed:
 - "Run `/design-review design/gdd/[system].md` in a fresh session to validate quality"

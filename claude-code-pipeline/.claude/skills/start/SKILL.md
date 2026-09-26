@@ -8,7 +8,7 @@ allowed-tools: Read, Glob, Grep, Write, AskUserQuestion
 
 # Guided Onboarding
 
-This skill writes one file: `production/review-mode.txt` (review mode config set in Phase 3b).
+This skill writes nothing — it only asks and routes.
 
 This skill is the entry point for new users. It does NOT assume you have a game idea, an engine preference, or any prior experience. It asks first, then routes you to the right workflow.
 
@@ -58,7 +58,6 @@ The user needs creative exploration before anything else.
    **Concept phase:**
    - `/brainstorm open` — discover your game concept
    - `/project-overview` — snapshot the project, then fill the stack in `project_setup.md` §1
-   - `/art-bible` — define visual identity (uses the Visual Identity Anchor brainstorm produces)
    - `/map-systems` — decompose the concept into systems
    - `/design-system` — author a GDD for each MVP system
    - `/review-all-gdds` — cross-system consistency check
@@ -83,7 +82,6 @@ The user needs creative exploration before anything else.
    **Concept phase:**
    - `/brainstorm [hint]` — develop the idea into a full concept
    - `/project-overview` — snapshot the project, then fill the stack in `project_setup.md` §1
-   - `/art-bible` — define visual identity (uses the Visual Identity Anchor brainstorm produces)
    - `/map-systems` — decompose the concept into systems
    - `/design-system` — author a GDD for each MVP system
    - `/review-all-gdds` — cross-system consistency check
@@ -110,7 +108,6 @@ The user needs creative exploration before anything else.
 3. Show the recommended path:
    **Concept phase:**
    - `/brainstorm` or `/project-overview` — (their pick from step 2)
-   - `/art-bible` — define visual identity (after brainstorm if run, or after concept doc exists)
    - `/design-review` — validate the concept doc
    - `/map-systems` — decompose the concept into individual systems
    - `/design-system` — author a GDD for each MVP system
@@ -154,31 +151,6 @@ The user needs creative exploration before anything else.
 
 ---
 
-## Phase 3b: Set Review Mode
-
-Check if `production/review-mode.txt` already exists.
-
-**If it exists**: Read it and show the current mode — "Review mode is set to `[current]`." — then proceed to Phase 4. Do not ask again.
-
-**If it does not exist**: Use `AskUserQuestion`:
-
-- **Prompt**: "One setup choice: how much design review would you want as you work through the workflow?"
-- **Options**:
-  - `Full` — Director specialists review at each key workflow step. Best for teams, learning the workflow, or when you want thorough feedback on every decision.
-  - `Lean (recommended)` — Directors only at major transitions. Skips per-skill reviews. Balanced approach for solo devs and small teams.
-  - `Solo` — No director reviews at all. Maximum speed. Best for game jams, prototypes, or if the reviews feel like overhead.
-
-Write the choice to `production/review-mode.txt` immediately after the user
-selects — no separate "May I write?" needed, as the write is a direct
-consequence of the selection:
-- `Full` → write `full`
-- `Lean (recommended)` → write `lean`
-- `Solo` → write `solo`
-
-Create the `production/` directory if it does not exist.
-
----
-
 ## Phase 4: Confirm Before Proceeding
 
 After presenting the recommended path, use `AskUserQuestion` to ask the user which step they'd like to take first. Never auto-run the next skill.
@@ -202,7 +174,7 @@ Verdict: **COMPLETE** — user oriented and handed off to next step.
 
 - **User picks D but project is empty**: Gently redirect — "It looks like the project is a fresh template with no artifacts yet. Would Path A or B be a better fit?"
 - **User picks A but project has code**: Mention what you found — "I noticed there's already code in `src/`. Did you mean to pick D (existing work)?"
-- **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/game-concept.md`. Review mode: `[read from production/review-mode.txt, or 'lean (default)' if missing]`. Want to pick up where you left off? Try `/gd-workflow-help` or just tell me what you'd like to work on."
+- **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/game-concept.md`. Want to pick up where you left off? Try `/gd-workflow-help` or just tell me what you'd like to work on."
 - **User doesn't fit any option**: Let them describe their situation in their own words and adapt.
 
 ---

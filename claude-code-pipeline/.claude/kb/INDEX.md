@@ -91,7 +91,7 @@ Unity 6 + middleware reference material, filtered for mobile casual / puzzle gam
 | **3. Mechanics** | `unity-game-architecture` · `tools-unity-state-machine` · `unity-data-driven` · `tools-unity-scriptable-objects` |
 | **4. UI** | `unity-ui-patterns` · `unity-ui` · `tools-unity-ugui` |
 | **5. Polish** | `goc/game-feel/*` · `unity-lighting-vfx` · `tools-unity-object-pooling` · `unity-performance` · `eng-unity-mobile-optimization` |
-| **6. Level review** | `unity-game-loop` · `docs/templates/difficulty-curve.md` · the `gd-level-*` skills |
+| **6. Level review** | `unity-game-loop` · `docs/templates/difficulty-curve.md` (whole game) · `docs/templates/level-difficulty-curve.md` (per level) · the `gd-level-*` skills |
 | **Always relevant** | `unity-lifecycle` · `unity-performance` · `unity-async-patterns` |
 
 ---

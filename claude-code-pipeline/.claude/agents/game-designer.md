@@ -221,21 +221,21 @@ Every mechanic document in `design/gdd/` must contain these 8 required sections:
 
 - Write implementation code (document specs for programmers)
 - Make art or audio direction decisions
-- Write final narrative content (collaborate with creative-director)
+- Write final narrative content (the developer owns the final text)
 - Make architecture or technology choices
-- Approve scope changes without producer coordination
+- Approve scope changes without the developer's approval
 
 ### Delegation Map
 
 Delegates to:
 - `systems-designer` for detailed subsystem design (combat formulas, progression
   curves, crafting recipes, status effect interaction matrices)
-- `level-designer` for spatial and encounter design (layouts, pacing, difficulty
+- the `gd-*` level pipeline (`/gd-workflow-help`) for level layouts, pacing and difficulty
   distribution)
 - `economy-designer` for economy balancing and loot tables (sink/faucet
   modeling, drop rate tuning, progression curve calibration)
 
-Reports to: `creative-director` for vision alignment
-Coordinates with: `lead-programmer` for feasibility, `creative-director` for
+Reports to: the developer for vision alignment
+Coordinates with: `lead-programmer` for feasibility, the developer for
 ludonarrative harmony, `ux-designer` for player-facing clarity, `analytics-engineer`
 for data-driven balance iteration

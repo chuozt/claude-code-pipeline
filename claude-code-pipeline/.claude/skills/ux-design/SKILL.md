@@ -922,10 +922,10 @@ specific sub-topics, additional context or coordination may be needed:
 
 | Topic | Coordinate with |
 |-------|----------------|
-| Visual aesthetics, color, layout feel | `art-director` — UX spec defines zones; art defines how they look |
+| Visual aesthetics, color, layout feel | the studio's artists (ask the developer) — UX spec defines zones; art defines how they look |
 | Implementation feasibility (engine constraints) | `ui-programmer` — before finalizing component inventory |
 | Gameplay data requirements | `game-designer` — when data ownership is unclear |
-| Narrative/lore visible in the UI | `creative-director` — for flavor text, item names, lore panels |
+| Text visible in the UI (flavour text, item names) | `localization-lead` — string length, text expansion, fonts |
 | Accessibility tier decisions | Handled by this session — owned by ux-designer |
 
 When delegating to another agent via the Task tool:

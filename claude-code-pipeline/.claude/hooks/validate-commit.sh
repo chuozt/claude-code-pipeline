@@ -6,8 +6,7 @@
 #   SDK folder                                                    the permission prompt)
 #
 # Only exit 2 (with stderr) or a JSON decision on stdout reaches Claude or the developer;
-# anything printed with exit 0 is lost. Stays in bash rather than unity_guard.py so it still
-# works on a machine without Python.
+# anything printed with exit 0 is lost. Bash only, like every hook here: no Python, no jq needed.
 
 INPUT=$(cat)
 case "$INPUT" in *commit*) ;; *) exit 0 ;; esac   # fast path: most Bash calls stop here
@@ -15,7 +14,7 @@ case "$INPUT" in *commit*) ;; *) exit 0 ;; esac   # fast path: most Bash calls s
 if command -v jq >/dev/null 2>&1; then
     COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 else
-    COMMAND=$(printf '%s' "$INPUT" | grep -oE '"command"[[:space:]]*:[[:space:]]*"([^"\\]|\\.)*"' \
+    COMMAND=$(printf '%s' "$INPUT" | grep -oE '"command"[[:space:]]*:[[:space:]]*"([^"\\]|[\\].)*"' \
         | sed 's/.*"command"[[:space:]]*:[[:space:]]*"//;s/"$//')
 fi
 

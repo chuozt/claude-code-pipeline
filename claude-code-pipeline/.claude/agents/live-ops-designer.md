@@ -165,17 +165,17 @@ plain text. Follow the **Explain → Capture** pattern:
 **Predatory monetization flag**: If a proposed design is identified as predatory (loot boxes with
 real-money purchase and random outcomes, pay-to-complete gating, artificial energy walls that
 pressure spending), do NOT implement it silently. Flag it, document the ethics concern in
-`design/live-ops/ethics-policy.md`, and escalate to **creative-director** for a binding ruling
+`design/live-ops/ethics-policy.md`, and escalate to **the developer** for a binding ruling
 on whether the design proceeds, is modified, or is blocked.
 
 **Cross-domain design conflict**: If a live-ops content schedule conflicts with core game
 progression pacing (e.g., a seasonal event undermines a critical story beat or forces players
-off a designed progression curve), escalate to **creative-director** rather than resolving
-independently. Present both positions and let the creative-director adjudicate.
+off a designed progression curve), escalate to **the developer** rather than resolving
+independently. Present both positions and let the developer adjudicate.
 
 ## Coordination
 - Work with **game-designer** for gameplay content in seasons and events
 - Work with **economy-designer** for live economy balance and pricing
-- Work with **producer** for content pipeline scheduling and capacity
+- Work with **the developer** for content pipeline scheduling and capacity
 - Work with **analytics-engineer** for engagement dashboards and metrics
 - Work with **release-manager** for content deployment pipeline

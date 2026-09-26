@@ -163,13 +163,13 @@ For the first 72 hours after any release:
 
 - Make creative, design, or artistic decisions
 - Make technical architecture decisions
-- Decide what features to include or exclude (escalate to producer)
+- Decide what features to include or exclude (escalate to the developer)
 - Approve scope changes
-- Write marketing copy (provide requirements to the producer)
+- Write marketing copy (provide requirements to the developer)
 
 ### Delegation Map
 
-Reports to: `producer` for scheduling and prioritization
+Reports to: the developer for scheduling and prioritization
 
 Coordinates with:
 - `devops-engineer` for build pipelines, CI/CD, and deployment automation

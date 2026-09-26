@@ -3,7 +3,7 @@ name: architecture-decision
 model: claude-opus-5-5
 effort: medium
 description: "Write an Architecture Decision Record (ADR) for one significant technical choice — context, options considered, decision, consequences — checked against the pinned Unity version. Use when typing /architecture-decision or saying 'write an ADR', 'record this technical decision', 'document why we chose X'."
-argument-hint: "[title] [--review full|lean|solo]"
+argument-hint: "[title]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
 ---
@@ -13,13 +13,6 @@ allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
 When this skill is invoked:
 
 ## 0. Parse Arguments — Detect Retrofit Mode
-
-Resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 **If the argument starts with `retrofit` followed by a file path**
 (e.g., `/architecture-decision retrofit docs/architecture/adr-0001-event-system.md`):
@@ -209,7 +202,7 @@ Status: Proposed
 
 Do not generate the ADR until the user confirms assumptions or provides corrections.
 
-**After engine specialist and TD reviews return** (Step 4.5/4.6), if unresolved
+**After the engine specialist review returns** (Step 4.5), if unresolved
 decisions remain, present each one as a separate `AskUserQuestion` with the proposed
 options as choices plus a free-text escape:
 
@@ -348,17 +341,7 @@ to implement it.]
    - If the specialist identifies a **blocking issue** (wrong API, deprecated approach, engine version incompatibility): revise the Decision and Engine Compatibility sections accordingly, then confirm the changes with the user before proceeding
    - If the specialist finds **minor notes** only: incorporate them into the ADR's Risks subsection
 
-**Review mode check** — apply before spawning TD-ADR:
-- `solo` → skip. Note: "TD-ADR skipped — Solo mode." Proceed to Step 4.7 (GDD sync check).
-- `lean` → skip (not a PHASE-GATE). Note: "TD-ADR skipped — Lean mode." Proceed to Step 4.7 (GDD sync check).
-- `full` → spawn as normal.
-
-4.6. **Technical Director Strategic Review** — After the engine specialist validation, spawn `technical-director` via Task using gate **TD-ADR** (`.claude/docs/director-gates.md`):
-   - Pass: the ADR file path (or draft content), engine version, domain, any existing ADRs in the same domain
-   - The TD validates architectural coherence (is this decision consistent with the whole system?) — distinct from the engine specialist's API-level check
-   - If CONCERNS or REJECT: revise the Decision or Alternatives sections accordingly before proceeding
-
-4.7. **GDD Sync Check** — Before presenting the write approval, scan all GDDs
+4.6. **GDD Sync Check** — Before presenting the write approval, scan all GDDs
 referenced in the "GDD Requirements Addressed" section for naming inconsistencies
 with the ADR's Key Interfaces and Decision sections (renamed signals, API methods,
 or data types). If any are found, surface them as a **prominent warning block**
