@@ -7,7 +7,7 @@
 > **Platform Targets**: [All platforms this HUD must work on — e.g., PC, PS5, Xbox Series X, Steam Deck]
 > **Related GDDs**: [Every system that exposes information through the HUD — e.g., `design/gdd/combat.md`, `design/gdd/progression.md`, `design/gdd/quests.md`]
 > **Accessibility Tier**: Basic | Standard | Comprehensive | Exemplary
-> **Style Reference**: [Link to art bible HUD section if it exists — e.g., `design/gdd/art-bible.md § HUD Visual Language`]
+> **Style Reference**: [Link to the art team's HUD style reference, if one exists]
 
 > **Note — Scope boundary**: This document specifies all elements that overlay the
 > game world during active gameplay — health bars, ammo counters, minimaps, quest
@@ -355,7 +355,7 @@ Repositioning saves to player profile, not to a single slot. Applies across play
 > in every gameplay moment. Color-blind failures, illegible text at minimum scale,
 > and inability to disable distracting animations are among the top accessibility
 > complaints in game reviews. This section defines HUD-specific requirements; refer
-> to the project's `docs/accessibility-requirements.md` for the full project standard.
+> to the project's accessibility standard, if it has one.
 
 ### 10.1 Colorblind Modes
 
@@ -502,4 +502,4 @@ The following player-adjustable settings must be available from the Accessibilit
 | [e.g., Should the minimap show enemy positions by default, or only after a detection skill is unlocked?] | [systems-designer + ui-designer] | [Sprint 5, Day 2] | [Pending — depends on progression GDD decision] |
 | [e.g., Does the game have a boss health bar, or do bosses use the standard enemy health bar? Bosses need a visually distinct treatment if they are significantly more important than normal enemies.] | [game-designer] | [Sprint 5, Day 1] | [Pending] |
 | [e.g., Damage numbers: diegetic (floating in world space, occluded by geometry) or screen space (always readable, overlaid on HUD layer)?] | [ui-designer + lead-programmer] | [Sprint 4, Day 5] | [Pending — architecture decision affects rendering layer choice] |
-| [e.g., Mobile portrait vs. landscape: does the game support both orientations? If yes, each requires its own zone layout.] | [producer] | [Sprint 3, Day 3] | [Pending — platform scope decision required first] |
+| [e.g., Mobile portrait vs. landscape: does the game support both orientations? If yes, each requires its own zone layout.] | [developer] | [date] | [Pending — platform scope decision required first] |

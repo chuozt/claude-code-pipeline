@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: "Guided, section-by-section GDD authoring for every undesigned system in the systems index, run back-to-back in one invocation. Gathers context from existing docs, walks through each required section collaboratively, cross-references dependencies, and writes incrementally to file. A single system or a retrofit path can still be targeted explicitly."
-argument-hint: "[all | <system-name> | retrofit <path>] [--review full|lean|solo]"
+argument-hint: "[all | <system-name> | retrofit <path>]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion, TodoWrite
 ---
@@ -9,13 +9,6 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion, TodoWrite
 When this skill is invoked:
 
 ## 1. Parse Arguments & Validate
-
-Resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 **Default mode is `all`.** No argument, or the literal argument `all`, means: design every
 undesigned system in the index, back-to-back, in one run — not one system per invocation.
@@ -133,6 +126,22 @@ For each dependency GDD that exists, extract and hold in context:
   (e.g., if designing a system that overlaps with another in scope, read the related GDD
   even if it's not a formal dependency)
 
+### 2c-bis: The Designer's Docs — the source for every design decision
+
+This skill is run by the **developer alone**; design decisions come from what the game
+designer has already written, never from an interview. Search, in this order, for anything
+about this system — rules, numbers, ranges, edge cases, intent:
+
+1. `design/pipeline/*.md` — `difficulty-model.md`, `level-definition.md`, `mechanics/*.md`,
+   `mechanic-mix.md`, `mechanic-object-mix.md`, `level-intent.md`
+2. The designer's `.xlsx` workbook, via `.claude/tools/gdd-sync` (the workbook wins over its
+   derived `.md` when they disagree)
+3. `design/gdd/*.md` written by the designer, `docs/features/*.md`
+
+Hold every hit as a **designer fact**: the value or rule, plus `file:line` (or sheet!cell).
+Sections C, D, E and G propose from these facts first (§4). Say which paths were searched —
+"nothing found" is a claim too (`CLAUDE.md` §5).
+
 ### 2d: Present Context Summary
 
 Before starting design work, present a brief summary to the user:
@@ -150,6 +159,9 @@ Before starting design work, present a brief summary to the user:
 >   - [constant_name]: [value] [unit] (owned by [source GDD])
 >   *(These values are locked — if this GDD needs different values, surface
 >   the conflict before writing. Do not silently use different numbers.)*
+>
+> - **Designer facts** (from 2c-bis): [value or rule] — `[source]` · … or "none found in
+>   [paths searched]"
 >
 > If no registry entries are relevant: omit the "Known cross-system facts" section.
 
@@ -240,7 +252,7 @@ Use the template structure from `.claude/docs/templates/game-design-document.md`
 # [System Name]
 
 > **Status**: In Design
-> **Author**: [user + agents]
+> **Author**: [developer] — design values from the designer's docs, `[PLACEHOLDER]` where none exist
 > **Last Updated**: [today's date]
 > **Implements Pillar**: [from context]
 
@@ -315,6 +327,22 @@ File content:
 
 ## 4. Section-by-Section Design
 
+**Developer-only.** Only the developer takes part; the designer is never asked mid-session
+(`docs/team-workflow.md`). Questions stay technical — flow, states, interfaces, what the code
+needs. Anything that is a **design decision** (a rule's intent, a number, a range, a
+balance trade-off) follows the **designer-fact rule**:
+
+1. **Found in the designer's docs** (2c-bis) → propose it with its source, e.g.
+   *"`moveLimit = 25` (`level-definition.md:48`)"*, and ask the developer to confirm.
+2. **Not found** → the developer may enter a working value, written **`[PLACEHOLDER]`** in
+   the GDD and in the config default, plus an Open Question "confirm [value] — owner: game
+   designer". It makes the code run; it is not a design decision (`CLAUDE.md` §10).
+3. **Never** invent a number or a rule yourself and present it as settled, and never ask the
+   developer taste questions ("what should it feel like?", "linear or logarithmic?").
+
+**No agents by default.** Spawn a specialist only when the developer explicitly asks for one
+(the routing table in §6 says which).
+
 Walk through each section in order. For **each section**, follow this cycle:
 
 ### The Section Cycle
@@ -330,9 +358,9 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
    `AskUserQuestion` for constrained questions, conversational text for open-ended
    exploration.
 
-3. **Options**: Where the section involves design choices (not just documentation),
-   present 2-4 approaches with pros/cons. Explain reasoning in conversation text,
-   then use `AskUserQuestion` to capture the decision.
+3. **Options**: Only for **technical** choices (data shape, interface, state layout) —
+   present 2-4 approaches with pros/cons, then use `AskUserQuestion`. A **design** choice is
+   never put to the developer as options; it follows the designer-fact rule above.
 
 4. **Decision**: User picks an approach or provides custom direction.
 
@@ -375,32 +403,17 @@ it if absent, Edit to update it if present.
 
 ### Section-Specific Guidance
 
-Each section has unique design considerations and may benefit from specialist agents:
-
 ---
 
 ### Section A: Overview
 
 **Goal**: One paragraph a stranger could read and understand.
 
-**Derive recommended options before building the widget**: Read the system's category and layer from the systems index (already in context from Phase 2), then determine the recommended option for each tab:
-- **Framing tab**: Foundation/Infrastructure layer → `[A]` recommended. Player-facing categories (Combat, UI, Dialogue, Character, Animation, Visual Effects, Audio) → `[C] Both` recommended.
-- **ADR ref tab**: Glob `docs/architecture/adr-*.md` and grep for the system name in the GDD Requirements section of any ADR. If a matching ADR is found → `[A] Yes — cite the ADR` recommended. If none found → `[B] No` recommended.
-- **Fantasy tab**: Foundation/Infrastructure layer → `[B] No` recommended. All other categories → `[A] Yes` recommended.
-
-Append `(Recommended)` to the appropriate option text in each tab.
-
-**Framing questions (ask BEFORE drafting)**: Use `AskUserQuestion` with a multi-tab widget:
-- Tab "Framing" — "How should the overview frame this system?" Options: `[A] As a data/infrastructure layer (technical framing)` / `[B] Through its player-facing effect (design framing)` / `[C] Both — describe the data layer and its player impact`
-- Tab "ADR ref" — "Should the overview reference the existing ADR for this system?" Options: `[A] Yes — cite the ADR for implementation details` / `[B] No — keep the GDD at pure design level`
-- Tab "Fantasy" — "Does this system have a player fantasy worth stating?" Options: `[A] Yes — players feel it directly` / `[B] No — pure infrastructure, players feel what it enables`
-
-Use the user's answers to shape the draft. Do NOT answer these questions yourself and auto-draft.
-
-**Questions to ask**:
-- What is this system in one sentence?
-- How does a player interact with it? (active/passive/automatic)
-- Why does this system exist — what would the game lose without it?
+**Draft it directly — no framing widget.** Write it from the systems index entry, the
+concept doc and the designer facts: what the system is in one sentence, how the player meets
+it (active / passive / automatic), and what the game loses without it. Foundation/
+Infrastructure systems get a technical framing. If an ADR in `docs/architecture/adr-*.md`
+names this system, cite it. The developer corrects the draft in the normal approval step.
 
 **Cross-reference**: Check that the description aligns with how the systems index
 describes it. Flag discrepancies.
@@ -416,38 +429,19 @@ describes the technical approach used to achieve it.
 
 ### Section B: Player Fantasy
 
-**Goal**: The emotional target — what the player should *feel*.
+**Goal**: The emotional target — what the player should *feel* — taken from the docs, not
+invented in this session.
 
-**Derive recommended option before building the widget**: Read the system's category and layer from Phase 2 context:
-- Player-facing categories (Combat, UI, Dialogue, Character, Animation, Audio, Level/World) → `[A] Direct` recommended
-- Foundation/Infrastructure layer → `[B] Indirect` recommended
-- Mixed categories (Camera/input, Economy, AI with visible player effects) → `[C] Both` recommended
+**No questions, no agent.** Fill this section from what already exists:
 
-Append `(Recommended)` to the appropriate option text.
+1. Foundation/Infrastructure layer → write `N/A — infrastructure; players feel what it
+   enables: [the systems it serves]`.
+2. Otherwise, find the pillar or core-fantasy line in `design/gdd/game-concept.md` (or
+   `game-pillars.md`) that this system serves, and **quote it** with its source.
+3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Fantasy
+   for [system] — owner: game designer". Never write a fantasy yourself.
 
-**Framing question (ask BEFORE drafting)**: Use `AskUserQuestion`:
-- Prompt: "Is this system something the player engages with directly, or infrastructure they experience indirectly?"
-- Options: `[A] Direct — player actively uses or feels this system` / `[B] Indirect — player experiences the effects, not the system` / `[C] Both — has a direct interaction layer and infrastructure beneath it`
-
-Use the answer to frame the Player Fantasy section appropriately. Do NOT assume the answer.
-
-**Questions to ask**:
-- What emotion or power fantasy does this serve?
-- What reference games nail this feeling? What specifically creates it?
-- Is this a "system you love engaging with" or "infrastructure you don't notice"?
-
-**Cross-reference**: Must align with the game pillars. If the system serves a pillar,
-quote the relevant pillar text.
-
-**Agent delegation (MANDATORY)**: After the framing answer is given but before drafting,
-spawn `creative-director` via Task:
-- Provide: system name, framing answer (direct/indirect/both), game pillars, any reference games the user mentioned, the game concept summary
-- Ask: "Shape the Player Fantasy for this system. What emotion or power fantasy should it serve? What player moment should we anchor to? What tone and language fits the game's established feeling? Be specific — give me 2-3 candidate framings."
-- Collect the creative-director's framings and present them to the user alongside the draft.
-
-**Do NOT draft Section B without first consulting `creative-director`.** The framing
-answer tells us *what kind* of fantasy it is; the creative-director shapes *how it's
-described* — tone, language, the specific player moment to anchor to.
+Show the result with the Section A draft; it needs no approval step of its own.
 
 ---
 
@@ -464,20 +458,14 @@ This is usually the largest section. Break it into sub-sections:
 3. **Interactions with Other Systems**: For each dependency (upstream and downstream),
    specify what data flows in, what flows out, and who owns the interface.
 
-**Questions to ask**:
-- Walk me through a typical use of this system, step by step
-- What are the decision points the player faces?
-- What can the player NOT do? (Constraints are as important as capabilities)
+**Draft first, then ask.** Build the rules from the designer facts, then ask the developer
+only technical questions:
+- Is this step-by-step flow what the code must do?
+- Is the state/transition table complete — any state or transition missing?
+- For each interface: what data goes in and out, and which side owns it?
 
-**Agent delegation (MANDATORY)**: Before drafting Section C, spawn specialist agents via Task in parallel:
-- Look up the system category in the routing table (Section 6 of this skill)
-- Spawn the Primary Agent AND Supporting Agent(s) listed for this category
-- Provide each agent: system name, game concept summary, pillar set, dependency GDD excerpts, the specific section being worked on
-- Collect their findings before drafting
-- Surface any disagreements between agents to the user via `AskUserQuestion`
-- Draft only after receiving specialist input
-
-**Do NOT draft Section C without first consulting the appropriate specialists.** A `systems-designer` reviewing rules and mechanics will catch design gaps the main session cannot.
+A rule the designer's docs do not settle → the designer-fact rule (§4): a working rule marked
+`[PLACEHOLDER]` if the developer supplies one, otherwise `UNDEFINED`, and an Open Question.
 
 **Cross-reference**: For each interaction listed, verify it matches what the
 dependency GDD specifies. If a dependency defines a value or formula and this
@@ -509,17 +497,19 @@ The [formula_name] formula is defined as:
 Do NOT write `[Formula TBD]` or describe a formula in prose without the variable
 table. A formula without defined variables cannot be implemented without guesswork.
 
-**Questions to ask**:
-- What are the core calculations this system performs?
-- Should scaling be linear, logarithmic, or stepped?
-- What should the output ranges be at early/mid/late game?
+**The developer writes the structure; the numbers come from the designer.** Derive the
+calculations the rules in Section C require — the expression, each variable and its type.
+For every **value** (a constant, a range, a curve's shape) apply the designer-fact rule (§4):
 
-**Agent delegation (MANDATORY)**: Before proposing any formulas or balance values, spawn specialist agents via Task in parallel:
-- **Always spawn `systems-designer`**: provide Core Rules from Section C, tuning goals from user, balance context from dependency GDDs. Ask them to propose formulas with variable tables and output ranges.
-- **For economy/cost systems, also spawn `economy-designer`**: provide placement costs, upgrade cost intent, and progression goals. Ask them to validate cost curves and ratios.
-- Present the specialists' proposals to the user for review via `AskUserQuestion`
-- The user decides; the main session writes to file
-- **Do NOT invent formula values or balance numbers without specialist input.** A user without balance design expertise cannot evaluate raw numbers — they need the specialists' reasoning.
+| Case | What goes in the GDD |
+|---|---|
+| Value in the designer's docs | the value + its source, confirmed by the developer |
+| Not in the docs, developer gives a working value | the value marked `[PLACEHOLDER]` + an Open Question for the designer |
+| Neither | `UNDEFINED` in the Range column + an Open Question |
+
+The only question for the developer is: *"Is this the calculation the code must do?"* Never
+ask about scaling shape or output ranges per game stage — those are balance decisions.
+Every variable that is a value, not a computed input, becomes a Tuning Knob (Section G).
 
 **Cross-reference**: If a dependency GDD defines a formula whose output feeds into
 this system, reference it explicitly. Don't reinvent — connect.
@@ -541,12 +531,11 @@ Do NOT write vague entries like "handle appropriately" — each must name the ex
 condition and the exact resolution. An edge case without a resolution is an open
 design question, not a specification.
 
-**Questions to ask**:
-- What happens at zero? At maximum? At out-of-range values?
-- What happens when two rules apply at the same time?
-- What happens if a player finds an unintended interaction? (Identify degenerate strategies)
-
-**Agent delegation (MANDATORY)**: Spawn `systems-designer` via Task before finalising edge cases. Provide: the completed Sections C and D, and ask them to identify edge cases from the formula and rule space that the main session may have missed. Present their findings and ask the user which to include.
+**List them yourself, the developer ticks.** From Sections C and D, list the candidates:
+every value at zero, at its maximum, out of range; two rules or events firing in the same
+frame; a dependency missing or not ready. Give each a resolution — from the designer facts
+when they settle it, otherwise the safe technical default (clamp, ignore, queue) marked
+`[PLACEHOLDER]`. Present them as one list; the developer keeps, edits or drops each.
 
 **Cross-reference**: Check edge cases against dependency GDDs. If a dependency
 defines a floor, cap, or resolution rule that this system could violate, flag it.
@@ -572,15 +561,19 @@ system]". Flag any one-directional dependencies for correction.
 
 ### Section G: Tuning Knobs
 
-**Goal**: Every designer-adjustable value, with safe ranges and extreme behaviors.
+**Goal**: Every designer-adjustable value, exposed as config so the designer tunes it later
+without a code change.
 
-**Questions to ask**:
-- What values should designers be able to tweak without code changes?
-- For each knob, what breaks if it's set too high? Too low?
-- Which knobs interact with each other? (Changing A makes B irrelevant)
+**Derive, do not ask.** One knob per value-variable from Section D, plus any value the rules
+in Section C use. For each:
 
-**Agent delegation**: If formulas are complex, delegate to `systems-designer`
-to derive tuning knobs from the formula variables.
+| Knob | Config field | Default | Source | Safe range |
+|---|---|---|---|---|
+| [name] | `[ScriptableObject].[field]` | [value] | [designer doc `file:line`] / `[PLACEHOLDER]` / `UNDEFINED` | [from the docs, or `UNDEFINED`] |
+
+Every `[PLACEHOLDER]` default and `UNDEFINED` range gets an Open Question for the designer.
+Never ask the developer what breaks when a knob is too high or too low — that is the
+designer's call, made later in the config.
 
 **Cross-reference**: If a dependency GDD lists tuning knobs that affect this system,
 reference them here. Don't create duplicate knobs — point to the source of truth.
@@ -602,12 +595,10 @@ Include at least: one criterion per core rule from Section C, and one per formul
 from Section D. Do NOT write "the system works as designed" — every criterion must
 be independently verifiable by a QA tester without reading the GDD.
 
-**Agent delegation (MANDATORY)**: Spawn `qa-lead` via Task before finalising acceptance criteria. Provide: the completed GDD sections C, D, E, and ask them to validate that the criteria are independently testable and cover all core rules and formulas. Surface any gaps or untestable criteria to the user.
-
-**Questions to ask**:
-- What's the minimum set of tests that prove this works?
-- What performance budget does this system get? (frame time, memory)
-- What would a QA tester check first?
+Before presenting, self-check that each criterion can be verified without reading the GDD
+and that every core rule and formula has one. **One question for the developer:** the
+performance budget this system gets on the reference device (frame time, memory) — or
+`UNDEFINED` if the project has none yet (`project_setup.md` §1).
 
 **Cross-reference**: Include criteria that verify cross-system interactions work,
 not just this system in isolation.
@@ -627,7 +618,11 @@ These sections are included in the template. Visual/Audio is **REQUIRED** for vi
 - Dialogue, quests, lore
 - Level/world systems
 
-For required systems: **spawn `art-director` via Task** before drafting this section. Provide: system name, game concept, game pillars, art bible sections 1–4 if they exist. Ask them to specify: (1) VFX and visual feedback requirements for this system's events, (2) any animation or visual style constraints, (3) which art bible principles most directly apply to this system. Present their output; do NOT leave this section as `[To be designed]` for visual systems.
+For required systems: list the **events that need feedback** (from Section C) and, for each,
+what the code must expose (an event, a hook point) and the performance budget on the target
+device (`project_setup.md` §1). Do NOT leave this section as `[To be designed]` for visual
+systems. How each feedback looks or sounds is the artists' and designer's call — mark it
+`UNDEFINED` rather than inventing it.
 
 For **all other system categories** (Foundation/Infrastructure, Economy, AI/pathfinding, Camera/input), offer the optional sections after the required sections:
 
@@ -636,10 +631,9 @@ Use `AskUserQuestion`:
   requirements, UI requirements, or capture open questions?"
   - Options: "Yes, all three", "Just open questions", "Skip — I'll add these later"
 
-For **Visual/Audio** (non-required systems): Coordinate with `art-director` and `audio-director` if detail is needed. Often a brief note suffices at the GDD stage.
+For **Visual/Audio** (non-required systems): a brief note suffices at the GDD stage.
 
-
-For **UI Requirements**: Coordinate with `ux-designer` for complex UI systems.
+For **UI Requirements**: list the data each screen shows and the commands it sends.
 After writing this section, check whether it contains real content (not just
 `[To be designed]` or a note that this system has no UI). If it does have real
 UI requirements, output this flag immediately:
@@ -652,7 +646,9 @@ UI requirements, output this flag immediately:
 > Note this in the systems index for this system if you update it.
 
 For **Open Questions**: Capture anything that came up during design that wasn't
-fully resolved. Each question should have an owner and target resolution date.
+fully resolved. Each question should have an owner and target resolution date. **Always
+written, never skipped** when the GDD holds any `[PLACEHOLDER]` or `UNDEFINED`: one row per
+item, owner "game designer" — this list is how the designer picks the GDD up afterwards.
 
 ---
 
@@ -669,20 +665,6 @@ the source of truth). Verify:
 - Edge cases have resolutions
 - Dependencies are listed with interfaces
 - Acceptance criteria are testable
-
-### 5a-bis: Creative Director Pillar Review
-
-**Review mode check** — apply before spawning CD-GDD-ALIGN:
-- `solo` → skip. Note: "CD-GDD-ALIGN skipped — Solo mode." Proceed to Step 5b.
-- `lean` → skip (not a PHASE-GATE). Note: "CD-GDD-ALIGN skipped — Lean mode." Proceed to Step 5b.
-- `full` → spawn as normal.
-
-Before finalizing the GDD, spawn `creative-director` via Task using gate **CD-GDD-ALIGN** (`.claude/docs/director-gates.md`).
-
-Pass: completed GDD file path, game pillars (from `design/gdd/game-concept.md` or `design/gdd/game-pillars.md`), MDA aesthetics target.
-
-Handle verdict per the standard rules in `director-gates.md`. After resolution, record the verdict in the GDD Status header:
-`> **Creative Director Review (CD-GDD-ALIGN)**: APPROVED [date] / CONCERNS (accepted) [date] / REVISED [date]`
 
 ---
 
@@ -802,24 +784,25 @@ Use `AskUserQuestion`:
 
 ## 6. Specialist Agent Routing
 
-This skill delegates to specialist agents for domain expertise. The main session
-orchestrates the overall flow; agents provide expert content.
+**Only on the developer's explicit request** (§4 "No agents by default"). When the developer
+asks for a second opinion on a section, this table says whom to spawn. An agent's proposal
+of a number is still not a designer fact — it goes in as `[PLACEHOLDER]`.
 
 | System Category | Primary Agent | Supporting Agent(s) |
 |----------------|---------------|---------------------|
 | **Foundation/Infrastructure** (event bus, save/load, scene mgmt, service locator) | `systems-designer` | `gameplay-programmer` (feasibility), `unity-specialist` (engine integration) |
-| Combat, damage, health | `game-designer` | `systems-designer` (formulas), `gameplay-programmer` (enemy AI), `art-director` (hit feedback visual direction, VFX intent) |
+| Combat, damage, health | `game-designer` | `systems-designer` (formulas), `gameplay-programmer` (enemy AI), `technical-artist` (hit feedback, VFX intent) |
 | Economy, loot, crafting | `economy-designer` | `systems-designer` (curves), `game-designer` (loops) |
 | Progression, XP, skills | `game-designer` | `systems-designer` (curves), `economy-designer` (sinks) |
-| Dialogue, quests, lore | `game-designer` | `creative-director` (tone), `art-director` (character visual profiles, cinematic tone) |
-| UI systems (HUD, menus) | `game-designer` | `ux-designer` (flows), `ui-programmer` (feasibility), `art-director` (visual style direction), `technical-artist` (render/shader constraints) |
-| Audio systems | `game-designer` | `audio-director` (direction), `sound-designer` (specs) |
+| Dialogue, quests, lore | `game-designer` | `localization-lead` (string volume, text expansion) |
+| UI systems (HUD, menus) | `game-designer` | `ux-designer` (flows), `ui-programmer` (feasibility), `technical-artist` (render/shader constraints) |
+| Audio systems | `game-designer` | `sound-designer` (specs) |
 | AI, pathfinding, behavior | `game-designer` | `gameplay-programmer` (implementation), `systems-designer` (scoring) |
-| Level/world systems | `game-designer` | `level-designer` (spatial) |
+| Level/world systems | `game-designer` | `systems-designer` (level data, constraints) |
 | Camera, input, controls | `game-designer` | `ux-designer` (feel), `gameplay-programmer` (feasibility) |
-| Animation, character movement | `game-designer` | `art-director` (animation style, pose language), `technical-artist` (rig/blend constraints), `gameplay-programmer` (feel) |
-| Visual effects, particles, shaders | `game-designer` | `art-director` (VFX visual direction), `technical-artist` (performance budget, shader complexity), `systems-designer` (trigger/state integration) |
-| Character systems (stats, archetypes) | `game-designer` | `art-director` (character visual archetype), `creative-director` (character alignment with the pillars), `systems-designer` (stat formulas) |
+| Animation, character movement | `game-designer` | `technical-artist` (rig/blend constraints), `gameplay-programmer` (feel) |
+| Visual effects, particles, shaders | `game-designer` | `technical-artist` (performance budget, shader complexity), `systems-designer` (trigger/state integration) |
+| Character systems (stats, archetypes) | `game-designer` | `systems-designer` (stat formulas) |
 
 **When delegating via Task tool**:
 - Provide: system name, game concept summary, dependency GDD excerpts, the specific
@@ -862,15 +845,15 @@ This skill follows the collaborative design principle at every step:
 2. **AskUserQuestion** at every decision point (Explain -> Capture pattern):
    - Phase 2: "Ready to start, or need more context?"
    - Phase 3: "May I create the skeleton?"
-   - Phase 4 (each section): Design questions, approach options, draft approval
+   - Phase 4 (each section): technical questions and draft approval — design values come
+     from the designer's docs, confirmed by the developer (§4 designer-fact rule)
    - Phase 5: "Run design review? Update systems index? What's next?" (single-system mode) /
      "Continue to the next system in the queue?" (all-systems mode)
 3. **"May I write to [filepath]?"** before the skeleton and before each section write
 4. **Incremental writing**: Each section is written to file immediately after approval
 5. **Session state updates**: After every section write
 6. **Cross-referencing**: Every section checks existing GDDs for conflicts
-7. **Specialist routing**: Complex sections get expert agent input, presented to
-   the user for decision — never written silently
+7. **Specialist routing**: only when the developer asks (§6) — never by default
 
 **In all-systems mode, steps 2 through 5 repeat once per system in the queue** — the loop
 is at the queue level (section 5e), not inside any individual step. Every rule above still
@@ -881,7 +864,8 @@ applies per system; running the whole index does not relax any single system's r
 **Never** contradict an existing approved GDD without flagging the conflict.
 **Never** silently skip the between-systems check-in (5e) in all-systems mode — advancing
 the queue without it is the multi-system equivalent of skipping approval.
-**Always** show where decisions come from (dependency GDDs, pillars, user choices).
+**Always** show where decisions come from (designer docs `file:line`, dependency GDDs,
+pillars, or `[PLACEHOLDER]` from the developer).
 
 ## Context Window Awareness
 

@@ -91,7 +91,7 @@ Rules learned the hard way:
 - `Unity_GetSha` / `Unity_ApplyTextEdits` refuse a **dotted** script name
   (`PlayerView.Movement.cs` → "Invalid script name"); partial-class files are edited on disk only.
 - A `cd` into a project subfolder (even one done by a Bash command) moves the session's cwd,
-  and the Bash/Edit/Write hooks then look for `.claude/hooks/unity_guard.py` under that folder
+  and the Bash/Edit/Write hooks then look for `.claude/hooks/guard.sh` under that folder
   and fail — every file tool is dead until the turn ends. Use absolute paths, never `cd`.
 
 `unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`

@@ -3,7 +3,7 @@ name: prototype
 model: claude-opus-5-5
 effort: medium
 description: "Throwaway prototype to answer ONE question about fun or feel (does this mechanic feel good, is this camera readable) — relaxed standards, playable in the Editor, deleted afterwards, plus a short report. Not the bot-playable simulation: that is /gd-prototype-sim. Use when typing /prototype or saying 'quick throwaway test', 'hack it together to see if it is fun', 'spike this mechanic'."
-argument-hint: "[concept-description] [--review full|lean|solo]"
+argument-hint: "[concept-description]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task
 agent: prototyper
@@ -13,13 +13,6 @@ isolation: worktree
 > **Coding rule — mandatory.** Every line of C# this skill writes, reviews, or proposes must follow `.claude/coding_convention.md` (Allman braces, §9 script layout, field order and naming, `GameDebug` instead of `Debug.Log`, no `{ get; private set; }`). Where any sample or advice below disagrees with that file, the convention wins.
 
 ## Phase 1: Define the Question
-
-Resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 Read the concept description from the argument. Identify the core question this prototype must answer. If the concept is vague, state the question explicitly before proceeding — a prototype without a clear question wastes time.
 
@@ -118,24 +111,18 @@ If yes, write the file.
 
 ---
 
-## Phase 6: Creative Director Review
+## Phase 6: Developer Decision
 
-**Review mode check** — apply before spawning CD-PLAYTEST:
-- `solo` → skip. Note: "CD-PLAYTEST skipped — Solo mode." Proceed to Phase 7 summary with the prototyper's recommendation as the final verdict.
-- `lean` → skip (not a PHASE-GATE). Note: "CD-PLAYTEST skipped — Lean mode." Proceed to Phase 7 summary with the prototyper's recommendation as the final verdict.
-- `full` → spawn as normal.
-
-Spawn `creative-director` via Task using gate **CD-PLAYTEST** (`.claude/docs/director-gates.md`).
-
-Pass: the full REPORT.md content, the original design question, game pillars and core fantasy from `design/gdd/game-concept.md` (if it exists).
-
-The creative director evaluates the prototype result against the game's creative vision and pillars, then confirms, modifies, or overrides the prototyper's PROCEED / PIVOT / KILL recommendation. Their verdict is final. Update the REPORT.md `Recommendation` section if the creative director's verdict differs from the prototyper's.
+Present the prototyper's PROCEED / PIVOT / KILL recommendation, with the evidence behind
+it and how it sits against the game pillars in `design/gdd/game-concept.md` (if it exists).
+Use `AskUserQuestion` to let the developer confirm or override it. Their decision is
+final; update the REPORT.md `Recommendation` section if it differs from the prototyper's.
 
 ---
 
 ## Phase 7: Summary and Next Steps
 
-Output a summary to the user: the core question, the result, the prototyper's initial recommendation, and the creative-director's final decision. Link to the full report at `prototypes/[concept-name]/REPORT.md`.
+Output a summary to the user: the core question, the result, the prototyper's initial recommendation, and the developer's final decision. Link to the full report at `prototypes/[concept-name]/REPORT.md`.
 
 If **PROCEED**: run `/design-system` to begin the production GDD for this mechanic, or `/architecture-decision` to record key technical decisions before implementation.
 

@@ -175,7 +175,7 @@ Before writing any code:
 
 ## Coordination
 - Work with **unity-specialist** for overall Unity architecture
-- Work with **art-director** for visual direction and material standards
+- Work with **technical-artist** for visual direction and material standards
 - Work with **technical-artist** for shader authoring workflow
 - Work with **performance-analyst** for GPU performance profiling
 - Work with **unity-ui-specialist** for UI shader effects

@@ -207,4 +207,4 @@ and inspectors, which are not game UI.
 - Work with **ux-designer** for interaction design and accessibility
 - Work with **unity-addressables-specialist** for UI asset loading
 - Work with **localization-lead** for text fitting and localization
-- Work with **accessibility-specialist** for compliance
+- Work with **ux-designer** for accessibility (colour-blind safety, text size, touch targets)

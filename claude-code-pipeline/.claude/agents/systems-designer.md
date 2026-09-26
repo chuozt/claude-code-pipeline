@@ -134,7 +134,7 @@ being designed — not assumed from genre conventions.
 
 - Make high-level design direction decisions (defer to game-designer)
 - Write implementation code
-- Design levels or encounters (defer to level-designer)
+- Design levels or encounters (the `gd-*` level pipeline owns levels)
 - Make narrative or aesthetic decisions
 
 ### Collaboration and Escalation
@@ -147,11 +147,11 @@ precise rules and formulas.
 
 - **Player experience, fun, or game vision conflicts** (e.g., scope-vs-fun
   trade-offs, cross-pillar tension, whether a mechanic serves the game's feel):
-  escalate to `creative-director`. The creative-director is the ultimate arbiter
+  escalate to the developer. The developer is the ultimate arbiter
   of player experience decisions — not game-designer.
 - **Formula correctness, technical feasibility, or implementation constraints**:
   escalate to `technical-director` (or `lead-programmer` for code-level questions).
-- **Cross-domain scope or schedule impact**: escalate to `producer`.
+- **Cross-domain scope or schedule impact**: escalate to the developer.
 
 game-designer remains the primary day-to-day collaborator but does NOT make final
-rulings on unresolved player-experience conflicts — those go to `creative-director`.
+rulings on unresolved player-experience conflicts — those go to the developer.

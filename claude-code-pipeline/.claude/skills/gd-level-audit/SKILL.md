@@ -68,6 +68,25 @@ L10  5 4 3 3 3 3 3 3 3 2 2 2 1 1 1 2 3 3 4 4   easy → tight at 50-70% → open
 L29  3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0   hard-locked from 15%                ❌
 ```
 
+### Plot against the designed curve
+
+If `design/pipeline/level-curves.md` exists (written by `/gd-level-intent`, format in
+`.claude/docs/templates/level-difficulty-curve.md`), for every level that has a block there:
+
+1. Convert the 20 free-slot averages to `pressure(t)` with the proxy in
+   `design/pipeline/flow-map.md` (with a MID: `pressure = 1 − free ÷ capacity`), one decimal.
+2. Fill the **Measured** row — with the run, bot, attempt count and date — and plot it with ○
+   (◉ where it lands on a ●).
+3. Compare with the **Tolerances** table: peak position, peak height, peak count, Δ max. Any
+   tolerance still `UNDEFINED` → report the raw gaps and say the verdict cannot be given until
+   the designer sets it; never pick a tolerance yourself.
+4. Write the verdict line (OK / Revise + which check failed + suspected root cause from Phase 4).
+
+Update only Measured rows, ○ marks and verdict lines — never a Designed row, which is the
+designer's. Ask before writing: *"Fill the measured curves into `level-curves.md`?"*
+Levels with no block (no specific intent) are compared against their tier's reference shape
+in the report only.
+
 The efficient way to run this: write **one static method** in the project's editor code that
 returns JSON, then — **once the developer has typed `/use-mcp`** (`CLAUDE.md` §2.1; without it,
 ask) — call it in one line through `eval` (`unity command eval --code "return X.RunToJson();"`),
@@ -116,7 +135,8 @@ Four suspects, in order of frequency:
 
 ## Phase 5 — Report
 
-1. **An N-row table:** level · designer label · win rate · difficulty verdict · worst colour pair · rule violations
+1. **An N-row table:** level · designer label · win rate · difficulty verdict · curve verdict
+   (designed vs measured, or vs the tier's reference shape) · worst colour pair · rule violations
 2. **The list of levels needing fixes + their ROOT CAUSE** — not "too hard" but
    *"missing the right resource at the 40–60% stretch"*
 3. **Proposed levels, exported to a separate folder**, with a read-me-first file

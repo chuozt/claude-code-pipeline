@@ -36,7 +36,7 @@ just not part of this pipeline's tracked sequence).
 | Command | What it does | Produces |
 |---|---|---|
 | `/map-systems` | Splits the concept into systems, maps dependencies, sets design order | `design/gdd/systems-index.md` |
-| `/design-system` | Writes every undesigned system's GDD, section by section, back-to-back in one run. `/design-system <name>` targets just one | `design/gdd/<system>.md` per system |
+| `/design-system` | Writes every undesigned system's GDD, section by section, back-to-back in one run. `/design-system <name>` targets just one. **Developer only**: design values are taken from the designer's docs, anything missing is marked `[PLACEHOLDER]` and listed as an Open Question for the designer | `design/gdd/<system>.md` per system |
 | `/create-architecture` | Turns the GDDs into a technical blueprint + the required ADR list | `docs/architecture/architecture.md` |
 
 ---
@@ -54,7 +54,7 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 | `/gd-mechanic-object-mix` | Which mechanics one object may carry at once (deadlock / slot / state checks) | `design/pipeline/mechanic-object-mix.md` |
 | `/gd-mechanic-mix` | Which mechanics may appear in one level, derived from their factors | `design/pipeline/mechanic-mix.md` |
 | `/gd-level-definition` | Separates human-owned identity from machine-generated variables; sets the tier profiles | `design/pipeline/level-definition.md` |
-| `/gd-level-intent` | Translates a per-level intent sheet into machine profiles. **Optional** | `design/pipeline/level-intent.md` |
+| `/gd-level-intent` | Translates a per-level intent sheet into machine profiles. **Optional** | `design/pipeline/level-intent.md` + designed curves in `level-curves.md` |
 
 > **Both mix matrices are needed before `/gd-level-definition`** — object scale and level scale
 > answer different questions and neither substitutes for the other.
@@ -98,7 +98,7 @@ simulate against) finished first.
 | Command | What it does | Produces |
 |---|---|---|
 | `/gd-level-gen` | Generates candidates, filters by static DSL then by bots, presents the top-k for approval | approved level payloads + measurements |
-| `/gd-level-audit` | Measures the whole level set with bots: win rates, pressure curves, colour pairing | an audit report + proposed fixes with root causes |
+| `/gd-level-audit` | Measures the whole level set with bots: win rates, pressure curves, colour pairing | an audit report + proposed fixes with root causes; measured curves in `level-curves.md` |
 
 > Phase 3 needs phase 2. Without a simulation there is nothing to filter or measure with.
 

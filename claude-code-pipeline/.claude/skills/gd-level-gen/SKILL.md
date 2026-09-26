@@ -68,9 +68,9 @@ Present the top-k (count from level-definition) as a comparison table:
 
 With a short note per candidate: which **factor** makes it hard, and where the tension sits.
 
-**Spawn `level-designer`** (Task) for a **pacing** opinion. A machine can score whether the
+**Spawn `game-designer`** (Task) for a **pacing** opinion. A machine can score whether the
 curve hits the numeric thresholds; whether it is *elegant or forced* is a pacing judgement —
-that is this agent's job (*"difficulty pacing"* in its definition).
+flow and pacing are this agent's frameworks.
 
 Include in the prompt: an excerpt of **section 8** of
 `resource-flow-difficulty-framework.md`, `level-definition.md`, and the top-k table above.

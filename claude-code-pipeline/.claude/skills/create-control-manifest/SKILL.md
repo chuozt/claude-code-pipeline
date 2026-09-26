@@ -120,18 +120,10 @@ Ask: "Does this look complete? Any rules to add or remove before I write the man
 
 ---
 
-## 4b. Director Gate — Technical Review
+## 4b. Technical Self-Review
 
-**Review mode check** — apply before spawning TD-MANIFEST:
-- `solo` → skip. Note: "TD-MANIFEST skipped — Solo mode." Proceed to Phase 5.
-- `lean` → skip. Note: "TD-MANIFEST skipped — Lean mode." Proceed to Phase 5.
-- `full` → spawn as normal.
-
-Spawn `technical-director` via Task using gate **TD-MANIFEST** (`.claude/docs/director-gates.md`).
-
-Pass: the Control Manifest Preview from Phase 4 (rule counts per layer, full extracted rule list), the list of ADRs covered, engine version, and any rules sourced from technical-preferences.md or engine reference docs.
-
-The technical-director reviews whether:
+This skill runs as technical-director. Before writing, check the Control Manifest Preview
+from Phase 4 against the ADRs it covers, and confirm:
 - All mandatory ADR patterns are captured and accurately stated
 - Forbidden approaches are complete and correctly attributed
 - No rules were added that lack a source ADR or preference document

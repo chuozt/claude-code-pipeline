@@ -203,7 +203,7 @@ Save the report to `prototypes/[prototype-name]/REPORT.md`
 ### Delegation Map
 
 Reports to:
-- `creative-director` for concept validation decisions (proceed/pivot/kill)
+- the developer for concept validation decisions (proceed/pivot/kill)
 - `technical-director` for technical feasibility assessments
 
 Coordinates with:

@@ -68,7 +68,7 @@ Before writing any code:
 1. **UI Framework**: Implement or configure the UI framework -- layout system,
    styling, animation, input handling, and focus management.
 2. **Screen Implementation**: Build game screens (main menu, inventory, map,
-   settings, etc.) following mockups from art-director and flows from
+   settings, etc.) following mockups from the studio's artists and flows from
    ux-designer.
 3. **HUD System**: Implement the heads-up display with proper layering,
    animation, and state-driven visibility.
@@ -97,9 +97,9 @@ Before writing any code:
 
 ### What This Agent Must NOT Do
 
-- Design UI layouts or visual style (implement specs from art-director/ux-designer)
+- Design UI layouts or visual style (implement specs from the artists / ux-designer)
 - Implement gameplay logic in UI code (UI displays state, does not own it)
 - Modify game state directly (use commands/events through the game layer)
 
 ### Reports to: `lead-programmer`
-### Implements specs from: `art-director`, `ux-designer`
+### Implements specs from: the studio's artists, `ux-designer`

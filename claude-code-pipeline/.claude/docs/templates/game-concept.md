@@ -306,11 +306,11 @@ the combat-crafting loop engaging for 30+ minute sessions"]
 
 ## Next Steps
 
-- [ ] Get concept approval from creative-director
+- [ ] Get concept approval from the developer
 - [ ] Fill in the stack tables in `CLAUDE.md` §1 and `project_setup.md` §1 (`/project-overview` drafts them)
 - [ ] Create game pillars document (`/design-review` to validate)
 - [ ] Decompose concept into systems (`/map-systems` — maps dependencies, assigns priorities, guides per-system GDD writing)
 - [ ] Create first architecture decision record (`/architecture-decision`)
 - [ ] Prototype core loop (`/prototype [core-mechanic]`)
 - [ ] Validate core loop with playtest (`/playtest-report`)
-- [ ] Agree the first milestone with the developer (`milestone-definition.md`)
+- [ ] Agree the first milestone with the developer

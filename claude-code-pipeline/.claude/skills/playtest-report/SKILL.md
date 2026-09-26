@@ -1,19 +1,12 @@
 ---
 name: playtest-report
 description: "Turn the notes from a playtest that ALREADY happened into a structured report: observations, pain points, severity, and follow-up actions. Planning a playtest before it runs is /gd-playtest-protocol. Use when typing /playtest-report or saying 'write up the playtest', 'organise these playtest notes', 'what did testers say'."
-argument-hint: "[new|analyze path-to-notes] [--review full|lean|solo]"
+argument-hint: "[new|analyze path-to-notes]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
 ---
 
 ## Phase 1: Parse Arguments
-
-Resolve the review mode (once, store for all gate spawns this run):
-1. If `--review [full|lean|solo]` was passed → use that
-2. Else read `production/review-mode.txt` → use that value
-3. Else → default to `lean`
-
-See `.claude/docs/director-gates.md` for the full check pattern.
 
 Determine the mode:
 
@@ -111,21 +104,6 @@ Present the categorized list, then route:
 - **Balance adjustments:** "Run `/gd-balance-analyst` to verify the full balance picture before tuning values."
 - **Bugs:** "Log these in the project bug tracker — template at `.claude/templates/BugReport.md`."
 - **Polish items:** "Add to the polish backlog in `production/` when the team reaches that phase."
-
----
-
-## Phase 3b: Creative Director Player Experience Review
-
-**Review mode check** — apply before spawning CD-PLAYTEST:
-- `solo` → skip. Note: "CD-PLAYTEST skipped — Solo mode." Proceed to Phase 4 (save the report).
-- `lean` → skip (not a PHASE-GATE). Note: "CD-PLAYTEST skipped — Lean mode." Proceed to Phase 4 (save the report).
-- `full` → spawn as normal.
-
-After categorising findings, spawn `creative-director` via Task using gate **CD-PLAYTEST** (`.claude/docs/director-gates.md`).
-
-Pass: the structured report content, game pillars and core fantasy (from `design/gdd/game-concept.md`), the specific hypothesis being tested.
-
-Present the creative director's assessment before saving the report. If CONCERNS or REJECT, add a `## Creative Director Assessment` section to the report capturing the verdict and feedback. If APPROVE, note the approval in the report.
 
 ---
 

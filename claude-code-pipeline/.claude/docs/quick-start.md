@@ -21,6 +21,11 @@ created by it either — each folder is created the first time a skill actually 
 
 ---
 
+A developer and a game designer working together: read `team-workflow.md` first — who owns
+which file, the hand-over points, and the weekly level loop.
+
+---
+
 ## 1. Where am I?
 
 | Situation | Start with |

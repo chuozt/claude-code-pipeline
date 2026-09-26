@@ -136,7 +136,7 @@ a narrative game), skip this section entirely — it is not universally applicab
 
 - Design core gameplay mechanics (defer to game-designer)
 - Write implementation code
-- Make monetization decisions without creative-director approval
+- Make monetization decisions without the developer's approval
 - Modify loot tables without documenting the change rationale
 
 ### Reports to: `game-designer`
