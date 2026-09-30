@@ -7,7 +7,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
 ---
 
 The translation bridge between **designer language** ("easy at the start, hard in the middle,
-easing off toward the end") and **generator language** (pressure curve shape, per-segment DSL
+easing off toward the end") and **generator language** (pressure curve shape, per-segment DIG
 profile).
 
 **OPTIONAL**: skip this and `gd-level-gen` uses the default tier profile from
@@ -39,11 +39,11 @@ Starting vocabulary table (extend it as the designer's phrasing reveals more):
 | Designer writes | Translates to |
 |---|---|
 | "easy at the start, hard in the middle, easing off at the end" | pressure: single peak at ~50% of the match, then decaying; expected failPoint in the middle |
-| "fast-paced" | dense decision rhythm: MID slack tighter than the tier default, low DSL (no long thinking) |
+| "fast-paced" | dense decision rhythm: Buffer Room tighter than the tier default, low DIG (no long thinking) |
 | "tension building steadily to the end" | monotonically rising pressure, peak at 80–90% of the match (the standard SuperHard shape) |
 | "sawtooth / rhythmic ups and downs" | 2–3 peaks alternating with release stretches (the standard Hard shape) |
 | "a breather after a hard level" | Normal curve, peak ≤ 0.5, no new mechanic |
-| "teaches mechanic X" | mechanic X appears in isolation, few simultaneous types, low DSL |
+| "teaches mechanic X" | mechanic X appears in isolation, few simultaneous types, low DIG |
 | "combined challenge / boss" | many mechanics (per the mix matrix), late peak, small margin |
 
 Any phrase **not in the table and not inferable** → ask the designer immediately, do not
@@ -76,7 +76,7 @@ Structure:
 | Designer writes | Translates to | (new entries marked ★)
 
 ## Intent per level
-| Level | Designer's exact words | Target curve | DSL | Mechanics | Conflict notes |
+| Level | Designer's exact words | Target curve | DIG | Mechanics | Conflict notes |
 | 12 | "easy start, hard middle..." | single peak ~50% | ... | ... | — |
 
 ## Levels with NO specific intent

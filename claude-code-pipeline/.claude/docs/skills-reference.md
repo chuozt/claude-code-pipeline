@@ -27,7 +27,7 @@ standalone commands but are not tracked steps of this sequence.
 | Command | Purpose |
 |---|---|
 | `/gd-mode` | Switch to conversing the way a game designer thinks — discussing player experience, not implementation |
-| `/gd-map-flow` | Map a puzzle game onto the INPUT/MID/OUTPUT model of the resource-flow frame — the mandatory gateway before… |
+| `/gd-map-flow` | Map a puzzle game onto the GIVEN/BUFFER/GOAL model of the resource-flow frame — the mandatory gateway before… |
 | `/gd-core-difficulty` | Interview the designer to define what makes the core gameplay hard — rank the 5 factors, settle the visibility… |
 | `/gd-mechanic-difficulty` | Interview the designer to define where one mechanic creates difficulty — how it changes the legal move set,… |
 | `/gd-mechanic-object-mix` | Decide which mechanics one OBJECT can carry at the same time — checking self-referential deadlock, attachme… |
@@ -49,7 +49,7 @@ simulate against) finished first.
 
 | Command | Purpose |
 |---|---|
-| `/gd-level-gen` | Generate levels from the defined formula — produce candidates, filter in two passes (static DSL, then bots)… |
+| `/gd-level-gen` | Generate levels from the defined formula — produce candidates, filter in two passes (static DIG, then bots)… |
 | `/gd-level-audit` | Measure the difficulty and colour pairing of an entire level set with headless bots, never by eye |
 
 ### Phase 4 — calibrate

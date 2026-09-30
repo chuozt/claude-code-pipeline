@@ -27,7 +27,7 @@ produces nonsense or destroys the game's artistic identity.
 This is the central question. Explain the principle before asking:
 
 > Expensive artistic content (models, silhouettes, themes) — **human-owned**.
-> Whatever decides difficulty (ordering, hidden-layer colouring, OUTPUT order) —
+> Whatever decides difficulty (ordering, hidden-layer colouring, GOAL order) —
 > **machine-generated**.
 > From the same content, the machine produces the whole Normal → SuperHard range with no
 > change to the art.
@@ -50,7 +50,7 @@ List them and get each confirmed — these are what the validator will guard:
 
 - **The conservation invariant** — from the flow map (`=` or `≥`)
 - The table of valid types/colours and their maximum counts
-- Capacity constraints (if there is a MID)
+- Capacity constraints (if there is a BUFFER)
 - The LEVEL-scale forbidden-combination matrix — from `mechanic-mix.md`
 - The OBJECT-scale forbidden-combination matrix — from `mechanic-object-mix.md`
   (the level tool's validator blocks it at attachment time)
@@ -69,17 +69,17 @@ For each tier (Normal / Hard / SuperHard), assemble one profile:
 | `GreedyBot` win-rate band | `difficulty-model.md` |
 | `pressure` curve shape | frame section 8 |
 | Number and kinds of mechanics | `mechanic-mix.md` section 4 |
-| Target DSL profile | **asked here** |
+| Target DIG profile | **asked here** |
 
-The DSL question: *"At this tier, how deep should the player have to dig to reach what they
+The DIG question: *"At this tier, how deep should the player have to dig to reach what they
 need — almost always available, or regularly peeling through several layers?"*
-Turn the answer into something quantifiable (e.g. "average DSL ≤ 1 layer" / "2–3 layers" /
+Turn the answer into something quantifiable (e.g. "average DIG ≤ 1 layer" / "2–3 layers" /
 "≥ 3 layers with stretches that force discarding").
 
 ## 4. Search strategy
 
 `AskUserQuestion`: "How should the generator search?"
-- `Hill-climb toward the target DSL` *(recommended — directed and cheap)*
+- `Hill-climb toward the target DIG` *(recommended — directed and cheap)*
 - `Random generation then filtering` *(simplest, much more expensive)*
 - `Exhaustive enumeration` *(only feasible when the space is small)*
 

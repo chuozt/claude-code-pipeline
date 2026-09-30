@@ -2,7 +2,7 @@
 name: gd-level-gen
 model: claude-opus-5-5
 effort: medium
-description: "Generate levels from the defined formula — produce candidates, filter in two passes (static DSL, then bots), rank them and present them to the designer for approval. Requires a working simulation + solver API. Use when typing /gd-level-gen or saying 'generate levels', 'make new levels', 'add more hard levels'."
+description: "Generate levels from the defined formula — produce candidates, filter in two passes (static DIG, then bots), rank them and present them to the designer for approval. Requires a working simulation + solver API. Use when typing /gd-level-gen or saying 'generate levels', 'make new levels', 'add more hard levels'."
 argument-hint: "<tier> [count] — e.g. hard 5"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
@@ -38,16 +38,16 @@ measurement report
 ## 1. Generate candidates
 
 Per `level-definition.md`: keep the **identity** part fixed, permute the **free** part
-(hidden INPUT × OUTPUT order), following the agreed strategy and a **recorded seed**.
+(hidden GIVEN × GOAL order), following the agreed strategy and a **recorded seed**.
 
 Record the seed in the report — without it, a candidate you saw cannot be reproduced.
 
-## 2. Filter pass 1 — static DSL (cheap)
+## 2. Filter pass 1 — static DIG (cheap)
 
-Compute the DSL profile from the data alone, **without playing a match**. Reject immediately:
+Compute the DIG profile from the data alone, **without playing a match**. Reject immediately:
 - candidates violating a constraint / the conservation invariant
-- candidates that obviously deadlock (infinite DSL at the moment the MID fills)
-- candidates far from the tier's target DSL profile
+- candidates that obviously deadlock (infinite DIG at the moment the BUFFER fills)
+- candidates far from the tier's target DIG profile
 
 Report the numbers: how many generated, how many rejected, and for which reasons.
 

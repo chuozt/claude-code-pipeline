@@ -39,8 +39,8 @@ GDD), then `AskUserQuestion` for a level: `High` / `Medium` / `Low` / `Not appli
 
 | Factor | Opening question |
 |---|---|
-| 1 · DSL | "Does the player often end up *knowing what they need but unable to reach it*?" |
-| 2 · MID slack | *(skip if the flow map says N/A)* "Is queue capacity the main source of pressure?" |
+| 1 · DIG | "Does the player often end up *knowing what they need but unable to reach it*?" |
+| 2 · Buffer Room | *(skip if the flow map says N/A)* "Is queue capacity the main source of pressure?" |
 | 3 · Hiddenness | "How much does the player have to guess because they cannot see it?" |
 | 4 · Commitment | "Are there moves that cannot be taken back once made?" |
 | 5 · Perceptual | "Does the player ever *know what to do* and still struggle because it is hard to see or find?" |
@@ -50,11 +50,11 @@ every later bot number is missing a component — a calibration round with real 
 
 ## 1b. The visibility rule ⭐ *(mandatory — hard-blocks level generation)*
 
-Skip if the flow map says INPUT is **never** occluded (every move is always visible).
+Skip if the flow map says GIVEN is **never** occluded (every move is always visible).
 
 Ask the designer in **experience** terms, not numbers:
 
-> "The player sees an [INPUT unit] peeking out a sliver from behind another, and taps it —
+> "The player sees an [GIVEN unit] peeking out a sliver from behind another, and taps it —
 > does the game accept it?"
 
 Then translate the answer into the two numbers the developer needs, and **present the
@@ -104,7 +104,7 @@ them. What matters is settling **what gets counted**.
 
 ## 3. `pressure(t)`
 
-If the flow map has a MID → default to `MID occupancy ÷ capacity`, and confirm.
+If the flow map has a BUFFER → default to `BUFFER occupancy ÷ capacity`, and confirm.
 If not → take the proxy declared in the flow map and confirm it still holds.
 
 ## 4. Starting weights and win-rate bands

@@ -74,7 +74,7 @@ If `design/pipeline/level-curves.md` exists (written by `/gd-level-intent`, form
 `.claude/docs/templates/level-difficulty-curve.md`), for every level that has a block there:
 
 1. Convert the 20 free-slot averages to `pressure(t)` with the proxy in
-   `design/pipeline/flow-map.md` (with a MID: `pressure = 1 − free ÷ capacity`), one decimal.
+   `design/pipeline/flow-map.md` (with a BUFFER: `pressure = 1 − free ÷ capacity`), one decimal.
 2. Fill the **Measured** row — with the run, bot, attempt count and date — and plot it with ○
    (◉ where it lands on a ●).
 3. Compare with the **Tolerances** table: peak position, peak height, peak count, Δ max. Any

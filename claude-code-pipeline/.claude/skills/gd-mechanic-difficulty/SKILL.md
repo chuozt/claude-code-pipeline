@@ -32,9 +32,9 @@ If a GDD exists: **restate** the mechanism in the model's language and ask the d
 confirm, rather than asking from scratch:
 
 - How does this mechanic change the **legal move set**? (adds / removes / temporarily locks)
-- How does it change the **OUTPUT structure**? (defers demand, merges demand, hides demand,
+- How does it change the **GOAL structure**? (defers demand, merges demand, hides demand,
   changes capacity)
-- Does it change **INPUT** or **MID** at all?
+- Does it change **GIVEN** or **BUFFER** at all?
 - **Attachment profile** (the input to `/gd-mechanic-object-mix` — ask all three):
   which **object type** does it attach to (host)? which **attachment/display slot** does it
   occupy (e.g. Key/Lock replacing the arrow = occupying the marker slot)? which **state
@@ -58,7 +58,7 @@ Dig until a machine could execute it. Two useful probes:
 
 Explain the 5 factors **using the mechanic being discussed**, then `AskUserQuestion`
 (multiSelect): "Which factor does this mechanic mainly load?"
-→ `DSL` / `MID slack` / `Hiddenness` / `Commitment` / `Perceptual`
+→ `DIG` / `Buffer Room` / `Hiddenness` / `Commitment` / `Perceptual`
 
 Get the designer to name **one primary factor** and (if any) secondary factors. The distinction
 matters: `/gd-mechanic-mix` uses the **primary factor** to derive the ban rules.
@@ -69,7 +69,7 @@ Reference example (from a tray-sorting game) to help the designer picture it:
 |---|---|---|
 | Big tray (2X) | Commitment | — |
 | Hidden tray | Hiddenness | — |
-| Ice tray | DSL | Hiddenness |
+| Ice tray | DIG | Hiddenness |
 | Connected trays | Commitment | merged demand |
 | Pipe | Hiddenness | — |
 

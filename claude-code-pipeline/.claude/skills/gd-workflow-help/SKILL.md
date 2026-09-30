@@ -48,7 +48,7 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 | Command | What it does | Produces |
 |---|---|---|
 | `/gd-mode` | Switches to designer language and designer-only sources — docs, browser-opened docs, `.xlsx` workbooks, the designer's own recorded thinking; **never reads code, even read-only** | nothing — a mode, exit with `/gd-mode off` |
-| `/gd-map-flow` | Maps the game onto the INPUT/MID/OUTPUT model. **The gateway to everything below** | `design/pipeline/flow-map.md` |
+| `/gd-map-flow` | Maps the game onto the GIVEN/BUFFER/GOAL model. **The gateway to everything below** | `design/pipeline/flow-map.md` |
 | `/gd-core-difficulty` | Ranks the 5 difficulty factors, settles the visibility rule and target win-rate bands | `design/pipeline/difficulty-model.md` |
 | `/gd-mechanic-difficulty` | Where one mechanic creates difficulty + which factor it loads. **Run per mechanic** | `design/pipeline/mechanics/<name>.md` |
 | `/gd-mechanic-object-mix` | Which mechanics one object may carry at once (deadlock / slot / state checks) | `design/pipeline/mechanic-object-mix.md` |
@@ -97,7 +97,7 @@ simulate against) finished first.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-level-gen` | Generates candidates, filters by static DSL then by bots, presents the top-k for approval | approved level payloads + measurements |
+| `/gd-level-gen` | Generates candidates, filters by static DIG then by bots, presents the top-k for approval | approved level payloads + measurements |
 | `/gd-level-audit` | Measures the whole level set with bots: win rates, pressure curves, colour pairing | an audit report + proposed fixes with root causes; measured curves in `level-curves.md` |
 
 > Phase 3 needs phase 2. Without a simulation there is nothing to filter or measure with.
