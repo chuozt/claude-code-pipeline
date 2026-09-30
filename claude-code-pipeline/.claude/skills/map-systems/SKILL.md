@@ -25,15 +25,15 @@ Read the game concept and any existing design work. This provides the raw materi
 for systems decomposition.
 
 **Required:**
-- Read `design/gdd/game-concept.md` — **fail with a clear message if missing**:
-  > "No game concept found at `design/gdd/game-concept.md`. Run `/brainstorm` first
+- Read `design/gdd/gd-game-concept.md` — **fail with a clear message if missing**:
+  > "No game concept found at `design/gdd/gd-game-concept.md`. Run `/brainstorm` first
   > to create one, then come back to decompose it into systems."
 
 **Optional (read if they exist):**
-- Read `design/gdd/game-pillars.md` — pillars constrain priority and scope
-- Read `design/gdd/systems-index.md` — if exists, **resume** from where it left off
+- Read `design/gdd/gd-game-pillars.md` — pillars constrain priority and scope
+- Read `design/dev-system/dev-map-systems.md` — if exists, **resume** from where it left off
   (update, don't recreate from scratch)
-- Glob `design/gdd/*.md` — check which system GDDs already exist
+- Glob `design/dev-system/dev-*.md` — check which system GDDs already exist
 
 **If the systems index already exists:**
 - Read it and present current status to the user
@@ -203,7 +203,7 @@ Present a summary of the document:
 - First 3 systems in the design order
 - Any high-risk items
 
-Ask: "May I write the systems index to `design/gdd/systems-index.md`?"
+Ask: "May I write the systems index to `design/dev-system/dev-map-systems.md`?"
 
 Wait for approval. Write the file only after "yes."
 
@@ -212,10 +212,10 @@ Wait for approval. Write the file only after "yes."
 After writing, create `docs/_session/active.md` if it does not exist, then update it with:
 - Task: Systems decomposition
 - Status: Systems index created
-- File: design/gdd/systems-index.md
+- File: design/dev-system/dev-map-systems.md
 - Next: Design individual system GDDs
 
-**Verdict: COMPLETE** — systems index written to `design/gdd/systems-index.md`.
+**Verdict: COMPLETE** — systems index written to `design/dev-system/dev-map-systems.md`.
 If the user declined: **Verdict: BLOCKED** — user did not approve the write.
 
 ---
@@ -287,7 +287,7 @@ After the systems index is created (or after designing some systems), present ne
 **The review option ([B]) is worth highlighting**: having `technical-director` review the completed systems index before starting GDD authoring catches scope issues, missing systems, and boundary problems before they're locked in across many documents. It is optional but recommended for new projects.
 
 After any individual GDD is completed:
-- "Run `/design-review design/gdd/[system].md` in a fresh session to validate quality"
+- "Run `/design-review design/dev-system/dev-[system].md` in a fresh session to validate quality"
 - "Run `/review-all-gdds` when all MVP GDDs are complete"
 
 ---
@@ -319,7 +319,7 @@ This skill follows the collaborative design principle at every phase:
 If context reaches or exceeds 70% at any point, append this notice:
 
 > **Context is approaching the limit (≥70%).** The systems index is saved to
-> `design/gdd/systems-index.md`. Open a fresh Claude Code session to continue
+> `design/dev-system/dev-map-systems.md`. Open a fresh Claude Code session to continue
 > designing individual GDDs — run `/map-systems next` to pick up where you left off.
 
 ---
@@ -329,5 +329,5 @@ If context reaches or exceeds 70% at any point, append this notice:
 - Run `/design-system` with no argument to author every undesigned GDD back-to-back, in
   design order — or `/design-system [first-system-in-order]` to author just the first one
 - Run `/map-systems next` to always pick the highest-priority undesigned system automatically
-- Run `/design-review design/gdd/[system].md` in a fresh session after each GDD is authored
+- Run `/design-review design/dev-system/dev-[system].md` in a fresh session after each GDD is authored
 - Run `/create-architecture` when all MVP GDDs are authored and reviewed

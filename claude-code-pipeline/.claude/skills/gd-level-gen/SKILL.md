@@ -2,7 +2,7 @@
 name: gd-level-gen
 model: claude-opus-5-5
 effort: medium
-description: "Generate levels from the defined formula — produce candidates, filter in two passes (static DSL, then bots), rank them and present them to the designer for approval. Requires a working simulation + solver API. Use when typing /gd-level-gen or saying 'generate levels', 'make new levels', 'add more hard levels'."
+description: "Generate levels from the defined formula — produce candidates, filter in two passes (static DIG, then bots), rank them and present them to the designer for approval. Requires a working simulation + solver API. Use when typing /gd-level-gen or saying 'generate levels', 'make new levels', 'add more hard levels'."
 argument-hint: "<tier> [count] — e.g. hard 5"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
@@ -13,14 +13,14 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
 Run the generation formula, filter in two passes, present the best candidates for approval.
 **A human is the final gate — this skill never puts a level into the build.**
 
-**In**: `level-definition.md` + a working simulation/solver · **Out**: level payloads + a
+**In**: `gd-level-definition.md` + a working simulation/solver · **Out**: level payloads + a
 measurement report
 
 ## 0. Check the preconditions — stop immediately if any is missing
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 8, 9.2, 10**.
-2. Read `design/pipeline/level-definition.md`. Missing → stop, point at `/gd-level-definition`.
-2b. Read `design/pipeline/level-intent.md` **if it exists** (optional — from
+2. Read `design/gdd/gd-level-definition.md`. Missing → stop, point at `/gd-level-definition`.
+2b. Read `design/gdd/gd-level-intent.md` **if it exists** (optional — from
    `/gd-level-intent`): any level present in that table has its tier profile **overridden**;
    absent levels use the default. Check the source hash in its header — if the designer says
    the intent sheet just changed but the hash is stale → tell them to re-run
@@ -28,7 +28,7 @@ measurement report
    own intent rather than the tier default.
 3. **The simulation + solver API must run.** Verify with a compile gate and one test match,
    reporting the real result. Not running → stop, point at `/gd-prototype-sim`.
-4. Read `design/pipeline/mechanics/*.md` — list any mechanic still **`unscored`** (no bot
+4. Read `design/gdd/gd-mechanics/*.md` — list any mechanic still **`unscored`** (no bot
    rule branch yet).
 
 ⚠️ **Hard stop**: if the requested tier uses an `unscored` mechanic → stop.
@@ -37,17 +37,17 @@ measurement report
 
 ## 1. Generate candidates
 
-Per `level-definition.md`: keep the **identity** part fixed, permute the **free** part
-(hidden INPUT × OUTPUT order), following the agreed strategy and a **recorded seed**.
+Per `gd-level-definition.md`: keep the **identity** part fixed, permute the **free** part
+(hidden GIVEN × GOAL order), following the agreed strategy and a **recorded seed**.
 
 Record the seed in the report — without it, a candidate you saw cannot be reproduced.
 
-## 2. Filter pass 1 — static DSL (cheap)
+## 2. Filter pass 1 — static DIG (cheap)
 
-Compute the DSL profile from the data alone, **without playing a match**. Reject immediately:
+Compute the DIG profile from the data alone, **without playing a match**. Reject immediately:
 - candidates violating a constraint / the conservation invariant
-- candidates that obviously deadlock (infinite DSL at the moment the MID fills)
-- candidates far from the tier's target DSL profile
+- candidates that obviously deadlock (infinite DIG at the moment the BUFFER fills)
+- candidates far from the tier's target DIG profile
 
 Report the numbers: how many generated, how many rejected, and for which reasons.
 
@@ -73,7 +73,7 @@ curve hits the numeric thresholds; whether it is *elegant or forced* is a pacing
 flow and pacing are this agent's frameworks.
 
 Include in the prompt: an excerpt of **section 8** of
-`resource-flow-difficulty-framework.md`, `level-definition.md`, and the top-k table above.
+`resource-flow-difficulty-framework.md`, `gd-level-definition.md`, and the top-k table above.
 The request: *"rank by pacing quality and justify; point out candidates that meet the numeric
 thresholds but whose curve feels forced. **Return analysis, DO NOT write files**"*.
 

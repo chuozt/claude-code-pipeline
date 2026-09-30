@@ -21,7 +21,7 @@
 ### Design Documentation
 - **Status**: [X%] complete
 - **Files Found**: [N] documents in `design/`
-  - GDD sections: [N] files in `design/gdd/`
+  - GDD sections: [N] files in `design/dev-system/`
   - Narrative docs: [N] files in `design/narrative/`
   - Level designs: [N] files in `design/levels/`
 - **Key Gaps**:
@@ -41,7 +41,7 @@
 
 ### Architecture Documentation
 - **Status**: [X%] complete
-- **ADRs Found**: [N] decisions documented in `docs/architecture/`
+- **ADRs Found**: [N] decisions documented in `design/dev-system/`
 - **Coverage**:
   - ✅ [Decision area 1] — documented
   - ⚠️  [Decision area 2] — undocumented but implemented

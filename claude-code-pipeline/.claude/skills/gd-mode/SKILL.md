@@ -17,8 +17,8 @@ On entering, print one line: `🎮 Designer mode — discussing experience, not 
 
 **Allowed inputs, in the order to check them:**
 
-1. **Markdown docs in the project** — `design/gdd/`, `design/pipeline/` (especially
-   `difficulty-model.md` and `flow-map.md` when the topic touches difficulty, perception,
+1. **Markdown docs in the project** — `design/dev-system/` (system GDDs), `design/gdd/` (the designer's files — especially
+   `gd-difficulty-model.md` and `gd-flow-map.md` when the topic touches difficulty, perception,
    or feel), `docs/features/`, `docs/_session/active.md`, any `questions-for-designer.md` /
    `source-audit.md`-style log of prior decisions.
 2. **Documents already open in the Claude Code browser pane, if this environment has one** —
@@ -38,10 +38,12 @@ On entering, print one line: `🎮 Designer mode — discussing experience, not 
    the designer" is grounded in: their documented train of thought, not a re-derivation from
    how the game happens to be coded today.
 
-**Use the vocabulary already agreed with the designer** in these docs (e.g. the 5 difficulty
-factors: DSL · MID slack · Hiddenness · Commitment · Perceptual, if `difficulty-model.md`
-exists). **Do not invent new synonymous metaphors** — the designer spent effort defining
-that vocabulary, and drifting off it destroys the shared language.
+**Use the vocabulary already agreed with the designer** in these docs — the game's own
+nouns (the trays, the tubes, the cat) and any term the designer has written down themselves.
+**Do not invent new synonymous metaphors** — the designer spent effort defining that
+vocabulary, and drifting off it destroys the shared language. The *framework's* vocabulary
+(GIVEN/BUFFER/GOAL, the 5 factors) is a different case — see section 3.1: it is written into
+files, not spoken to the designer.
 
 **Reasoning lens:** think about the question the way `.claude/agents/game-designer.md`
 would — MDA (aesthetics before mechanics), Self-Determination Theory, flow/pacing — rather
@@ -115,8 +117,56 @@ Exceptions: **none**. Not even "just one line so the designer can see it".
 - Saying "that's not possible". Replace with: **what it would cost**
 
 **Keep industry design vocabulary, do not paraphrase it.** Win rate, retention, churn, core
-loop, pacing, sawtooth, onboarding, and the 5 difficulty factors in `difficulty-model.md` — the
-designer uses these daily. Translating them into "simpler words" talks down to them.
+loop, pacing, sawtooth, onboarding, level, tier, mechanic — the designer uses these daily.
+Translating them into "simpler words" talks down to them.
+
+### 3.1 Framework words are NOT industry vocabulary — never say them to the designer ⭐
+
+The resource-flow frame (`.claude/reference/resource-flow-difficulty-framework.md`) has its
+own words: GIVEN / BUFFER / GOAL, DIG, Buffer Room, Hiddenness, Commitment, Perceptual, loading
+factor, conservation invariant, `pressure(t)`, attachment slot, state dimension. **No
+designer uses these at their desk.** They exist so the developer and the generator have
+exact names — they belong in the **right-hand column of the decision table (section 8)**,
+never in a question.
+
+Every `gd-*` skill is written in framework words because the *file it produces* must be.
+When one of those skills tells you to ask something, **the question reaches the designer
+in player language; the framework word reaches the file.** Standing translation table
+(examples from a tray-sorting game — rebuild them in the current game's nouns):
+
+| Framework word | What to talk about instead |
+|---|---|
+| GIVEN | the things the player picks up / taps / drags |
+| BUFFER, BUFFER capacity | the waiting spot / holding slots, and how many fit |
+| GOAL | the things that must be filled or cleared to win |
+| VISIBILITY / Hiddenness | what the player can already see vs. has to guess |
+| DIG | "you know which colour you need, but it is buried and you have to dig" |
+| Buffer Room | "how much room is left in the holding slots before it gets scary" |
+| Commitment | "a move you cannot take back" |
+| Perceptual | "you know what to do but it is hard to *see* or *find* it" |
+| conservation invariant `=` / `≥` | "does each colour come out exactly even, or can there be leftovers?" |
+| `pressure(t)` | "how close to losing the player feels at this point of the level" |
+| loading factor | "what *kind* of hard this mechanic adds" (then offer the five kinds as moments of play) |
+| attachment slot / state dimension | "where on the piece it sits" / "what it hides or locks" |
+
+Two exceptions: (a) the designer used the framework word first, unprompted — then it is
+theirs, keep it; (b) the designer asks what a word in a pipeline file means — explain it once
+in player language, then go on without it.
+
+**Replying in Vietnamese:** say it the way the designer would say it to a colleague — *"biết
+cần màu gì nhưng nó bị vùi sâu"*, *"chỗ để tạm sắp đầy"*, *"đi rồi không rút lại được"*.
+Never a word-for-word rendering of the English term ("độ trễ cung–cầu", "độ chùng của
+BUFFER", "chiều trạng thái") — those are harder to understand than the English.
+
+### 3.2 Questions that belong to the developer — do not put them to the designer
+
+Some `gd-*` steps ask for things a designer has no way to answer and no reason to care about:
+a search strategy, a formula for a proxy, what a validator does on a bad candidate, weight
+coefficients. Rule #1 already says it: *if it cannot be translated into a felt consequence,
+it is a question for the developer.* For those steps, take the skill's stated default, write
+it into the file tagged `[DEV DEFAULT]`, and tell the designer in one line that the developer
+will confirm it. The designer only hears the question when the answer changes how the game
+feels.
 
 ## 4. How to present
 
@@ -191,6 +241,11 @@ immediately** to experience language. Do not use the opening to reconvene a tech
 `/gd-mode off`, or the designer saying "go back to the technical style".
 
 ## Where this sits in the pipeline
+
+Sections 1, 3.1, 3.2, 5 and 7 of this file are **the question style for every phase-1B
+skill** (`gd-map-flow` … `gd-level-intent`), whether or not the mode is switched on — each
+of those skills says so in its header. Switching the mode on adds the source restrictions of
+section 0 and the code ban of section 3.0 on top.
 
 This is the entry point of **phase 1B** — the designer's own track, run in parallel with
 phase 1A (the developer's architecture track), not after it. Typical opening:

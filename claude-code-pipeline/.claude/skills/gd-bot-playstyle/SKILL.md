@@ -9,7 +9,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
 Turn "what playing this game well means" into **rules a machine can run**. Run **once per
 game**, immediately before `/gd-prototype-sim`.
 
-**In**: `flow-map.md` + `difficulty-model.md` · **Out**: `design/pipeline/bot-playstyle.md`
+**In**: `gd-flow-map.md` + `gd-difficulty-model.md` · **Out**: `design/bot/bot-playstyle.md`
 
 > **Why this skill runs late.** Generating levels needs no bot — the layout, the colours, the order
 > pieces arrive in and the difficulty points never ask what a bot thinks. A bot is only needed once
@@ -24,12 +24,12 @@ game**, immediately before `/gd-prototype-sim`.
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 5.1 and 6.1**.
-2. Read `design/pipeline/flow-map.md`. **Missing → stop**:
+2. Read `design/gdd/gd-flow-map.md`. **Missing → stop**:
    > "There is no flow map. Run `/gd-map-flow` first."
-3. Read `design/pipeline/difficulty-model.md`. **Missing → stop**:
+3. Read `design/gdd/gd-difficulty-model.md`. **Missing → stop**:
    > "There is no difficulty model. Run `/gd-core-difficulty` first — without knowing which
    > factor is High, there is no way to know where the bot must be careful."
-4. Read `design/pipeline/mechanics/*.md` if present — every mechanic needs a **branch** in these rules.
+4. Read `design/gdd/gd-mechanics/*.md` if present — every mechanic needs a **branch** in these rules.
 5. Read the gameplay GDD for concrete situations to use in the questions.
 
 ## 1. The root question
@@ -50,7 +50,7 @@ using `AskUserQuestion` where the options are finite:
 | Situation to ask about | Why |
 |---|---|
 | **Several moves are legal** — which one? | without this rule the bot picks arbitrarily, and every measurement takes the shape of "arbitrary" |
-| **Stuck** — no move serves an open OUTPUT | this is where DSL bites; how the bot handles it drives win rate more than anything else |
+| **Stuck** — no move serves an open GOAL | this is where DIG bites; how the bot handles it drives win rate more than anything else |
 | **Side information** — does the game have a reveal mechanic (X-ray, peek, preview), and do good players use it to choose moves? | designers routinely forget to mention it; yet it is often exactly what separates good from decent |
 
 **How to know it is enough**: read the rule back to the designer and ask *"in situation X,
@@ -81,19 +81,19 @@ board for free and **always finds levels easier than a human does**.
 
 Include the **perceptual premise** — list exactly what the bot is allowed to know, so the
 simulation grants that and no more: the visible move set per the visibility rule
-(`difficulty-model` section 1b), the revealed information from section 2, and the OUTPUT
+(`difficulty-model` section 1b), the revealed information from section 2, and the GOAL
 horizon per the flow map.
 
 ## 5. `pressure(t)` — confirm
 
 Take the proxy declared in the flow map, confirm it still holds, and record **how to read
-it**: with a coarse quantum (one action pushing the MID up several steps) the curve is a
+it**: with a coarse quantum (one action pushing the BUFFER up several steps) the curve is a
 **sawtooth** — read it by step, not by slope.
 
 ## 6. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/pipeline/bot-playstyle.md`?"
+> "Write this to `design/bot/bot-playstyle.md`?"
 
 Structure: the designer's original sentence · the three playstyle rules in words · the perceptual
 premise · the observation budget table · `pressure(t)` · a branch per mechanic (or `UNDEFINED`)

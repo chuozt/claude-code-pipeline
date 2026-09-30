@@ -9,7 +9,7 @@
 - **Engine**: [exact Unity version from `CLAUDE.md` §1]
 - **GDDs Indexed**: [N]
 - **ADRs Indexed**: [M]
-- **Last Review**: [link to docs/architecture/architecture-review-[date].md]
+- **Last Review**: [link to design/dev-system/dev-architecture-review-[date].md]
 
 ## Coverage Summary
 

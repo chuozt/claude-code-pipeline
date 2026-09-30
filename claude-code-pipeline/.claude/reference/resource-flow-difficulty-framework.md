@@ -12,6 +12,11 @@
 > The three games named below (pixel sort, candy sort, cubeland) are **real
 > reference cases from this studio**, kept because they carry real numbers.
 > Read them as examples, not as the current project's data.
+>
+> **Naming (v1.1)**: the five components are **GIVEN / BUFFER / GOAL / ACTION / VISIBILITY**
+> and factor 1 is **Dig Depth (DIG)**, factor 2 **Buffer Room**. Older documents and
+> `design/gdd/` files written before this rename say INPUT / MID / OUTPUT, DSL and
+> MID slack — same meaning, read them as such. Nothing else changed.
 
 ---
 
@@ -42,34 +47,34 @@ validation cases (section 3), not as retrofit targets.
 Every game in the family is an instance of:
 
 ```
-INPUT   — the resource the player FREELY CHOOSES to solve the puzzle / reach the goal.
+GIVEN   — the resource the player FREELY CHOOSES to solve the puzzle / reach the goal.
           Ordered and/or partially hidden.
-MID     — an intermediate queue; capacity may be bounded or not.
-          OPTIONAL — a game may have no MID.
-OUTPUT  — what the player must consume / solve to reach the goal.
-          PASSIVE: it reacts to the chosen INPUT; the player never picks it directly.
-ACTION  — choosing which INPUT unit to release / route, under incomplete information
-VISIBILITY — which part of INPUT / OUTPUT is visible in advance
+BUFFER     — an intermediate queue; capacity may be bounded or not.
+          OPTIONAL — a game may have no BUFFER.
+GOAL  — what the player must consume / solve to reach the goal.
+          PASSIVE: it reacts to the chosen GIVEN; the player never picks it directly.
+ACTION  — choosing which GIVEN unit to release / route, under incomplete information
+VISIBILITY — which part of GIVEN / GOAL is visible in advance
 ```
 
-**The agency factor is the distinguishing feature: the player holds the INPUT, not
-the OUTPUT.** All difficulty arises from the gap between those two ends.
+**The agency factor is the distinguishing feature: the player holds the GIVEN, not
+the GOAL.** All difficulty arises from the gap between those two ends.
 
-**Win** = every OUTPUT satisfied.
-**Lose** = no legal move leads to a win. For games **with a MID**, the most
-common form is *the MID is full ∧ no unit in it matches an open OUTPUT*.
+**Win** = every GOAL satisfied.
+**Lose** = no legal move leads to a win. For games **with a BUFFER**, the most
+common form is *the BUFFER is full ∧ no unit in it matches an open GOAL*.
 
 **Conservation invariant** (game-agnostic): for every type c,
-`Σ INPUT(c) ≥ Σ OUTPUT(c)` (equality if the game forbids surplus) — every
+`Σ GIVEN(c) ≥ Σ GOAL(c)` (equality if the game forbids surplus) — every
 validator must guard it.
 
-**Having a MID or not decides three things in the frame — declare them at map time:**
+**Having a BUFFER or not decides three things in the frame — declare them at map time:**
 
-| | With MID | No MID |
+| | With BUFFER | No BUFFER |
 |---|---|---|
-| Lose condition | MID overflow (standard form) | out of moves / out of turns — **declare separately** |
-| Factor 2 *MID slack* (section 4) | applies | **N/A** — drop it from the section 6 formula |
-| `pressure(t)` (section 8) | MID occupancy | **pick another proxy** — declare at map time |
+| Lose condition | BUFFER overflow (standard form) | out of moves / out of turns — **declare separately** |
+| Factor 2 *Buffer Room* (section 4) | applies | **N/A** — drop it from the section 6 formula |
+| `pressure(t)` (section 8) | BUFFER occupancy | **pick another proxy** — declare at map time |
 
 If it maps onto the model, the whole frame applies; only the simulation (the
 specific rules) is written per game.
@@ -80,9 +85,9 @@ specific rules) is written per game.
 
 | Component | Pixel sort | Candy sort | Cubeland |
 |---|---|---|---|
-| INPUT | 3D model: coloured parts/layers, peeled outside→in | rows of candy / tubes in order | stacked voxel blocks |
-| MID | funnel + conveyor (Y pixels) | waiting slots / holding trays | queue + shooter slots |
-| OUTPUT | columns of coloured trays, front row Open | orders / destination trays | elevator / colour destinations |
+| GIVEN | 3D model: coloured parts/layers, peeled outside→in | rows of candy / tubes in order | stacked voxel blocks |
+| BUFFER | funnel + conveyor (Y pixels) | waiting slots / holding trays | queue + shooter slots |
+| GOAL | columns of coloured trays, front row Open | orders / destination trays | elevator / colour destinations |
 | ACTION | tap an exposed piece (releases X units/cluster) | choose a tube to pour / candy to release | tap an exposed block |
 | VISIBILITY | shell visible, interior hidden (X-ray peek) | tubes fully visible or partly hidden | outer faces visible, interior hidden |
 | Mismatches | crowd physics (View-only, does not affect the model) | *(fill in at real mapping time)* | *(fill in at real mapping time)* |
@@ -100,16 +105,16 @@ formula in every game. Factor 5 is a per-game slot.
 
 | # | Factor | Measured definition | Example |
 |---|---|---|---|
-| 1 | **Demand–Supply Lag (DSL)** | the delay between an OUTPUT needing type c and c becoming selectable in the INPUT | the needed tray colour is buried deep / the right candy sits at the bottom of a tube |
-| 2 | **MID slack** *(N/A without a MID)* | `MID capacity ÷ units per action` | Y/X = 4 taps / number of waiting slots |
-| 3 | **Hiddenness** | the fraction of INPUT+OUTPUT not visible in advance; the depth of meaningful lookahead | uncoloured interior / face-down tubes |
+| 1 | **Demand–Supply Lag (DIG)** | the delay between a GOAL needing type c and c becoming selectable in the GIVEN | the needed tray colour is buried deep / the right candy sits at the bottom of a tube |
+| 2 | **Buffer Room** *(N/A without a BUFFER)* | `BUFFER capacity ÷ units per action` | Y/X = 4 taps / number of waiting slots |
+| 3 | **Hiddenness** | the fraction of GIVEN+GOAL not visible in advance; the depth of meaningful lookahead | uncoloured interior / face-down tubes |
 | 4 | **Commitment** | how irreversible a single action is | releasing a whole X-unit cluster / pouring a whole tube — not retractable |
 | 5 | **Perceptual cost** *(per-game slot)* | the human eye's search cost — a bot CANNOT measure it | 3D rotation + similar colours / ~0 on a flat board |
 
-**DSL is the family's primary factor** — it connects straight to the lose
+**DIG is the family's primary factor** — it connects straight to the lose
 condition: a large lag forces the player to release "junk" to dig toward the
-type they need → the MID swells → it overflows.
-In a game without a MID, a large lag gradually drains the set of legal moves.
+type they need → the BUFFER swells → it overflows.
+In a game without a BUFFER, a large lag gradually drains the set of legal moves.
 
 ---
 
@@ -146,7 +151,7 @@ Pixel-sort example:
 | Mechanic | Factor loaded | How play changes |
 |---|---|---|
 | Hidden tray (lv4) | Hiddenness | cannot plan ahead → keep spare capacity |
-| Ice tray (lv11) | DSL (+Hiddenness) | demand deferred by N trays → feed other types while waiting |
+| Ice tray (lv11) | DIG (+Hiddenness) | demand deferred by N trays → feed other types while waiting |
 | Connected trays (lv18) | Commitment (+merged demand) | two trays must finish together, no abandoning one |
 | Pipe (lv25) | Hiddenness | the next tray is unknown → keep a wide safety margin |
 
@@ -202,21 +207,21 @@ and carries a Key — capacity and carried-object are independent dimensions.*
 Ice not with Hidden/Connected/Pipe; Hidden not with Ice/Pipe; Connected not with
 Ice/Pipe. Only **Big Tray combined with everything** — and Big Tray was the
 **only** mechanic loading Commitment, while the other three all loaded
-Hiddenness/DSL. The designer banned exactly the same-factor pairs with no theory.
+Hiddenness/DIG. The designer banned exactly the same-factor pairs with no theory.
 
 *The revised GDD* **removed Big Tray**. The remaining four: Hidden (Hiddenness),
-Ice (DSL+Hiddenness), Connected (Commitment+merged demand), Pipe (Hiddenness) —
+Ice (DIG+Hiddenness), Connected (Commitment+merged demand), Pipe (Hiddenness) —
 and **three of the four ban each other almost completely**, exactly as the
 same-factor rule predicts.
 
 **This both confirms and warns:**
 - ✅ The same-factor = forbidden rule still held after the mechanic set changed
-- ⚠️ The current mechanic set is **factor-poor**: 3 of 4 load Hiddenness/DSL, and
+- ⚠️ The current mechanic set is **factor-poor**: 3 of 4 load Hiddenness/DIG, and
   only Connected touches Commitment. The consequence is **very few combinable
   pairs** → the tool of creating difficulty through combination is lost, leaving
-  only DSL (burying colours deeper).
+  only DIG (burying colours deeper).
 - If more mechanics are needed later, **prioritise the empty factors** (Commitment,
-  MID slack) rather than adding yet another Hiddenness variant — the frame
+  Buffer Room) rather than adding yet another Hiddenness variant — the frame
   predicts this in advance, without trial and error.
 
 Note: the combination bans a designer writes in a GDD usually **mix both scales**
@@ -237,7 +242,7 @@ mark them `unscored` and exclude them from the `w` calibration set.
 ## 6. Score formula & bot family (hard frame, soft coefficients)
 
 ```
-DifficultyScore = w₁·DSL + w₂·(1/MidSlack) + w₃·Hiddenness
+DifficultyScore = w₁·DIG + w₂·(1/BufferRoom) + w₃·Hiddenness
                 + w₄·Commitment + w₅·PerceptualProxy
 ```
 
@@ -259,7 +264,7 @@ DifficultyScore = w₁·DSL + w₂·(1/MidSlack) + w₃·Hiddenness
 | Bot | Simulates | Playstyle rule |
 |---|---|---|
 | `RandomBot` | the worst player | picks uniformly among legal moves |
-| `GreedyBot` | a competent player | always serves an open OUTPUT |
+| `GreedyBot` | a competent player | always serves an open GOAL |
 | `LookaheadBot(k)` | a strong player | looks k moves ahead |
 
 **Tier B** replaces three discrete points with a **continuous space**. Player DNA:
@@ -318,8 +323,8 @@ progress. The definition is shared; the *implementation* is per-game:
 
 | | `pressure(t)` implementation |
 |---|---|
-| With MID | `MID occupancy ÷ MID capacity` — measured on the conveyor in pixel sort, on waiting slots in candy sort |
-| Without MID | a proxy declared at map time, e.g. `1 − (legal moves remaining ÷ at match start)` or `turns used ÷ turns allowed` |
+| With BUFFER | `BUFFER occupancy ÷ BUFFER capacity` — measured on the conveyor in pixel sort, on waiting slots in candy sort |
+| Without BUFFER | a proxy declared at map time, e.g. `1 − (legal moves remaining ÷ at match start)` or `turns used ÷ turns allowed` |
 
 Curve shapes remain comparable across games even when the proxies differ — which
 is exactly why the frame uses the curve, not the score, as its shared language.
@@ -343,7 +348,7 @@ Example starting point (designer estimates, uncalibrated):
 
 | Factor | Pixel sort | Candy sort (estimated) |
 |---|---|---|
-| w₁ DSL | high | high |
+| w₁ DIG | high | high |
 | w₂ 1/slack | medium | high |
 | w₃ hiddenness | medium | medium |
 | w₄ commitment | medium | high |
@@ -427,21 +432,21 @@ not after.
 The principle of **separating Content from Difficulty** (generalised from the
 shell/interior insight of the pixel-sort project): every game in the family has
 an *identity* part (model shape, candy types — human-owned, untouched by the
-generator) and a *free* part (order/colour of the hidden portion + OUTPUT order —
+generator) and a *free* part (order/colour of the hidden portion + GOAL order —
 machine-generated).
 
 ```
-INPUT  : identity content (human) + the target difficulty tier
-SEARCH : permute the INPUT (free part) × permute the OUTPUT (consumption order)
-GUIDE  : hill-climb toward the tier's target DSL profile (directed search,
+GIVEN  : identity content (human) + the target difficulty tier
+SEARCH : permute the GIVEN (free part) × permute the GOAL (consumption order)
+GUIDE  : hill-climb toward the tier's target DIG profile (directed search,
          not blind generate-and-test)
-FILTER : pass 1 — static DSL (cheap, rejects obvious deadlocks)
+FILTER : pass 1 — static DIG (cheap, rejects obvious deadlocks)
          pass 2 — the bot family through the Solver API (expensive):
          GreedyBot win rate within the tier band, pressure curve of the right shape
-OUTPUT : top-k candidates → A HUMAN APPROVES (the designer)
+GOAL : top-k candidates → A HUMAN APPROVES (the designer)
 ```
 
-Easy = INPUT and OUTPUT nearly in phase + wide slack + little concealment.
+Easy = GIVEN and GOAL nearly in phase + wide slack + little concealment.
 Hard = deliberate phase offset + tightened slack + more concealment + a placed
 commitment point.
 

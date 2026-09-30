@@ -85,7 +85,7 @@ Currently installed and in active use:
 
 ## Architecture Decisions Log
 
-One line per accepted ADR (`docs/architecture/`): id, title, and the decision in a sentence.
+One line per accepted ADR (`design/dev-system/`): id, title, and the decision in a sentence.
 
 - `<...>`
 

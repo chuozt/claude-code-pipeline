@@ -15,11 +15,11 @@ Developer và designer không bao giờ bàn giao qua chat. Bàn giao bằng fil
 
 | Thư mục / file | Ai ghi | Ai đọc | Bên còn lại được… |
 |---|---|---|---|
-| `design/gdd/game-concept.md`, workbook `.xlsx` gốc | Designer | Cả hai | góp ý, không sửa |
-| `design/gdd/<system>.md` (GDD) | Dev, một mình, chạy `/design-system` — giá trị design trích từ docs của designer | Cả hai | sửa các `[PLACEHOLDER]` qua Open Questions |
-| `design/pipeline/*.md` (flow map, difficulty model, mix matrix, level definition, level intent) | Designer, qua các skill `gd-*` | Dev, simulation, generator | chỉ đọc |
-| `design/pipeline/level-curves.md` | Dòng Designed: `/gd-level-intent` · Dòng Measured: `/gd-level-audit` | Cả hai | chỉ dòng của mình |
-| `docs/architecture/`, ADR, code trong `Assets/` | Dev | Designer chỉ qua dev | không bao giờ đụng |
+| `design/gdd/gd-game-concept.md`, workbook `.xlsx` gốc | Designer | Cả hai | góp ý, không sửa |
+| `design/dev-system/dev-<system>.md` (GDD) | Dev, một mình, chạy `/design-system` — giá trị design trích từ docs của designer | Cả hai | sửa các `[PLACEHOLDER]` qua Open Questions |
+| `design/gdd/gd-*.md` (flow map, difficulty model, mix matrix, level definition, level intent) | Designer, qua các skill `gd-*` | Dev, simulation, generator | chỉ đọc |
+| `design/levels/level-curves.md` | Dòng Designed: `/gd-level-intent` · Dòng Measured: `/gd-level-audit` | Cả hai | chỉ dòng của mình |
+| `design/dev-system/`, ADR, code trong `Assets/` | Dev | Designer chỉ qua dev | không bao giờ đụng |
 | `docs/_session/active.md` | Người chạy session | Chính người đó, sau khi compact | — |
 
 Hai luật suy ra từ đây, vốn đã là luật của dự án:
@@ -73,17 +73,17 @@ Phase 4      sau soft launch: calibrate, quay lại phase 3
 
 | Developer | Designer |
 |---|---|
-| Base project: stack điền ở `project_setup.md` §1, asmdef, `GameDebug` | Concept: `design/gdd/game-concept.md` — viết tay hoặc dùng `/brainstorm` |
+| Base project: stack điền ở `project_setup.md` §1, asmdef, `GameDebug` | Concept: `design/gdd/gd-game-concept.md` — viết tay hoặc dùng `/brainstorm` |
 | Đã có code sẵn → `/reverse-document` để dựng lại docs từ code | Bắt đầu workbook `.xlsx` gốc |
 
-**Bàn giao:** `game-concept.md` được cả hai duyệt. Chưa bên nào vào phase 1 trước đó.
+**Bàn giao:** `gd-game-concept.md` được cả hai duyệt. Chưa bên nào vào phase 1 trước đó.
 
 ### Phase 1A ∥ 1B — Song song, không ai chờ ai
 
 | 1A — Developer | 1B — Designer (trong `/gd-mode`) |
 |---|---|
-| `/map-systems` → `systems-index.md` | `/gd-map-flow` → `flow-map.md` (**đầu tiên**, từ vựng cho mọi bước sau) |
-| `/design-system` → mỗi system một GDD, **chỉ dev**. Luật, con số, khoảng giá trị trích từ docs của designer (file 1B, `.xlsx`) và dev xác nhận; docs chưa có thì dev điền giá trị tạm gắn `[PLACEHOLDER]` (hoặc `UNDEFINED`) kèm Open Question cho designer. Không hỏi cảm tính, không spawn agent trừ khi dev yêu cầu | `/gd-core-difficulty` → `difficulty-model.md` |
+| `/map-systems` → `dev-map-systems.md` | `/gd-map-flow` → `gd-flow-map.md` (**đầu tiên**, từ vựng cho mọi bước sau) |
+| `/design-system` → mỗi system một GDD, **chỉ dev**. Luật, con số, khoảng giá trị trích từ docs của designer (file 1B, `.xlsx`) và dev xác nhận; docs chưa có thì dev điền giá trị tạm gắn `[PLACEHOLDER]` (hoặc `UNDEFINED`) kèm Open Question cho designer. Không hỏi cảm tính, không spawn agent trừ khi dev yêu cầu | `/gd-core-difficulty` → `gd-difficulty-model.md` |
 | `/create-architecture` → tách Model/View, danh sách ADR | `/gd-mechanic-difficulty` × từng mechanic |
 | `/architecture-decision` × từng ADR bắt buộc | `/gd-mechanic-object-mix` + `/gd-mechanic-mix` (cả hai, trước bước sau) |
 | | `/gd-level-definition` → tier profile |
@@ -94,8 +94,8 @@ xác nhận hoặc thay từng `[PLACEHOLDER]` trong GDD và field config tươn
 
 **Bàn giao — họp đồng bộ.** Checklist trước phase 2:
 - [ ] Thư mục model không có tham chiếu `UnityEngine` (`architect.md` §1)
-- [ ] `difficulty-model.md` và `level-definition.md` đã có và được designer ký duyệt
-- [ ] Mỗi mechanic trong level definition đều có `design/pipeline/mechanics/<name>.md`
+- [ ] `gd-difficulty-model.md` và `gd-level-definition.md` đã có và được designer ký duyệt
+- [ ] Mỗi mechanic trong level definition đều có `design/gdd/gd-mechanics/<name>.md`
 
 ### Phase 2 — Dạy bot chơi (tuỳ chọn — chỉ cần khi muốn đo)
 
@@ -117,7 +117,7 @@ buộc. Weights mới → quay lại phase 3.
 
 | Khi nào | Ai | Làm gì | Kết quả |
 |---|---|---|---|
-| Đầu tuần | Designer | Cập nhật sheet intent → `/gd-level-intent` → **duyệt đường thiết kế** (●) | `level-intent.md`, dòng Designed trong `level-curves.md` |
+| Đầu tuần | Designer | Cập nhật sheet intent → `/gd-level-intent` → **duyệt đường thiết kế** (●) | `gd-level-intent.md`, dòng Designed trong `level-curves.md` |
 | Một lần, trước audit đầu tiên | Designer | Điền bảng **Tolerances** trong `level-curves.md` | thiếu nó thì không ra được verdict |
 | Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` → `/gd-level-audit` | candidate export ra folder riêng; dòng Measured (○) + verdict |
 | Cuối tuần | Designer | Đọc `level-curves.md`: giữ / sửa / thay từng level | quyết định ghi cạnh từng level |

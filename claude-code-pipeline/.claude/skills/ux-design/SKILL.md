@@ -36,7 +36,7 @@ comes from arriving informed.
 
 ### 2a: Required Reads
 
-- **Game concept**: Read `design/gdd/game-concept.md` — if missing, warn:
+- **Game concept**: Read `design/gdd/gd-game-concept.md` — if missing, warn:
   > "No game concept found. Run `/brainstorm` first to establish the game's
   > foundation before designing UX."
   > Continue anyway if the user asks.
@@ -56,7 +56,7 @@ If the player journey file does not exist, note the gap and proceed:
 
 ### 2c: GDD UI Requirements
 
-Glob `design/gdd/*.md` and grep for `UI Requirements` sections. Read any GDD whose
+Glob `design/dev-system/dev-*.md` and grep for `UI Requirements` sections. Read any GDD whose
 UI Requirements section references this screen by name or category.
 
 These GDD UI Requirements are the **requirements input** to this spec. Collect them

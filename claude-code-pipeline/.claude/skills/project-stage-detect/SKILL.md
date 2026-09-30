@@ -26,9 +26,9 @@ of artifacts, and gaps that need attention. It's especially useful when:
 Analyze project structure and content:
 
 **Design Documentation** (`design/`):
-- Count GDD files in `design/gdd/*.md`
-- Check for game-concept.md, game-pillars.md, systems-index.md
-- If systems-index.md exists, count total systems vs. designed systems
+- Count GDD files in `design/dev-system/dev-*.md`
+- Check for gd-game-concept.md, gd-game-pillars.md, dev-map-systems.md
+- If dev-map-systems.md exists, count total systems vs. designed systems
 - Analyze completeness (Overview, Detailed Design, Edge Cases, etc.)
 - Count narrative docs in `design/narrative/`
 - Count level designs in `design/levels/`
@@ -49,7 +49,7 @@ Analyze project structure and content:
 - Check for READMEs (documented vs undocumented)
 - Assess if prototypes are archived or active
 
-**Architecture Docs** (`docs/architecture/`):
+**Architecture Docs** (`design/dev-system/`):
 - Count ADRs (Architecture Decision Records)
 - Check for overview/index documents
 
@@ -77,7 +77,7 @@ auto-detect using these heuristics (check from most-advanced backward):
 
 **DO NOT** just list missing files. Instead, **ask clarifying questions**:
 
-- "I see combat code (`src/gameplay/combat/`) but no `design/gdd/combat-system.md`. Was this prototyped first, or should we reverse-document?"
+- "I see combat code (`src/gameplay/combat/`) but no `design/dev-system/dev-combat-system.md`. Was this prototyped first, or should we reverse-document?"
 - "You have 15 ADRs but no architecture overview. Should I create one to help new contributors?"
 - "No sprint plans in `production/`. Are you tracking work elsewhere (Jira, Trello, etc.)?"
 - "I found a game concept but no systems index. Have you decomposed the concept into individual systems yet, or should we run `/map-systems`?"

@@ -114,7 +114,7 @@ If yes, write the file.
 ## Phase 6: Developer Decision
 
 Present the prototyper's PROCEED / PIVOT / KILL recommendation, with the evidence behind
-it and how it sits against the game pillars in `design/gdd/game-concept.md` (if it exists).
+it and how it sits against the game pillars in `design/gdd/gd-game-concept.md` (if it exists).
 Use `AskUserQuestion` to let the developer confirm or override it. Their decision is
 final; update the REPORT.md `Recommendation` section if it differs from the prototyper's.
 

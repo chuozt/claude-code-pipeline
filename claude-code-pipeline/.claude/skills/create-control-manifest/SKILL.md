@@ -18,7 +18,7 @@ answers "what do I do?" and "what must I never do?" — organized by architectur
 layer, extracted from all Accepted ADRs, technical preferences, and engine
 reference docs. Where ADRs explain *why*, the manifest tells you *what*.
 
-**Output:** `docs/architecture/control-manifest.md`
+**Output:** `design/dev-system/dev-control-manifest.md`
 
 **When to run:** After `/architecture-review` passes and ADRs are in Accepted
 status. Re-run whenever new ADRs are accepted or existing ADRs are revised.
@@ -28,7 +28,7 @@ status. Re-run whenever new ADRs are accepted or existing ADRs are revised.
 ## 1. Load All Inputs
 
 ### ADRs
-- Glob `docs/architecture/adr-*.md` and read every file
+- Glob `design/dev-system/adr/adr-*.md` and read every file
 - Filter to only Accepted ADRs (Status: Accepted) — skip Proposed, Deprecated,
   Superseded
 - Note the ADR number and title for every rule sourced
@@ -138,7 +138,7 @@ Apply the verdict:
 
 ## 5. Write the Control Manifest
 
-Ask: "May I write this to `docs/architecture/control-manifest.md`?"
+Ask: "May I write this to `design/dev-system/dev-control-manifest.md`?"
 
 Format:
 

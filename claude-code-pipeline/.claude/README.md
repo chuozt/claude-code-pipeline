@@ -99,9 +99,14 @@ project root, creating each folder the first time it is actually needed.
 
 | Path | Written by | Holds |
 |---|---|---|
-| `design/` | `gd-*`, `design-system`, `ux-design` | GDDs, pipeline specs, entity registry, UX |
+| `design/gdd/` | the designer: `brainstorm`, the phase-1B `gd-*` skills, `gdd-sync` | `gd-game-concept.md`, `gd-flow-map.md`, `gd-difficulty-model.md`, `gd-mechanics/`, the two mix matrices, `gd-level-definition.md`, `gd-level-intent.md` |
+| `design/dev-system/` | the developer: `map-systems`, `design-system`, `create-architecture`, `architecture-decision` | `dev-map-systems.md`, `dev-<system>.md` GDDs, `dev-architecture.md`, `adr/`, reviews |
+| `design/bot/` | `gd-bot-playstyle` (phase 2) | `bot-playstyle.md` |
+| `design/levels/` | `gd-level-intent` (Designed rows), `gd-level-audit` (Measured rows, audit reports) (phase 3) | `level-curves.md`, `level-audit-<date>.md` |
+| `design/calibration/` | `gd-calibrate` (phase 4) | `calibration-<date>.md` |
+| `design/ux/` | `ux-design` | UX specs, HUD, interaction patterns |
 | `production/` | `playtest-report`, QA agents; `stage.txt` by hand | project stage, playtest reports, QA evidence |
-| `docs/` | `create-architecture`, developers | architecture, ADRs, research, engine reference |
+| `docs/` | developers | research, engine reference |
 | `docs/features/` | developers | living feature docs next to the code |
 | `docs/_session/active.md` | every multi-step skill and agent, developers | **the one session-state file** — read by the session-start hook and after every compaction (`context.md` §1) |
 

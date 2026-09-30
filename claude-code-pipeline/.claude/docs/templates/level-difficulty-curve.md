@@ -4,9 +4,9 @@
 > **Owner**: [game designer]
 > **Last Updated**: [Date]
 > **Written by**: `/gd-level-intent` (designed curve) · `/gd-level-audit` (measured curve)
-> **Project file**: `design/pipeline/level-curves.md`
-> **Links To**: `design/pipeline/flow-map.md` (how `pressure(t)` is computed in this game),
-> `design/pipeline/level-intent.md` (the designer's words per level)
+> **Project file**: `design/levels/level-curves.md`
+> **Links To**: `design/gdd/gd-flow-map.md` (how `pressure(t)` is computed in this game),
+> `design/gdd/gd-level-intent.md` (the designer's words per level)
 
 One block per level: the curve the designer **wants** next to the curve the bots **measured**,
 on the same scale, so "is this level shaped the way we meant?" is answered by looking.
@@ -17,8 +17,8 @@ on the same scale, so "is this level shaped the way we meant?" is answered by lo
 
 - **Y axis — `pressure(t)`, 0.0 to 1.0**: how close the player is to losing
   (`resource-flow-difficulty-framework.md` §8). 0.0 = nothing threatens the player, 1.0 = the
-  next wrong move loses. How it is computed in this game is in `flow-map.md`
-  (e.g. `MID occupancy ÷ MID capacity`).
+  next wrong move loses. How it is computed in this game is in `gd-flow-map.md`
+  (e.g. `BUFFER occupancy ÷ BUFFER capacity`).
 - **X axis — progress through the level**, 20 marks of 5% each: Start → Mid → Climax → Exit.
 - **●** designed · **○** measured · **◉** both on the same cell. Values are rounded to 0.1 to
   plot; the numbers under the chart are the exact ones.
@@ -26,7 +26,7 @@ on the same scale, so "is this level shaped the way we meant?" is answered by lo
   its win rate with the wrong shape — that still fails review.
 
 > `/gd-level-audit` reports "average free slots"; that is the opposite direction. Convert with
-> the proxy from `flow-map.md` before plotting (with a MID: `pressure = 1 − free ÷ capacity`).
+> the proxy from `gd-flow-map.md` before plotting (with a BUFFER: `pressure = 1 − free ÷ capacity`).
 
 ---
 

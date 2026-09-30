@@ -99,45 +99,45 @@
     <div class="card dev"><div class="who">DEV</div><span class="t">Dựng base project</span>
       <div class="sk"><div class="top"><span class="c">/project-overview</span><span class="f none">không ghi file</span></div>
         <div class="d">Xem dự án đang có gì, rồi dev tự điền CLAUDE.md</div></div>
-      <div class="sk"><div class="top"><span class="c">/reverse-document</span><span class="f">design/gdd/*.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/reverse-document</span><span class="f">design/dev-system/dev-*.md</span></div>
         <div class="d">Đã có code sẵn thì dựng lại docs từ code</div></div>
     </div>
     <div class="card gd"><div class="who">GD</div><span class="t">Viết concept</span>
-      <div class="sk"><div class="top"><span class="c">/brainstorm</span><span class="f">design/gdd/game-concept.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/brainstorm</span><span class="f">design/gdd/gd-game-concept.md</span></div>
         <div class="d">Từ ý tưởng thành concept — hoặc tự viết tay</div></div>
       <div class="sk nonum"><div class="top"><span class="c">.xlsx</span><span class="f">gdd-sync → design/gdd/</span></div>
         <div class="d">Workbook của GD — nguồn sự thật, để đâu tuỳ dự án</div></div>
     </div>
   </div>
-  <div class="arrow">↓ cả hai duyệt <b>game-concept.md</b> mới sang Phase 1</div>
+  <div class="arrow">↓ cả hai duyệt <b>gd-game-concept.md</b> mới sang Phase 1</div>
 
   <h2 style="margin-top:0">Phase 1 · 1A ∥ 1B — không ai chờ ai</h2>
   <div class="grid g2">
     <div class="card dev"><div class="who">1A · DEV</div><span class="t">Từ ý tưởng → kiến trúc</span>
-      <div class="dir">File vào <span class="c">design/gdd/</span> (1–2) · <span class="c">docs/architecture/</span> (3–4)</div>
-      <div class="sk"><div class="top"><span class="c">/map-systems</span><span class="f">systems-index.md</span></div>
+      <div class="dir">File vào <span class="c">design/dev-system/</span> · tiền tố <span class="c">dev-</span></div>
+      <div class="sk"><div class="top"><span class="c">/map-systems</span><span class="f">dev-map-systems.md</span></div>
         <div class="d">Tách concept thành các system</div></div>
-      <div class="sk"><div class="top"><span class="c">/design-system</span><span class="f">booster.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/design-system</span><span class="f">dev-booster.md</span></div>
         <div class="d">Mỗi system một GDD</div></div>
-      <div class="sk"><div class="top"><span class="c">/create-architecture</span><span class="f">architecture.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/create-architecture</span><span class="f">dev-architecture.md</span></div>
         <div class="d">Tách Model/View, liệt kê ADR cần viết</div></div>
       <div class="sk"><div class="top"><span class="c">/architecture-decision</span><span class="f">adr-0001-event-bus.md</span></div>
         <div class="d">Ghi từng quyết định kỹ thuật</div></div>
       <div class="note">Chỉ dev chạy. Số liệu lấy từ docs của GD; chưa có thì ghi <span class="c">[PLACEHOLDER]</span> để GD chốt sau.</div>
     </div>
     <div class="card gd"><div class="who">1B · GD · bật /gd-mode</div><span class="t">Định nghĩa độ khó</span>
-      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
-      <div class="sk"><div class="top"><span class="c">/gd-map-flow</span><span class="f">flow-map.md</span></div>
-        <div class="d">INPUT / MID / OUTPUT — <b style="color:var(--text)">luôn chạy đầu tiên</b></div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-core-difficulty</span><span class="f">difficulty-model.md</span></div>
+      <div class="dir">File vào <span class="c">design/gdd/</span> · tiền tố <span class="c">gd-</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-map-flow</span><span class="f">gd-flow-map.md</span></div>
+        <div class="d">GIVEN / BUFFER / GOAL — <b style="color:var(--text)">luôn chạy đầu tiên</b></div></div>
+      <div class="sk"><div class="top"><span class="c">/gd-core-difficulty</span><span class="f">gd-difficulty-model.md</span></div>
         <div class="d">Game khó vì đâu, win rate mục tiêu</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-difficulty</span><span class="f">mechanics/ice-block.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-difficulty</span><span class="f">gd-mechanics/ice-block.md</span></div>
         <div class="d">Chạy một lần cho mỗi mechanic</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-object-mix</span><span class="f">mechanic-object-mix.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-object-mix</span><span class="f">gd-mechanic-object-mix.md</span></div>
         <div class="d">Một vật mang được những mechanic nào</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">mechanic-mix.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">gd-mechanic-mix.md</span></div>
         <div class="d">Mechanic nào đi chung một level</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">level-definition.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">gd-level-definition.md</span></div>
         <div class="d">Máy được tự sinh những gì</div></div>
     </div>
   </div>
@@ -146,7 +146,7 @@
   <div class="sync">
     <span>Model không dính <span class="c">UnityEngine</span></span>
     <span>GD ký duyệt file độ khó</span>
-    <span>Mỗi mechanic có file trong <span class="c">mechanics/</span></span>
+    <span>Mỗi mechanic có file trong <span class="c">gd-mechanics/</span></span>
   </div>
 
   <h2>4 luật thứ tự</h2>
@@ -167,14 +167,14 @@
   <h2 style="margin-top:0">Phase 2 → 3 → 4 · Chỉ cần khi muốn đo</h2>
   <div class="grid g3">
     <div class="card opt"><div class="who">PHASE 2</div><span class="t">Dạy bot chơi</span>
-      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="dir">File vào <span class="c">design/bot/</span></div>
       <div class="sk"><div class="top"><span class="c">/gd-bot-playstyle</span><span class="f">bot-playstyle.md</span></div>
         <div class="d">GD mô tả thế nào là "chơi giỏi"</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-prototype-sim</span><span class="f">&lt;Game&gt;.Sim</span></div>
         <div class="d">Dev dựng sim C# thuần + test</div></div>
     </div>
     <div class="card opt"><div class="who">PHASE 3</div><span class="t">Sinh &amp; đo level</span>
-      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="dir">File vào <span class="c">design/levels/</span></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-intent</span><span class="f">level-curves.md ●</span></div>
         <div class="d">GD muốn mỗi level ra sao</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-gen</span><span class="f">folder riêng</span></div>
@@ -183,7 +183,7 @@
         <div class="d">Đo cả bộ level, báo cáo cần sửa gì</div></div>
     </div>
     <div class="card opt"><div class="who">PHASE 4</div><span class="t">Khớp người chơi thật</span>
-      <div class="dir">File vào <span class="c">design/pipeline/</span></div>
+      <div class="dir">File vào <span class="c">design/calibration/</span></div>
       <div class="sk"><div class="top"><span class="c">/gd-calibrate</span><span class="f">calibration/2026-10-01.md</span></div>
         <div class="d">Sau soft launch: so số bot với người chơi thật, rồi quay lại Phase 3</div></div>
     </div>
@@ -224,8 +224,8 @@
 
   <h2>Ai ghi file nào</h2>
   <div class="grid g4">
-    <div class="card gd"><div class="who">GD</div><span class="c">game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/pipeline/*</span></div>
-    <div class="card dev"><div class="who">DEV</div><span class="c">design/gdd/*</span><br><span class="c">docs/architecture/*</span><br><span class="c">Assets/**</span></div>
+    <div class="card gd"><div class="who">GD</div><span class="c">gd-game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/gdd/gd-*</span></div>
+    <div class="card dev"><div class="who">DEV</div><span class="c">design/dev-system/dev-*</span><br><span class="c">design/dev-system/*</span><br><span class="c">Assets/**</span></div>
     <div class="card"><div class="who" style="color:var(--muted)">CẢ HAI</div><span class="c">level-curves.md</span><br><span class="sub">GD ghi ● · dev ghi ○</span></div>
     <div class="card"><div class="who" style="color:var(--muted)">KHÔNG BAO GIỜ</div><span class="sub">Dev quyết độ khó, giá, màu · GD sửa code</span></div>
   </div>

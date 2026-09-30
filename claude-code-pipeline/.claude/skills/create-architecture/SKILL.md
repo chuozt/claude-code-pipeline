@@ -13,7 +13,7 @@ agent: technical-director
 
 # Create Architecture
 
-This skill produces `docs/architecture/architecture.md` — the master architecture
+This skill produces `design/dev-system/dev-architecture.md` — the master architecture
 document that translates all approved GDDs into a concrete technical blueprint.
 It sits between design and implementation, and must exist before sprint planning begins.
 
@@ -57,11 +57,11 @@ If no engine is configured, stop and prompt:
 
 Read all approved design documents and extract technical requirements from each:
 
-1. `design/gdd/game-concept.md` — game pillars, genre, core loop
-2. `design/gdd/systems-index.md` — all systems, dependencies, priority tiers
+1. `design/gdd/gd-game-concept.md` — game pillars, genre, core loop
+2. `design/dev-system/dev-map-systems.md` — all systems, dependencies, priority tiers
 3. `.claude/docs/technical-preferences.md` — naming conventions, performance budgets,
    allowed libraries, forbidden patterns
-4. **Every GDD in `design/gdd/`** — for each, extract technical requirements:
+4. **Every GDD in `design/dev-system/`** — for each, extract technical requirements:
    - Data structures implied by the game rules
    - Performance constraints stated or implied
    - Engine capabilities the system requires
@@ -89,7 +89,7 @@ left without an architectural decision to support it by the end of this session.
 
 ### 0c. Existing Architecture Decisions
 
-Read all files in `docs/architecture/` to understand what has already been decided.
+Read all files in `design/dev-system/` to understand what has already been decided.
 List any ADRs found and their domains.
 
 ### 0d. Generate Knowledge Gap Inventory
@@ -122,7 +122,7 @@ continue building the architecture with these warnings flagged throughout?"
 
 ## Phase 1: System Layer Mapping
 
-Map every system from `systems-index.md` into an architecture layer. The standard
+Map every system from `dev-map-systems.md` into an architecture layer. The standard
 game architecture layers are:
 
 ```
@@ -282,9 +282,9 @@ but don't yet. Group by priority:
 ## Phase 7: Write the Master Architecture Document
 
 Once all sections are approved, write the complete document to
-`docs/architecture/architecture.md`.
+`design/dev-system/dev-architecture.md`.
 
-Ask: "May I write the master architecture document to `docs/architecture/architecture.md`?"
+Ask: "May I write the master architecture document to `design/dev-system/dev-architecture.md`?"
 
 The document structure:
 
@@ -354,7 +354,7 @@ Update the Document Status section:
 - Technical Sign-Off: [date] — APPROVED / APPROVED WITH CONDITIONS
 ```
 
-Ask: "May I update the Document Status section in `docs/architecture/architecture.md` with the sign-off?"
+Ask: "May I update the Document Status section in `design/dev-system/dev-architecture.md` with the sign-off?"
 
 ---
 

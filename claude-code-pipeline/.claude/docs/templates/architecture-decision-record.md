@@ -164,7 +164,7 @@ creates. These become the contracts that implementers must respect.]
 
 | GDD Document | System | Requirement | How This ADR Satisfies It |
 |-------------|--------|-------------|--------------------------|
-| [e.g. `design/gdd/combat.md`] | [e.g. Combat] | [e.g. "Hitbox detection must resolve within 1 frame"] | [e.g. "Jolt physics collision queries run synchronously in _physics_process"] |
+| [e.g. `design/dev-system/dev-combat.md`] | [e.g. Combat] | [e.g. "Hitbox detection must resolve within 1 frame"] | [e.g. "Jolt physics collision queries run synchronously in _physics_process"] |
 
 > If this is a foundational decision with no direct GDD dependency, write:
 > "Foundational — no GDD requirement. Enables: [list what GDD systems this

@@ -64,17 +64,17 @@ Scope: [full | since-last-review | entity:name]
 ## Phase 2: Locate In-Scope GDDs
 
 ```
-Glob pattern="design/gdd/*.md"
+Glob pattern="design/dev-system/dev-*.md"
 ```
 
-Exclude: `game-concept.md`, `systems-index.md`, `game-pillars.md` — these are
+Exclude: `gd-game-concept.md`, `dev-map-systems.md`, `gd-game-pillars.md` — these are
 not system GDDs.
 
 For `since-last-review` mode:
 ```bash
-git log --name-only --pretty=format: -- design/gdd/ | grep "\.md$" | sort -u
+git log --name-only --pretty=format: -- design/dev-system/ | grep "\.md$" | sort -u
 ```
-Limit to GDDs modified since the most recent `design/gdd/gdd-cross-review-*.md`
+Limit to GDDs modified since the most recent `design/dev-system/reviews/dev-cross-review-*.md`
 file's creation date.
 
 Report the in-scope GDD list before scanning.
@@ -96,7 +96,7 @@ each returning ~10 lines on a hit).
 For each entity in entity_map:
 
 ```
-Grep pattern="[entity_name]" glob="design/gdd/*.md" output_mode="content" -C 3
+Grep pattern="[entity_name]" glob="design/dev-system/dev-*.md" output_mode="content" -C 3
 ```
 
 For each GDD hit, extract the values mentioned near the entity name:
@@ -148,7 +148,7 @@ For each conflict found in Phase 3, do a targeted full-section read of the
 conflicting GDD to get precise context:
 
 ```
-Read path="design/gdd/[conflicting_gdd].md"
+Read path="design/dev-system/dev-[conflicting_gdd].md"
 ```
 (Or use Grep with wider context if the file is large)
 

@@ -17,9 +17,9 @@ picking up a single gap without running the whole queue.
 
 **Resolve which mode this run is in:**
 
-1. Check if `design/gdd/systems-index.md` exists. If it does not exist, fail with:
+1. Check if `design/dev-system/dev-map-systems.md` exists. If it does not exist, fail with:
    > "Usage: `/design-system` (all undesigned systems) · `/design-system <system-name>`
-   > (just one) · `/design-system retrofit design/gdd/[system-name].md` (fill gaps in an
+   > (just one) · `/design-system retrofit design/dev-system/dev-[system-name].md` (fill gaps in an
    > existing GDD).
    > No systems index found. Run `/map-systems` first to map your systems and get the
    > design order."
@@ -39,12 +39,12 @@ picking up a single gap without running the whole queue.
    already designed or in review — nothing to queue" and stop.
 3. Argument is a specific `<system-name>` (not `all`, not `retrofit …`) → **Single-system
    mode.** Only that system is designed this run; no queue, no auto-advance.
-4. Argument starts with `retrofit`, or is a path to an existing `.md` in `design/gdd/` →
+4. Argument starts with `retrofit`, or is a path to an existing `.md` in `design/dev-system/` →
    **Retrofit mode** (below). Retrofit always targets one file, never the whole queue.
 
 **Detect retrofit mode:**
 If the argument starts with `retrofit` or the argument is a file path to an
-existing `.md` file in `design/gdd/`, enter **retrofit mode**:
+existing `.md` file in `design/dev-system/`, enter **retrofit mode**:
 
 1. Read the existing GDD file.
 2. Identify which of the 8 required sections are present (scan for section headings).
@@ -55,7 +55,7 @@ existing `.md` file in `design/gdd/`, enter **retrofit mode**:
 4. Present to the user before doing anything:
    ```
    ## Retrofit: [System Name]
-   File: design/gdd/[filename].md
+   File: design/dev-system/dev-[filename].md
 
    Sections already written (will not be touched):
    ✓ [section name]
@@ -85,9 +85,9 @@ primary advantage over ad-hoc design — it arrives informed.
 
 ### 2a: Required Reads
 
-- **Game concept**: Read `design/gdd/game-concept.md` — fail if missing:
+- **Game concept**: Read `design/gdd/gd-game-concept.md` — fail if missing:
   > "No game concept found. Run `/brainstorm` first."
-- **Systems index**: Read `design/gdd/systems-index.md` — fail if missing:
+- **Systems index**: Read `design/dev-system/dev-map-systems.md` — fail if missing:
   > "No systems index found. Run `/map-systems` first to map your systems."
 - **Target system**: Find the system in the index. If not listed, warn:
   > "[system-name] is not in the systems index. Would you like to add it, or
@@ -119,10 +119,10 @@ For each dependency GDD that exists, extract and hold in context:
 
 ### 2c: Optional Reads
 
-- **Game pillars**: Read `design/gdd/game-pillars.md` if it exists
-- **Existing GDD**: Read `design/gdd/[system-name].md` if it exists (resume, don't
+- **Game pillars**: Read `design/gdd/gd-game-pillars.md` if it exists
+- **Existing GDD**: Read `design/dev-system/dev-[system-name].md` if it exists (resume, don't
   restart from scratch)
-- **Related GDDs**: Glob `design/gdd/*.md` and read any that are thematically related
+- **Related GDDs**: Glob `design/dev-system/dev-*.md` and read any that are thematically related
   (e.g., if designing a system that overlaps with another in scope, read the related GDD
   even if it's not a formal dependency)
 
@@ -132,8 +132,8 @@ This skill is run by the **developer alone**; design decisions come from what th
 designer has already written, never from an interview. Search, in this order, for anything
 about this system — rules, numbers, ranges, edge cases, intent:
 
-1. `design/pipeline/*.md` — `difficulty-model.md`, `level-definition.md`, `mechanics/*.md`,
-   `mechanic-mix.md`, `mechanic-object-mix.md`, `level-intent.md`
+1. `design/gdd/gd-*.md` — `gd-difficulty-model.md`, `gd-level-definition.md`, `gd-mechanics/*.md`,
+   `gd-mechanic-mix.md`, `gd-mechanic-object-mix.md`, `gd-level-intent.md`
 2. The designer's `.xlsx` workbook, via `.claude/tools/gdd-sync` (the workbook wins over its
    derived `.md` when they disagree)
 3. `design/gdd/*.md` written by the designer, `docs/features/*.md`
@@ -176,7 +176,7 @@ Before asking the user to begin designing, load engine context and surface any
 constraints or knowledge gaps that will shape the design.
 
 **Step 1 — Determine the engine domain for this system:**
-Map the system's category (from systems-index.md) to an engine domain:
+Map the system's category (from dev-map-systems.md) to an engine domain:
 
 | System Category | Engine Domain |
 |----------------|--------------|
@@ -196,7 +196,7 @@ Map the system's category (from systems-index.md) to an engine domain:
 - If engine is configured, read `docs/engine-reference/[engine]/VERSION.md`
 - Read `docs/engine-reference/[engine]/modules/[domain].md` if it exists
 - Read `docs/engine-reference/[engine]/breaking-changes.md` for domain-relevant entries
-- Glob `docs/architecture/adr-*.md` and read any ADRs whose domain matches
+- Glob `design/dev-system/adr/adr-*.md` and read any ADRs whose domain matches
   (check the Engine Compatibility table's "Domain" field)
 
 **Step 3 — Present the Feasibility Brief:**
@@ -311,7 +311,7 @@ Use the template structure from `.claude/docs/templates/game-design-document.md`
 [To be designed]
 ```
 
-Ask: "May I create the skeleton file at `design/gdd/[system-name].md`?"
+Ask: "May I create the skeleton file at `design/dev-system/dev-[system-name].md`?"
 
 After writing, update `docs/_session/active.md`:
 - Use Glob to check if the file exists.
@@ -321,7 +321,7 @@ After writing, update `docs/_session/active.md`:
 File content:
 - Task: Designing [system-name] GDD
 - Current section: Starting (skeleton created)
-- File: design/gdd/[system-name].md
+- File: design/dev-system/dev-[system-name].md
 
 ---
 
@@ -333,7 +333,7 @@ needs. Anything that is a **design decision** (a rule's intent, a number, a rang
 balance trade-off) follows the **designer-fact rule**:
 
 1. **Found in the designer's docs** (2c-bis) → propose it with its source, e.g.
-   *"`moveLimit = 25` (`level-definition.md:48`)"*, and ask the developer to confirm.
+   *"`moveLimit = 25` (`gd-level-definition.md:48`)"*, and ask the developer to confirm.
 2. **Not found** → the developer may enter a working value, written **`[PLACEHOLDER]`** in
    the GDD and in the config default, plus an Open Question "confirm [value] — owner: game
    designer". It makes the code run; it is not a design decision (`CLAUDE.md` §10).
@@ -412,7 +412,7 @@ it if absent, Edit to update it if present.
 **Draft it directly — no framing widget.** Write it from the systems index entry, the
 concept doc and the designer facts: what the system is in one sentence, how the player meets
 it (active / passive / automatic), and what the game loses without it. Foundation/
-Infrastructure systems get a technical framing. If an ADR in `docs/architecture/adr-*.md`
+Infrastructure systems get a technical framing. If an ADR in `design/dev-system/adr/adr-*.md`
 names this system, cite it. The developer corrects the draft in the normal approval step.
 
 **Cross-reference**: Check that the description aligns with how the systems index
@@ -436,8 +436,8 @@ invented in this session.
 
 1. Foundation/Infrastructure layer → write `N/A — infrastructure; players feel what it
    enables: [the systems it serves]`.
-2. Otherwise, find the pillar or core-fantasy line in `design/gdd/game-concept.md` (or
-   `game-pillars.md`) that this system serves, and **quote it** with its source.
+2. Otherwise, find the pillar or core-fantasy line in `design/gdd/gd-game-concept.md` (or
+   `gd-game-pillars.md`) that this system serves, and **quote it** with its source.
 3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Fantasy
    for [system] — owner: game designer". Never write a fantasy yourself.
 
@@ -708,7 +708,7 @@ Present a completion summary:
 > - Cross-system conflicts found: [list or "none"]
 
 > **To validate this GDD, open a fresh Claude Code session and run:**
-> `/design-review design/gdd/[system-name].md`
+> `/design-review design/dev-system/dev-[system-name].md`
 >
 > **Never run `/design-review` in the same session as `/design-system`.** The reviewing
 > agent must be independent of the authoring context. Running it here would inherit
@@ -726,17 +726,17 @@ After the GDD is complete (and optionally reviewed):
   - If design-review was run and verdict is NEEDS REVISION: Status → "In Review"
   - If design-review was skipped: Status → "Designed" (pending review)
   - If the user chose "I'll review it myself first": Status → "Designed"
-  - Design Doc: link to `design/gdd/[system-name].md`
+  - Design Doc: link to `design/dev-system/dev-[system-name].md`
 - Update the Progress Tracker counts
 
-Ask: "May I update the systems index at `design/gdd/systems-index.md`?"
+Ask: "May I update the systems index at `design/dev-system/dev-map-systems.md`?"
 
 ### 5d: Update Session State
 
 Update `docs/_session/active.md` with:
 - Task: [system-name] GDD
 - Status: Complete (or In Review if design-review was run)
-- File: design/gdd/[system-name].md
+- File: design/dev-system/dev-[system-name].md
 - Sections: All 8 written
 - Next: [suggest next system from design order]
 
@@ -822,7 +822,7 @@ deliberately in step 5e):
 1. Read `docs/_session/active.md` — it records the current system, which
    sections are complete, and (in all-systems mode) the full queue with each system marked
    done / current / pending.
-2. Read `design/gdd/[system-name].md` for the **current** system — sections with real
+2. Read `design/dev-system/dev-[system-name].md` for the **current** system — sections with real
    content are done; sections with `[To be designed]` still need work.
 3. Resume from the next incomplete section of the current system — no need to re-discuss
    completed ones.
@@ -874,7 +874,7 @@ section, check if the status line shows context at or above 70%. If so, append t
 to the response:
 
 > **Context is approaching the limit (≥70%).** Your progress is saved — all approved
-> sections are written to `design/gdd/[system-name].md|design/gdd/systems-index.md]`. When
+> sections are written to `design/dev-system/dev-[system-name].md` and `dev-map-systems.md`. When
 > you're ready to continue, open a fresh Claude Code session and run `/design-system`
 > (all-systems mode: resumes the recorded queue exactly where it left off) or
 > `/design-system [system-name]` (single-system mode) — it will detect which sections are
@@ -887,7 +887,7 @@ check-in (5e) — recommend stopping there even if the user would otherwise say 
 
 ## Recommended Next Steps
 
-- Run `/design-review design/gdd/[system-name].md` in a **fresh session** to validate each completed GDD independently
+- Run `/design-review design/dev-system/dev-[system-name].md` in a **fresh session** to validate each completed GDD independently
 - Run `/consistency-check` to verify a GDD's values don't conflict with other GDDs
   (offered inline between systems in all-systems mode — see 5e)
 - Run `/design-system` with no argument to design every remaining undesigned system in

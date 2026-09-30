@@ -1,4 +1,4 @@
-# GDD Sync — xlsx → design/gdd/*.md
+# GDD Sync — xlsx → design/dev-system/dev-*.md
 
 The design source of truth is the designer's xlsx workbook (they own it and will keep
 updating it). The `.md` files under `design/gdd/` are derived copies that serve the skills
@@ -16,7 +16,7 @@ At the start of any design-related session, or when the developer says "the GDD 
 md5sum "<workbook path>"
 ```
 
-Compare against `Source Hash (md5)` in the header of `design/gdd/systems-index.md`.
+Compare against `Source Hash (md5)` in the header of `design/dev-system/dev-map-systems.md`.
 Different → run the procedure below. Same → do nothing.
 
 ## Procedure (performed by the AI agent)
@@ -51,11 +51,11 @@ Different → run the procedure below. Same → do nothing.
    Output format: `R<row>| <col>: <value> | <col>: <value> ...`
 
 4. **Reconcile sheet ↔ .md file** using the "Source sheet" table in
-   `design/gdd/systems-index.md`, diff against the previous extraction (if kept), and update
+   `design/dev-system/dev-map-systems.md`, diff against the previous extraction (if kept), and update
    the affected `.md` files. Every update still follows the collaboration protocol: present
    the diff, get approval, then write.
 
-5. **Update the headers** — `Source Hash (md5)` + `Last Updated` in `systems-index.md` and in
+5. **Update the headers** — `Source Hash (md5)` + `Last Updated` in `dev-map-systems.md` and in
    every `.md` file just changed.
 
 ## Sheet map (in workbook.xml order)

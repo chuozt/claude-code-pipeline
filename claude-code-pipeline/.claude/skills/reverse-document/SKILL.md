@@ -126,8 +126,8 @@ Based on type, use appropriate template:
 
 | Type | Template | Output Path |
 |------|----------|-------------|
-| `design` | `templates/design-doc-from-implementation.md` | `design/gdd/[system-name].md` |
-| `architecture` | `templates/architecture-doc-from-code.md` | `docs/architecture/[decision-name].md` |
+| `design` | `templates/design-doc-from-implementation.md` | `design/dev-system/dev-[system-name].md` |
+| `architecture` | `templates/architecture-doc-from-code.md` | `design/dev-system/adr/[decision-name].md` |
 | `concept` | `templates/concept-doc-from-prototype.md` | `prototypes/[name]/CONCEPT.md` or `design/concepts/[name].md` |
 
 **Draft structure**:
@@ -153,7 +153,7 @@ SECTIONS MARKED AS INCOMPLETE:
 - "[System] interaction with [other-system]" (not fully implemented yet)
 - "[Variant or feature]" (only [subset] implemented so far)
 
-May I write this to design/gdd/[system-name].md?
+May I write this to design/dev-system/dev-[system-name].md?
 ```
 
 Wait for approval. User may request changes before writing.
@@ -184,7 +184,7 @@ verified-by: [User name]
 After writing, suggest next steps:
 
 ```
-✅ Written to design/gdd/combat-system.md
+✅ Written to design/dev-system/dev-combat-system.md
 
 FOLLOW-UP RECOMMENDED:
 1. Run /gd-balance-analyst on combat formulas (exponential scaling concern)
@@ -234,18 +234,18 @@ User: 1. [Resource] is for pacing, prevent [unwanted behavior]
 Agent: Perfect, that clarifies the vision. Let me draft the design doc.
        [Shows draft with clarified intent]
 
-       May I write this to design/gdd/[system-name].md?
+       May I write this to design/dev-system/dev-[system-name].md?
 
 User: Yes, write it.
 
-Agent: ✅ Written to design/gdd/[system-name].md
+Agent: ✅ Written to design/dev-system/dev-[system-name].md
        ✅ Marked as [REVERSE-DOCUMENTED]
        ✅ Flagged [value] scaling for rebalancing
 
        Next steps:
        - Update [formula] to [corrected scaling]
        - Run /gd-balance-analyst to validate [curve]
-       - Document [mechanic] as core pillar in game-pillars.md
+       - Document [mechanic] as core pillar in gd-game-pillars.md
 ```
 
 ---

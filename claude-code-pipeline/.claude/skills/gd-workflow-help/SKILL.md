@@ -14,12 +14,12 @@ Check which output files already exist, and mark each command **✅ done** / **�
 `—` not started. Do not just print a static list — the point is telling them where they are.
 
 ```bash
-ls design/gdd/game-concept.md design/gdd/systems-index.md docs/architecture/architecture.md \
-   design/pipeline/flow-map.md design/pipeline/difficulty-model.md \
-   design/pipeline/mechanic-object-mix.md design/pipeline/mechanic-mix.md \
-   design/pipeline/level-definition.md design/pipeline/level-intent.md \
-   design/pipeline/bot-playstyle.md 2>/dev/null
-ls design/pipeline/mechanics/*.md design/pipeline/calibration/*.md 2>/dev/null
+ls design/gdd/gd-game-concept.md design/dev-system/dev-map-systems.md design/dev-system/dev-architecture.md \
+   design/gdd/gd-flow-map.md design/gdd/gd-difficulty-model.md \
+   design/gdd/gd-mechanic-object-mix.md design/gdd/gd-mechanic-mix.md \
+   design/gdd/gd-level-definition.md design/gdd/gd-level-intent.md \
+   design/bot/bot-playstyle.md 2>/dev/null
+ls design/gdd/gd-mechanics/*.md design/calibration/calibration-*.md 2>/dev/null
 ```
 
 `▶ next` is the first command whose output is missing and whose inputs all exist. Phase 1A
@@ -29,15 +29,15 @@ and 1B each start counting from their own first command — see the note below t
 
 ## Phase 1A — From idea to architecture *(developer track)*
 
-Assumes a game concept already exists (`design/gdd/game-concept.md` — written however the
+Assumes a game concept already exists (`design/gdd/gd-game-concept.md` — written however the
 team produces one; `/brainstorm` and `/start` can still be run standalone if useful, they are
 just not part of this pipeline's tracked sequence).
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/map-systems` | Splits the concept into systems, maps dependencies, sets design order | `design/gdd/systems-index.md` |
-| `/design-system` | Writes every undesigned system's GDD, section by section, back-to-back in one run. `/design-system <name>` targets just one. **Developer only**: design values are taken from the designer's docs, anything missing is marked `[PLACEHOLDER]` and listed as an Open Question for the designer | `design/gdd/<system>.md` per system |
-| `/create-architecture` | Turns the GDDs into a technical blueprint + the required ADR list | `docs/architecture/architecture.md` |
+| `/map-systems` | Splits the concept into systems, maps dependencies, sets design order | `design/dev-system/dev-map-systems.md` |
+| `/design-system` | Writes every undesigned system's GDD, section by section, back-to-back in one run. `/design-system <name>` targets just one. **Developer only**: design values are taken from the designer's docs, anything missing is marked `[PLACEHOLDER]` and listed as an Open Question for the designer | `design/dev-system/dev-<system>.md` per system |
+| `/create-architecture` | Turns the GDDs into a technical blueprint + the required ADR list | `design/dev-system/dev-architecture.md` |
 
 ---
 
@@ -47,14 +47,14 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-mode` | Switches to designer language and designer-only sources — docs, browser-opened docs, `.xlsx` workbooks, the designer's own recorded thinking; **never reads code, even read-only** | nothing — a mode, exit with `/gd-mode off` |
-| `/gd-map-flow` | Maps the game onto the INPUT/MID/OUTPUT model. **The gateway to everything below** | `design/pipeline/flow-map.md` |
-| `/gd-core-difficulty` | Ranks the 5 difficulty factors, settles the visibility rule and target win-rate bands | `design/pipeline/difficulty-model.md` |
-| `/gd-mechanic-difficulty` | Where one mechanic creates difficulty + which factor it loads. **Run per mechanic** | `design/pipeline/mechanics/<name>.md` |
-| `/gd-mechanic-object-mix` | Which mechanics one object may carry at once (deadlock / slot / state checks) | `design/pipeline/mechanic-object-mix.md` |
-| `/gd-mechanic-mix` | Which mechanics may appear in one level, derived from their factors | `design/pipeline/mechanic-mix.md` |
-| `/gd-level-definition` | Separates human-owned identity from machine-generated variables; sets the tier profiles | `design/pipeline/level-definition.md` |
-| `/gd-level-intent` | Translates a per-level intent sheet into machine profiles. **Optional** | `design/pipeline/level-intent.md` + designed curves in `level-curves.md` |
+| `/gd-mode` | Talk about how the game feels, not how it is coded. Reads only docs and workbooks, **never code** — and sets the question style every skill below uses | nothing — a mode, exit with `/gd-mode off` |
+| `/gd-map-flow` | Names what the player is given, where things wait, and what must be filled to win. **Do this first** | `design/gdd/gd-flow-map.md` |
+| `/gd-core-difficulty` | What makes the base game hard (dig depth, waiting room, guessing, no-undo, hard to see), when a covered object counts as tappable, and how many of 10 players should win per tier | `design/gdd/gd-difficulty-model.md` |
+| `/gd-mechanic-difficulty` | For one mechanic: what it changes, how a good player handles it, which kind of hard it adds. **Run per mechanic** | `design/gdd/gd-mechanics/<name>.md` |
+| `/gd-mechanic-object-mix` | Which mechanics can sit on the same object at once | `design/gdd/gd-mechanic-object-mix.md` |
+| `/gd-mechanic-mix` | Which mechanics can appear in the same level, and how many per tier | `design/gdd/gd-mechanic-mix.md` |
+| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier | `design/gdd/gd-level-definition.md` |
+| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. **Optional** | `design/gdd/gd-level-intent.md` + designed curves in `level-curves.md` |
 
 > **Both mix matrices are needed before `/gd-level-definition`** — object scale and level scale
 > answer different questions and neither substitutes for the other.
@@ -66,8 +66,8 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 Neither track reads the other's output. **1A** (architecture: systems → GDD sections →
 technical blueprint) and **1B** (difficulty: flow model → factors → mix matrices → level
 definition) can both start the moment a game concept exists, staffed by different people at
-the same time. Nothing in 1B's five files (`flow-map.md`, `difficulty-model.md`,
-`mechanic-object-mix.md`, `mechanic-mix.md`, `level-definition.md`) is produced by or
+the same time. Nothing in 1B's five files (`gd-flow-map.md`, `gd-difficulty-model.md`,
+`gd-mechanic-object-mix.md`, `gd-mechanic-mix.md`, `gd-level-definition.md`) is produced by or
 required by anything in 1A, and vice versa.
 
 They only start to matter to each other once code is written: the architecture from 1A
@@ -85,7 +85,7 @@ simulate against) finished first.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-bot-playstyle` | Turns "what playing well means" into three executable playstyle rules | `design/pipeline/bot-playstyle.md` |
+| `/gd-bot-playstyle` | Turns "what playing well means" into three executable playstyle rules | `design/bot/bot-playstyle.md` |
 | `/gd-prototype-sim` | Builds the pure-C# simulation + bots + solver API. **Needs a developer** | a `<Game>.Sim` assembly + tests |
 
 > Any mechanic without a rule branch makes its levels `unscored` — generatable, but not
@@ -97,7 +97,7 @@ simulate against) finished first.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-level-gen` | Generates candidates, filters by static DSL then by bots, presents the top-k for approval | approved level payloads + measurements |
+| `/gd-level-gen` | Generates candidates, filters by static DIG then by bots, presents the top-k for approval | approved level payloads + measurements |
 | `/gd-level-audit` | Measures the whole level set with bots: win rates, pressure curves, colour pairing | an audit report + proposed fixes with root causes; measured curves in `level-curves.md` |
 
 > Phase 3 needs phase 2. Without a simulation there is nothing to filter or measure with.
@@ -108,7 +108,7 @@ simulate against) finished first.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-calibrate` | Fits the difficulty weights to designer scoring or real-player data, with a mandatory holdout | calibrated `w` + `design/pipeline/calibration/<date>.md` |
+| `/gd-calibrate` | Fits the difficulty weights to designer scoring or real-player data, with a mandatory holdout | calibrated `w` + `design/calibration/calibration-<date>.md` |
 
 > This is the only step entitled to say "this level is hard" without an asterisk. Then loop
 > back to `/gd-level-gen` with the calibrated ruler.
