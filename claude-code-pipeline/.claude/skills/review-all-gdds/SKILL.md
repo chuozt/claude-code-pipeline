@@ -46,7 +46,7 @@ Before reading any full document, use Grep to extract `## Summary` sections
 from all GDD files:
 
 ```
-Grep pattern="## Summary" glob="design/gdd/*.md" output_mode="content" -A 5
+Grep pattern="## Summary" glob="design/dev-system/dev-*.md" output_mode="content" -A 5
 ```
 
 Display a manifest to the user:
@@ -84,11 +84,11 @@ Run `/consistency-check` after this review to populate the registry."
 
 Full-read the in-scope documents:
 
-1. `design/gdd/game-concept.md` — game vision, core loop, MVP definition
-2. `design/gdd/game-pillars.md` if it exists — design pillars and anti-pillars
-3. `design/gdd/systems-index.md` — authoritative system list, layers, dependencies, status
-4. **Every in-scope system GDD in `design/gdd/`** — read completely (skip
-   game-concept.md and systems-index.md — those are read above)
+1. `design/gdd/gdd-game-concept.md` — game vision, core loop, MVP definition
+2. `design/gdd/gdd-game-pillars.md` if it exists — design pillars and anti-pillars
+3. `design/dev-system/dev-map-systems.md` — authoritative system list, layers, dependencies, status
+4. **Every in-scope system GDD in `design/dev-system/`** — read completely (skip
+   gdd-game-concept.md and dev-map-systems.md — those are read above)
 
 Report: "Loaded [N] system GDDs covering [M] systems. Pillars: [list]. Anti-pillars: [list]."
 
@@ -545,13 +545,13 @@ FAIL: One or more blocking issues must be resolved before architecture begins.
 ## Phase 6: Write Report and Flag GDDs
 
 Use `AskUserQuestion` for write permission:
-- Prompt: "May I write this review to `design/gdd/gdd-cross-review-[date].md`?"
+- Prompt: "May I write this review to `design/dev-system/reviews/dev-cross-review-[date].md`?"
 - Options: `[A] Yes — write the report` / `[B] No — skip`
 
 If any GDDs are flagged for revision, use a second `AskUserQuestion`:
 - Prompt: "Should I update the systems index to mark these GDDs as needing revision? ([list of flagged GDDs])"
 - Options: `[A] Yes — update systems index` / `[B] No — leave as-is`
-- If yes: update each flagged GDD's Status field in systems-index.md to "Needs Revision".
+- If yes: update each flagged GDD's Status field in dev-map-systems.md to "Needs Revision".
   (Do NOT append parentheticals to the status value — other skills match "Needs Revision"
   as an exact string and parentheticals break that match.)
 
@@ -566,7 +566,7 @@ append to `docs/_session/active.md`:
     - Flagged for revision: [comma-separated list, or "None"]
     - Blocking issues: [N — brief one-line descriptions, or "None"]
     - Recommended next: [the Phase 7 handoff action, condensed to one line]
-    - Report: design/gdd/gdd-cross-review-[date].md
+    - Report: design/dev-system/reviews/dev-cross-review-[date].md
 
 If `active.md` does not exist, create it with this block as the initial content.
 Confirm in conversation: "Session state updated."
@@ -580,7 +580,7 @@ After all file writes are complete, use `AskUserQuestion` for a closing widget.
 Before building options, check project state:
 - Are there any Warning-level items that are simple edits (flagged with "30-second edit", "brief addition", or similar)? → offer inline quick-fix option
 - Are any GDDs in the "Flagged for Revision" table? → offer /design-review option for each
-- Read systems-index.md for the next system with Status: Not Started → offer /design-system option
+- Read dev-map-systems.md for the next system with Status: Not Started → offer /design-system option
 - Is the verdict PASS or CONCERNS? → offer /create-architecture
 
 Build the option list dynamically — only include options that apply:

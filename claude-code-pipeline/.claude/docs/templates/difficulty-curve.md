@@ -3,8 +3,8 @@
 > **Status**: Draft | In Review | Approved
 > **Author**: [game-designer / systems-designer]
 > **Last Updated**: [Date]
-> **Links To**: `design/gdd/game-concept.md`
-> **Relevant GDDs**: [e.g., `design/gdd/combat.md`, `design/gdd/progression.md`]
+> **Links To**: `design/gdd/gdd-game-concept.md`
+> **Relevant GDDs**: [e.g., `design/dev-system/dev-combat.md`, `design/dev-system/dev-progression.md`]
 
 ---
 

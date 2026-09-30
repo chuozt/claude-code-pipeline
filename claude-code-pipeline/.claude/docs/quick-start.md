@@ -78,9 +78,9 @@ Everything else can be reordered or skipped.
 
 | Path | Written by | Holds |
 |---|---|---|
-| `design/gdd/` | `brainstorm`, `map-systems`, `design-system` | the concept, the systems index, per-system GDDs |
-| `design/pipeline/` | the `gd-*` skills | flow map, difficulty model, mechanic files, mix matrices, level definition |
-| `docs/architecture/` | `create-architecture`, `architecture-decision` | the architecture blueprint and ADRs |
+| `design/gdd/` | `brainstorm`, the phase-1B `gd-*` skills | the designer's files, all `gdd-*`: concept, flow map, difficulty model, `gdd-mechanics/`, mix matrices, level definition, level intent |
+| `design/dev-system/` | `map-systems`, `design-system`, `create-architecture`, `architecture-decision` | the developer's files, all `dev-*`: systems index, per-system GDDs, architecture blueprint, `adr/` |
+| `design/bot/` · `design/levels/` · `design/calibration/` | phase 2 · 3 · 4 skills | `bot-playstyle.md` · `level-curves.md` + audits · `calibration-<date>.md` |
 | `docs/features/` | developers | living per-feature documentation next to the code |
 | `docs/_session/active.md` | every session | the session state file — read this first after any interruption |
 | `production/` | production skills | stage, review mode, QA evidence |

@@ -52,9 +52,9 @@ proceeding. If there is no argument, ask the user to describe the change.
 
 Before drafting anything, read the relevant context:
 
-- Search `design/gdd/` for the GDD most relevant to this change. Read the
+- Search `design/dev-system/` for the GDD most relevant to this change. Read the
   sections that this change would affect.
-- Check whether `design/gdd/systems-index.md` exists. If it does, read it to
+- Check whether `design/dev-system/dev-map-systems.md` exists. If it does, read it to
   understand where this system sits in the dependency graph and what tier it
   belongs to. If it does not exist, note "No systems index found — skipping
   dependency tier check." and continue.
@@ -81,7 +81,7 @@ Produce a single table:
 
 **Type**: Tuning
 **System**: [System name]
-**GDD Reference**: `design/gdd/[filename].md` — Tuning Knobs section
+**GDD Reference**: `design/dev-system/dev-[filename].md` — Tuning Knobs section
 **Date**: [today]
 
 ## Change
@@ -110,7 +110,7 @@ New value is [within / at the edge of / outside] the documented range.
 
 **Type**: [Tweak / Addition]
 **System**: [System name]
-**GDD Reference**: `design/gdd/[filename].md`
+**GDD Reference**: `design/dev-system/dev-[filename].md`
 **Date**: [today]
 
 ## Change Summary
@@ -124,7 +124,7 @@ Reference the relevant MDA aesthetic or player feedback if applicable.]
 
 ## Design Delta
 
-Current GDD says (quoting `design/gdd/[filename].md`, [section]):
+Current GDD says (quoting `design/dev-system/dev-[filename].md`, [section]):
 
 > [exact quote of the relevant rule or description]
 
@@ -199,7 +199,7 @@ All values must live in `assets/data/[appropriate-file].json`, not hardcoded.
 
 ## Systems Index
 
-This system is not currently in `design/gdd/systems-index.md`.
+This system is not currently in `design/dev-system/dev-map-systems.md`.
 [If it should be added: suggest which layer and priority tier.]
 [If it is too small to track: state "This system is below systems-index
 tracking threshold — quick spec is sufficient."]
@@ -225,7 +225,7 @@ If a GDD update is required (flagged in the spec), ask separately after
 writing the quick spec:
 
 "This spec modifies rules in [System Name]. May I update
-`design/gdd/[filename].md` — specifically the [section name] section?"
+`design/dev-system/dev-[filename].md` — specifically the [section name] section?"
 
 Show the exact text that would be changed (old vs. new) before asking. Do not
 make GDD edits without explicit approval.

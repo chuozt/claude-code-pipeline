@@ -9,7 +9,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
 The gateway to the whole level pipeline. Run **once per game**. Without this file the later
 skills have no shared vocabulary to talk in.
 
-**In**: the existing GDDs (`design/gdd/`) · **Out**: `design/pipeline/flow-map.md`
+**In**: the existing GDDs (`design/dev-system/`) · **Out**: `design/gdd/gdd-flow-map.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply to every question below, mode on
 > or off.** GIVEN / BUFFER / GOAL / invariant / `pressure(t)` are words for the **file**. The
@@ -21,9 +21,9 @@ skills have no shared vocabulary to talk in.
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **section 2** — that is the
    model definition and the law for this skill.
-2. Read `design/gdd/game-concept.md` and `design/gdd/systems-index.md` if they exist. Note
+2. Read `design/gdd/gdd-game-concept.md` and `design/dev-system/dev-map-systems.md` if they exist. Note
    the object names already used there; still ask the designer to confirm them (step 1).
-3. If `design/pipeline/flow-map.md` already exists → read it, ask "update or rewrite?".
+3. If `design/gdd/gdd-flow-map.md` already exists → read it, ask "update or rewrite?".
 
 If there is no GDD at all: warn that mapping from memory will drift, suggest running
 `/design-system` first — but allow continuing if the designer wants to.
@@ -92,7 +92,7 @@ numbers cannot be trusted.
 ## 6. Write the file — two columns
 
 Present the full draft in conversation, then ask:
-> "Write this to `design/pipeline/flow-map.md`?"
+> "Write this to `design/gdd/gdd-flow-map.md`?"
 
 The five components and the invariant are a **two-column table** (`gd-mode` §8) — the
 designer's own words and object names on the left, the framework value on the right:

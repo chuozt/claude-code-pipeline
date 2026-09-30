@@ -15,8 +15,8 @@ step in the set entitled to say "this level is hard" without an asterisk.
 ## 0. Load context and check preconditions
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **all of section 9**.
-2. Read `design/pipeline/difficulty-model.md` (the current `w` set), `level-definition.md`,
-   and **every** `design/pipeline/mechanics/*.md`.
+2. Read `design/gdd/gdd-difficulty-model.md` (the current `w` set), `gdd-level-definition.md`,
+   and **every** `design/gdd/gdd-mechanics/*.md`.
 3. Find real-player data: ask the developer for the source (Firebase export / dashboard / CSV).
    **None available** → do not stop: run **mode 3** (designer hand-scoring) — that mode needs
    no data at all, only the simulation and a set of generated levels.
@@ -78,7 +78,7 @@ The holdout (section 4) still applies: keep some levels out of the designer-scor
 **Spawn `analytics-engineer`** (Task). The prompt must include — without it the agent returns
 generic data analysis and misses the frame:
 - excerpts from **sections 4, 6, 9** of `resource-flow-difficulty-framework.md`
-- `difficulty-model.md` (the current `w` set and what each factor means)
+- `gdd-difficulty-model.md` (the current `w` set and what each factor means)
 - the data table: per level → 5 factor values + bot prediction + real win rate
 - the request, per mode:
   - **Mode 1**: *"regress to find `w` such that DifficultyScore matches the real win rate on
@@ -113,9 +113,9 @@ The third kind is the most common, because factor 5 is the one a bot cannot meas
 ## 6. Write the results
 
 Ask permission before writing:
-- update `w` (and/or DNA) in `design/pipeline/difficulty-model.md`, **keeping the old values in
+- update `w` (and/or DNA) in `design/gdd/gdd-difficulty-model.md`, **keeping the old values in
   a history section** — never delete them, so the next round has something to compare against
-- write `design/pipeline/calibration/<date>.md`: the mode, the fitting/holdout split, `w`
+- write `design/calibration/calibration-<date>.md`: the mode, the fitting/holdout split, `w`
   before and after, the holdout error, the deviations found, and the excluded levels
 
 ## 7. Closing reminders

@@ -13,7 +13,7 @@ carry). A pair can be forbidden at object scale yet allowed at level scale.
 Once each mechanic's loading factor is known, which pairs combine well and which combine badly
 is **derivable** — no trial and error needed.
 
-**In**: `design/pipeline/mechanics/*.md` · **Out**: `design/pipeline/mechanic-mix.md`
+**In**: `design/gdd/gdd-mechanics/*.md` · **Out**: `design/gdd/gdd-mechanic-mix.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** The matrix is
 > **derived by you, not asked**. The designer sees each verdict as one plain sentence, then
@@ -23,7 +23,7 @@ is **derivable** — no trial and error needed.
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 5.2, 5.3b**.
-2. Read **every** file in `design/pipeline/mechanics/`. If a mechanic has no file → list them
+2. Read **every** file in `design/gdd/gdd-mechanics/`. If a mechanic has no file → list them
    and ask: run `/gd-mechanic-difficulty` for those first, or derive the matrix from what
    exists and mark the gaps?
 3. Grep the source GDD for combination bans the designer **already wrote**. **Separate the
@@ -52,7 +52,7 @@ example two mechanics both demanding spare capacity for different reasons).
 
 **Spawn `systems-designer`** (Task) to look the other way. The prompt must include:
 - excerpts from **sections 4 and 5.2–5.3** of `resource-flow-difficulty-framework.md`
-- all of `design/pipeline/mechanics/*.md`
+- all of `design/gdd/gdd-mechanics/*.md`
 - the matrix just derived in section 1
 - the request: *"find pairs marked ALLOWED that actually conflict, and pairs marked FORBIDDEN
   that might still work; justify by factor. **Return analysis, DO NOT write files**"*
@@ -97,12 +97,12 @@ Propose, then confirm with `AskUserQuestion`:
 | SuperHard | 2–3 mechanics on different factors + tightened slack + a late commitment point | "Two or three, tight room, and one big can't-undo moment near the end" | "Hai đến ba mechanic, chỗ chờ rất hẹp, và một nước không rút lại được gần cuối" |
 
 Say clearly that this is a **starting point**; the real win-rate bands in
-`difficulty-model.md` are the arbiter — after mixing, it still has to be measured.
+`gdd-difficulty-model.md` are the arbiter — after mixing, it still has to be measured.
 
 ## 5. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/pipeline/mechanic-mix.md`?"
+> "Write this to `design/gdd/gdd-mechanic-mix.md`?"
 
 Structure: the full matrix · overridden cells + reasons · **the cross-check table against the
 old bans (agreement / disagreement)** · the three-tier mixing formula · date + who signed off.

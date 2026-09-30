@@ -5,7 +5,7 @@
 > **Last Updated**: [Date]
 > **Game**: [Game name — this is a single document per game, not per element]
 > **Platform Targets**: [All platforms this HUD must work on — e.g., PC, PS5, Xbox Series X, Steam Deck]
-> **Related GDDs**: [Every system that exposes information through the HUD — e.g., `design/gdd/combat.md`, `design/gdd/progression.md`, `design/gdd/quests.md`]
+> **Related GDDs**: [Every system that exposes information through the HUD — e.g., `design/dev-system/dev-combat.md`, `design/dev-system/dev-progression.md`, `design/dev-system/dev-quests.md`]
 > **Accessibility Tier**: Basic | Standard | Comprehensive | Exemplary
 > **Style Reference**: [Link to the art team's HUD style reference, if one exists]
 

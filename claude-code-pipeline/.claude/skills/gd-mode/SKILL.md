@@ -17,8 +17,8 @@ On entering, print one line: `🎮 Designer mode — discussing experience, not 
 
 **Allowed inputs, in the order to check them:**
 
-1. **Markdown docs in the project** — `design/gdd/`, `design/pipeline/` (especially
-   `difficulty-model.md` and `flow-map.md` when the topic touches difficulty, perception,
+1. **Markdown docs in the project** — `design/dev-system/` (system GDDs), `design/gdd/` (the designer's files — especially
+   `gdd-difficulty-model.md` and `gdd-flow-map.md` when the topic touches difficulty, perception,
    or feel), `docs/features/`, `docs/_session/active.md`, any `questions-for-designer.md` /
    `source-audit.md`-style log of prior decisions.
 2. **Documents already open in the Claude Code browser pane, if this environment has one** —

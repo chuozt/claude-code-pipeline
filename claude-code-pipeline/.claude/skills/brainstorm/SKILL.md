@@ -13,8 +13,8 @@ When this skill is invoked:
    scratch.
 
 2. **Check for existing concept work**:
-   - Read `design/gdd/game-concept.md` if it exists (resume, don't restart)
-   - Read `design/gdd/game-pillars.md` if it exists (build on established pillars)
+   - Read `design/gdd/gdd-game-concept.md` if it exists (resume, don't restart)
+   - Read `design/gdd/gdd-game-pillars.md` if it exists (build on established pillars)
 
 3. **Run through ideation phases** interactively, asking the user questions at
    each phase. Do NOT generate everything silently — the goal is **collaborative
@@ -236,7 +236,7 @@ Ground the concept in reality:
    belongs to the studio's artists, not to this skill.
 
 5. Use `AskUserQuestion` for write approval:
-- Prompt: "Game concept is ready. May I write it to `design/gdd/game-concept.md`?"
+- Prompt: "Game concept is ready. May I write it to `design/gdd/gdd-game-concept.md`?"
 - Options: `[A] Yes — write it` / `[B] Not yet — revise a section first`
 
 If [B]: ask which section to revise using `AskUserQuestion` with options: `Elevator Pitch` / `Core Fantasy & Unique Hook` / `Pillars` / `Core Loop` / `MVP Definition` / `Scope Tiers` / `Risks` / `Something else — I'll describe`
@@ -252,7 +252,7 @@ If yes, generate the document using the template at `.claude/docs/templates/game
 6. **Suggest next steps** (in this order — this is the professional studio
    pre-production pipeline). List ALL steps — do not abbreviate or truncate:
    1. "Run `/project-overview`, then fill the stack in `project_setup.md` §1"
-   2. "Use `/design-review design/gdd/game-concept.md` to validate concept completeness before going downstream"
+   2. "Use `/design-review design/gdd/gdd-game-concept.md` to validate concept completeness before going downstream"
    3. "Decompose the concept into individual systems with `/map-systems` — maps dependencies, assigns priorities, and creates the systems index"
    4. "Author per-system GDDs with `/design-system` — guided, section-by-section GDD writing for each system identified in step 3"
    5. "Plan the technical architecture with `/create-architecture` — produces the master architecture blueprint and Required ADR list"
@@ -275,7 +275,7 @@ This is a multi-phase skill. If context reaches or exceeds 70% during any phase,
 append this notice to the current response before continuing:
 
 > **Context is approaching the limit (≥70%).** The game concept document is saved
-> to `design/gdd/game-concept.md`. Open a fresh Claude Code session to continue
+> to `design/gdd/gdd-game-concept.md`. Open a fresh Claude Code session to continue
 > if needed — progress is not lost.
 
 ---

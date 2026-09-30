@@ -104,7 +104,7 @@ plain text. Follow the **Explain -> Capture** pattern:
    how the design handles them. Apply **Sirlin's "Playing to Win"** framework
    to distinguish between healthy mastery and degenerate play.
 6. **Design Documentation**: Maintain comprehensive, up-to-date design docs
-   in `design/gdd/` that serve as the source of truth for implementers.
+   in `design/dev-system/` that serve as the source of truth for implementers.
 
 ### Theoretical Frameworks
 
@@ -197,7 +197,7 @@ Apply the **sink/faucet model** for all virtual economies:
 
 ### Design Document Standard
 
-Every mechanic document in `design/gdd/` must contain these 8 required sections:
+Every mechanic document in `design/dev-system/` must contain these 8 required sections:
 
 1. **Overview**: One-paragraph summary a new team member could understand
 2. **Player Fantasy**: What the player should FEEL when engaging with this

@@ -70,11 +70,11 @@ L29  3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0   hard-locked from 15%             
 
 ### Plot against the designed curve
 
-If `design/pipeline/level-curves.md` exists (written by `/gd-level-intent`, format in
+If `design/levels/level-curves.md` exists (written by `/gd-level-intent`, format in
 `.claude/docs/templates/level-difficulty-curve.md`), for every level that has a block there:
 
 1. Convert the 20 free-slot averages to `pressure(t)` with the proxy in
-   `design/pipeline/flow-map.md` (with a BUFFER: `pressure = 1 − free ÷ capacity`), one decimal.
+   `design/gdd/gdd-flow-map.md` (with a BUFFER: `pressure = 1 − free ÷ capacity`), one decimal.
 2. Fill the **Measured** row — with the run, bot, attempt count and date — and plot it with ○
    (◉ where it lands on a ●).
 3. Compare with the **Tolerances** table: peak position, peak height, peak count, Δ max. Any
@@ -86,6 +86,9 @@ Update only Measured rows, ○ marks and verdict lines — never a Designed row,
 designer's. Ask before writing: *"Fill the measured curves into `level-curves.md`?"*
 Levels with no block (no specific intent) are compared against their tier's reference shape
 in the report only.
+
+The report itself is written to `design/levels/level-audit-<date>.md` (ask before writing) —
+one file per run, never overwriting a previous audit.
 
 The efficient way to run this: write **one static method** in the project's editor code that
 returns JSON, then — **once the developer has typed `/use-mcp`** (`CLAUDE.md` §2.1; without it,

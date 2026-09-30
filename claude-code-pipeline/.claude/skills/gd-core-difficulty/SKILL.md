@@ -9,11 +9,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
 Turn "difficulty" from a feeling into something measurable. Run **once per game**, right
 after `gd-map-flow`.
 
-**In**: `design/pipeline/flow-map.md` · **Out**: `design/pipeline/difficulty-model.md`
+**In**: `design/gdd/gdd-flow-map.md` · **Out**: `design/gdd/gdd-difficulty-model.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** Factor names
 > (DIG, Buffer Room, Hiddenness, Commitment, Perceptual) and `w₁..w₅` are for the file. The
-> designer hears each factor as a moment of play, using the object names from `flow-map.md`.
+> designer hears each factor as a moment of play, using the object names from `gdd-flow-map.md`.
 
 > **Scope — only the "what makes it hard" half.** The other half, *"what does playing well
 > mean"* → the bot's playstyle rules, which belong to `/gd-bot-playstyle` and run later, right before
@@ -31,11 +31,11 @@ after `gd-map-flow`.
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 4, 5.1, 6, 8**.
-2. Read `design/pipeline/flow-map.md`. **Missing → stop**:
+2. Read `design/gdd/gdd-flow-map.md`. **Missing → stop**:
    > "There is no flow map. Run `/gd-map-flow` first — without the model there is no way to
    > know which factors apply."
    Take the object names from its designer column and use them in every question below.
-3. Read the gameplay GDDs in `design/gdd/` for concrete examples to use in the questions.
+3. Read the gameplay GDDs in `design/dev-system/` for concrete examples to use in the questions.
 
 ## 1. Rank the 5 factors
 
@@ -96,7 +96,7 @@ Only if factor 5 ≠ `Never`.
 **Spawn `systems-designer`** (Task) to propose a formula — the designer knows *what* causes
 eye strain but usually cannot write it as something countable. The prompt must include:
 - excerpts from **sections 4 and 6** of `resource-flow-difficulty-framework.md`
-- `flow-map.md` (this game's model)
+- `gdd-flow-map.md` (this game's model)
 - the designer's answer above
 - the request: *"propose 2–3 candidate PerceptualProxy formulas, each with a variable table +
   value ranges; **return analysis, DO NOT write files**"*
@@ -132,7 +132,7 @@ truth — the calibration round (frame section 9) settles the real numbers.
 ## 5. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/pipeline/difficulty-model.md`?"
+> "Write this to `design/gdd/gdd-difficulty-model.md`?"
 
 Structure: the 5-factor table (designer's answer | level | `w`) · **the visibility rule
 (two-column table + the reversal warning)** · PerceptualProxy · pressure proxy · the three

@@ -15,7 +15,7 @@
 >
 > **Naming (v1.1)**: the five components are **GIVEN / BUFFER / GOAL / ACTION / VISIBILITY**
 > and factor 1 is **Dig Depth (DIG)**, factor 2 **Buffer Room**. Older documents and
-> `design/pipeline/` files written before this rename say INPUT / MID / OUTPUT, DSL and
+> `design/gdd/` files written before this rename say INPUT / MID / OUTPUT, DSL and
 > MID slack — same meaning, read them as such. Nothing else changed.
 
 ---

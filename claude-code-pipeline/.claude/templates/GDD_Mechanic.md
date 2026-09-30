@@ -2,7 +2,7 @@
 
 > Status: Draft | In review | Approved
 > Author: <designer>   ·   Updated: <date>   ·   Unlocks at level: <N>
-> Related: <other mechanics/systems>
+> Related: <other gdd-mechanics/systems>
 
 ---
 

@@ -11,11 +11,11 @@ easing off toward the end") and **generator language** (pressure curve shape, pe
 profile).
 
 **OPTIONAL**: skip this and `gd-level-gen` uses the default tier profile from
-`level-definition.md`. Run it and any level with its own intent **overrides** the tier default
+`gdd-level-definition.md`. Run it and any level with its own intent **overrides** the tier default
 — per-level intent beats the tier profile.
 
-**In**: the designer's xlsx / docx / md file · **Out**: `design/pipeline/level-intent.md` +
-the **designed** curve per level in `design/pipeline/level-curves.md`
+**In**: the designer's xlsx / docx / md file · **Out**: `design/gdd/gdd-level-intent.md` +
+the **designed** curve per level in `design/levels/level-curves.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** This skill
 > mostly reads; it asks only when a phrase is unclear or an intent is impossible. The
@@ -25,7 +25,7 @@ the **designed** curve per level in `design/pipeline/level-curves.md`
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **section 8** (the three
-   standard curve shapes) and `design/pipeline/level-definition.md` (the default tier
+   standard curve shapes) and `design/gdd/gdd-level-definition.md` (the default tier
    profiles — if missing, warn that intent will have no baseline to override and suggest
    running `/gd-level-definition` first, but do not block).
 2. Read the source file the designer supplied:
@@ -75,7 +75,7 @@ plain words and let the designer choose — never silently pick one:
 ## 3. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/pipeline/level-intent.md`?"
+> "Write this to `design/gdd/gdd-level-intent.md`?"
 
 Structure:
 
@@ -101,7 +101,7 @@ generator error.
 ## 3b. Draw the designed curve
 
 For every level with an intent, turn "Target curve" into a chart the designer can check by eye,
-in `design/pipeline/level-curves.md`, following `.claude/docs/templates/level-difficulty-curve.md`:
+in `design/levels/level-curves.md`, following `.claude/docs/templates/level-difficulty-curve.md`:
 
 1. File missing → create it from the template (header, How To Read, Tolerances with every value
    `UNDEFINED`, Reference Shapes). Never fill a tolerance yourself — ask the designer.

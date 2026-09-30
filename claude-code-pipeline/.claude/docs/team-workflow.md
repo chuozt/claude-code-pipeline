@@ -14,11 +14,11 @@ The developer and the designer never hand work over in chat. They hand it over a
 
 | Folder / file | Written by | Read by | The other side may… |
 |---|---|---|---|
-| `design/gdd/game-concept.md`, source `.xlsx` workbooks | Designer | Both | comment, never edit |
-| `design/gdd/<system>.md` (GDDs) | Developer, alone, with `/design-system` — design values quoted from the designer's docs | Both | fixes `[PLACEHOLDER]`s via Open Questions |
-| `design/pipeline/*.md` (flow map, difficulty model, mix matrices, level definition, level intent) | Designer, through the `gd-*` skills | Developer, the simulation, the generator | read only |
-| `design/pipeline/level-curves.md` | Designed row: `/gd-level-intent` · Measured row: `/gd-level-audit` | Both | only their own rows |
-| `docs/architecture/`, ADRs, code under `Assets/` | Developer | Designer only through the developer | never touch |
+| `design/gdd/gdd-game-concept.md`, source `.xlsx` workbooks | Designer | Both | comment, never edit |
+| `design/dev-system/dev-<system>.md` (GDDs) | Developer, alone, with `/design-system` — design values quoted from the designer's docs | Both | fixes `[PLACEHOLDER]`s via Open Questions |
+| `design/gdd/gdd-*.md` (flow map, difficulty model, mix matrices, level definition, level intent) | Designer, through the `gd-*` skills | Developer, the simulation, the generator | read only |
+| `design/levels/level-curves.md` | Designed row: `/gd-level-intent` · Measured row: `/gd-level-audit` | Both | only their own rows |
+| `design/dev-system/`, ADRs, code under `Assets/` | Developer | Designer only through the developer | never touch |
 | `docs/_session/active.md` | Whoever runs the session | That person, after a compaction | — |
 
 Two rules follow from this and are already project law:
@@ -72,17 +72,17 @@ Phase 4      after soft launch: calibrate, back to phase 3
 
 | Developer | Designer |
 |---|---|
-| Base project: stack filled in `project_setup.md` §1, asmdefs, `GameDebug` | Concept: `design/gdd/game-concept.md` — by hand or with `/brainstorm` |
+| Base project: stack filled in `project_setup.md` §1, asmdefs, `GameDebug` | Concept: `design/gdd/gdd-game-concept.md` — by hand or with `/brainstorm` |
 | Code already exists → `/reverse-document` to rebuild the docs from it | Starts the source `.xlsx` workbook |
 
-**Hand-over:** `game-concept.md` approved by both. Neither side starts phase 1 before it.
+**Hand-over:** `gdd-game-concept.md` approved by both. Neither side starts phase 1 before it.
 
 ### Phase 1A ∥ 1B — In parallel, nobody waits
 
 | 1A — Developer | 1B — Designer (in `/gd-mode`) |
 |---|---|
-| `/map-systems` → `systems-index.md` | `/gd-map-flow` → `flow-map.md` (**first**, the vocabulary for the rest) |
-| `/design-system` → one GDD per system, **developer only**. Rules, numbers and ranges are quoted from the designer's docs (1B files, `.xlsx`) and confirmed by the developer; anything the docs do not settle is a working value marked `[PLACEHOLDER]` (or `UNDEFINED`) with an Open Question for the designer. No taste questions, no agents unless asked | `/gd-core-difficulty` → `difficulty-model.md` |
+| `/map-systems` → `dev-map-systems.md` | `/gd-map-flow` → `gdd-flow-map.md` (**first**, the vocabulary for the rest) |
+| `/design-system` → one GDD per system, **developer only**. Rules, numbers and ranges are quoted from the designer's docs (1B files, `.xlsx`) and confirmed by the developer; anything the docs do not settle is a working value marked `[PLACEHOLDER]` (or `UNDEFINED`) with an Open Question for the designer. No taste questions, no agents unless asked | `/gd-core-difficulty` → `gdd-difficulty-model.md` |
 | `/create-architecture` → Model/View split, ADR list | `/gd-mechanic-difficulty` × each mechanic |
 | `/architecture-decision` × each required ADR | `/gd-mechanic-object-mix` + `/gd-mechanic-mix` (both, before the next step) |
 | | `/gd-level-definition` → tier profiles |
@@ -93,8 +93,8 @@ produced the difficulty files, since those settle most of the numbers.
 
 **Hand-over — the sync meeting.** Checklist before phase 2:
 - [ ] The model folder has no `UnityEngine` reference (`architect.md` §1)
-- [ ] `difficulty-model.md` and `level-definition.md` exist and the designer signs them off
-- [ ] Every mechanic in the level definition has a `design/pipeline/mechanics/<name>.md`
+- [ ] `gdd-difficulty-model.md` and `gdd-level-definition.md` exist and the designer signs them off
+- [ ] Every mechanic in the level definition has a `design/gdd/gdd-mechanics/<name>.md`
 
 ### Phase 2 — Teach a bot to play (optional — only needed to measure)
 
@@ -116,7 +116,7 @@ mandatory 20% holdout. New weights → back to phase 3.
 
 | When | Who | What | Output |
 |---|---|---|---|
-| Start of week | Designer | Updates the intent sheet → `/gd-level-intent` → **approves the designed curves** (●) | `level-intent.md`, Designed rows in `level-curves.md` |
+| Start of week | Designer | Updates the intent sheet → `/gd-level-intent` → **approves the designed curves** (●) | `gdd-level-intent.md`, Designed rows in `level-curves.md` |
 | Once, before the first audit | Designer | Fills the **Tolerances** table in `level-curves.md` | no verdicts are possible without it |
 | Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` → `/gd-level-audit` | candidates exported to a separate folder; Measured rows (○) + verdicts |
 | End of week | Designer | Reads `level-curves.md`: keep / revise / replace each level | decisions recorded next to each level |

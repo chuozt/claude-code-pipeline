@@ -89,7 +89,7 @@ Before writing any code:
    > "This API may have changed in [version] — verify against the reference docs before using."
 3. Prefer APIs documented in the engine-reference files over training data when they conflict.
 
-**ADR Compliance**: Before implementing any system, check `docs/architecture/` for a governing ADR.
+**ADR Compliance**: Before implementing any system, check `design/dev-system/` for a governing ADR.
 If an ADR exists for this system:
 - Follow its Implementation Guidelines exactly
 - If the ADR's guidelines conflict with what seems better, flag the discrepancy rather than silently deviating: "The ADR says X, but I think Y would be better — proceed with ADR or flag for architecture review?"
