@@ -11,6 +11,10 @@ the bot rule branch that keeps the bot from playing ignorantly on levels contain
 
 **In**: the mechanic GDD + `difficulty-model.md` · **Out**: `design/pipeline/mechanics/<name>.md`
 
+> **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** "Legal move
+> set", "GOAL structure", "attachment slot", "state dimension", "loading factor" are words
+> for the file. Use the object names from `flow-map.md` and the mechanic's own name.
+
 > **Base rule (frame section 5)**: you may not call a level "easy" or "hard" until every
 > mechanic cluster in it is defined. And a mechanic must be defined on **both halves —
 > the mechanism and the play**. Missing the second half → no bot → no measurement →
@@ -28,40 +32,49 @@ the bot rule branch that keeps the bot from playing ignorantly on levels contain
 
 ## 1. Half one — the mechanism
 
-If a GDD exists: **restate** the mechanism in the model's language and ask the designer to
-confirm, rather than asking from scratch:
+If a GDD exists: **restate** what it says in plain words and ask the designer to confirm,
+rather than asking from scratch. Otherwise ask, one row at a time:
 
-- How does this mechanic change the **legal move set**? (adds / removes / temporarily locks)
-- How does it change the **GOAL structure**? (defers demand, merges demand, hides demand,
-  changes capacity)
-- Does it change **GIVEN** or **BUFFER** at all?
-- **Attachment profile** (the input to `/gd-mechanic-object-mix` — ask all three):
-  which **object type** does it attach to (host)? which **attachment/display slot** does it
-  occupy (e.g. Key/Lock replacing the arrow = occupying the marker slot)? which **state
-  dimension** does it touch (what it hides, locks, or alters)?
+| Writes to file | Ask (EN) | Hỏi (VI) |
+|---|---|---|
+| legal move set: adds / removes / locks | "With this mechanic, what can the player do that they could not before? What can they no longer do, or not yet?" | "Có mechanic này thì người chơi làm được thêm gì? Không làm được gì nữa, hoặc chưa làm được ngay?" |
+| GOAL structure: defers / merges / hides / capacity | "Does it change what has to be filled? For example: a [goal object] that opens later, two that count as one, one whose colour is hidden, one that holds more." | "Nó có đổi cái phải fill không? Ví dụ: [chỗ nhận] mở muộn hơn, hai cái tính là một, một cái bị giấu màu, một cái chứa nhiều hơn." |
+| GIVEN / BUFFER change | "Does it change the objects the player taps, or the [waiting spot]? How?" | "Nó có đổi gì ở object người chơi bấm, hay ở [chỗ chờ] không? Đổi thế nào?" |
+| **host** | "Which object does this mechanic sit on? What is that object called?" | "Mechanic này gắn lên object nào? Tên gọi của object đó là gì?" |
+| **slot occupied** | "Where on that object does it show? Does it replace something already shown there, like an arrow or a number?" | "Nó hiện ở chỗ nào trên object đó? Có thay thế thứ gì đang hiện sẵn không, ví dụ mũi tên hay con số?" |
+| **state dimension** | "What does it hide, lock, or change on that object?" | "Nó giấu, khóa, hay đổi cái gì của object đó?" |
 
+The last three rows are the **attachment profile** — the input to `/gd-mechanic-object-mix`.
 Anything the GDD leaves unclear → ask, do not infer.
 
 ## 2. Half two — the play ⭐
 
-The core question, asked in prose:
-
-> **"When a level has this mechanic, what does playing well mean — how does it differ from the core?"**
+| Ask (EN) | Hỏi (VI) |
+|---|---|
+| "In a level with this mechanic, what does a good player do differently?" | "Trong level có mechanic này, người chơi giỏi sẽ chơi khác đi thế nào?" |
 
 Dig until a machine could execute it. Two useful probes:
-- "What mistake do new players make with this mechanic?" → that mistake is exactly what
-  `Mistake` needs to simulate
-- "In situation X, which move does your rule pick?" → if the designer has to think, the rule
-  is still incomplete
+
+| Ask (EN) | Hỏi (VI) | Why |
+|---|---|---|
+| "What mistake do new players make with it?" | "Người mới hay mắc lỗi gì với mechanic này?" | that mistake is what `Mistake` needs to simulate |
+| "In this situation: [describe one]. Which move does your rule pick?" | "Tình huống này: [mô tả]. Theo luật đó thì đi nước nào?" | if the designer has to think, the rule is still incomplete |
 
 ## 3. Loading factor
 
-Explain the 5 factors **using the mechanic being discussed**, then `AskUserQuestion`
-(multiSelect): "Which factor does this mechanic mainly load?"
-→ `DIG` / `Buffer Room` / `Hiddenness` / `Commitment` / `Perceptual`
+`AskUserQuestion`, **multiSelect**, each option a kind of hard **in this mechanic's terms**.
+Then ask which one is the main one.
 
-Get the designer to name **one primary factor** and (if any) secondary factors. The distinction
-matters: `/gd-mechanic-mix` uses the **primary factor** to derive the ban rules.
+| Writes to file | Option (EN) | Lựa chọn (VI) |
+|---|---|---|
+| DIG | "The player knows what they need but this mechanic buries it deeper" | "Biết cần gì nhưng mechanic này vùi nó sâu hơn" |
+| Buffer Room | "It makes the [waiting spot] fill up faster" | "Làm [chỗ chờ] đầy nhanh hơn" |
+| Hiddenness | "It makes the player guess more" | "Bắt người chơi đoán nhiều hơn" |
+| Commitment | "It creates moves that cannot be undone" | "Tạo ra nước đi không rút lại được" |
+| Perceptual | "It makes things harder to see or find" | "Làm khó nhìn, khó tìm hơn" |
+
+Follow-up: "Which of those is the main one?" / "Cái nào là chính?" — `/gd-mechanic-mix` uses
+the **primary factor** to derive the ban rules.
 
 Reference example (from a tray-sorting game) to help the designer picture it:
 
@@ -84,19 +97,21 @@ From half two, state the rule branch `GreedyBot` must learn, in the form
 > `/gd-mechanic-mix` to derive the matrix. Fill this branch in when `/gd-bot-playstyle` runs,
 > then update the mechanic table in `bot-playstyle.md`.
 
-Include the **ignorant-bot trap warning** (frame section 5.4), stated plainly to the designer:
-
-> If this mechanic has no rule branch in code, every level containing it must be marked
-> `unscored` — the bot plays badly because **the bot is ignorant**, not because the level is
-> hard. Scoring it then inflates difficulty for the wrong reason.
+Include the **ignorant-bot trap warning** (frame section 5.4), in plain words:
+- EN: *"Until the bot is taught this mechanic, levels that use it can be generated but not
+  scored — a bot that does not know the rule loses because it is ignorant, not because the
+  level is hard."*
+- VI: *"Chừng nào bot chưa được dạy mechanic này thì level dùng nó sinh ra được nhưng chưa chấm
+  điểm được — bot thua vì không biết luật, không phải vì level khó."*
 
 ## 5. Write the file
 
 Present the draft, then ask:
 > "Write this to `design/pipeline/mechanics/<name>.md`?"
 
-Structure: mechanism (and which GDD it came from) · play · primary + secondary factors · bot
-rule branch · `scored` / `unscored` status · date + who was interviewed.
+Structure: mechanism (and which GDD it came from) · attachment profile · play · primary +
+secondary factors · bot rule branch · `scored` / `unscored` status · date + who was interviewed.
+Designer's words on the left, framework value on the right (`gd-mode` §8).
 
 `UNDEFINED` for anything the designer has not decided. **Never fill it in.**
 

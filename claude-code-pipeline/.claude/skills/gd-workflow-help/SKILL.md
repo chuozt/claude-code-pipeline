@@ -47,14 +47,14 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-mode` | Switches to designer language and designer-only sources — docs, browser-opened docs, `.xlsx` workbooks, the designer's own recorded thinking; **never reads code, even read-only** | nothing — a mode, exit with `/gd-mode off` |
-| `/gd-map-flow` | Maps the game onto the GIVEN/BUFFER/GOAL model. **The gateway to everything below** | `design/pipeline/flow-map.md` |
-| `/gd-core-difficulty` | Ranks the 5 difficulty factors, settles the visibility rule and target win-rate bands | `design/pipeline/difficulty-model.md` |
-| `/gd-mechanic-difficulty` | Where one mechanic creates difficulty + which factor it loads. **Run per mechanic** | `design/pipeline/mechanics/<name>.md` |
-| `/gd-mechanic-object-mix` | Which mechanics one object may carry at once (deadlock / slot / state checks) | `design/pipeline/mechanic-object-mix.md` |
-| `/gd-mechanic-mix` | Which mechanics may appear in one level, derived from their factors | `design/pipeline/mechanic-mix.md` |
-| `/gd-level-definition` | Separates human-owned identity from machine-generated variables; sets the tier profiles | `design/pipeline/level-definition.md` |
-| `/gd-level-intent` | Translates a per-level intent sheet into machine profiles. **Optional** | `design/pipeline/level-intent.md` + designed curves in `level-curves.md` |
+| `/gd-mode` | Talk about how the game feels, not how it is coded. Reads only docs and workbooks, **never code** — and sets the question style every skill below uses | nothing — a mode, exit with `/gd-mode off` |
+| `/gd-map-flow` | Names what the player is given, where things wait, and what must be filled to win. **Do this first** | `design/pipeline/flow-map.md` |
+| `/gd-core-difficulty` | What makes the base game hard (dig depth, waiting room, guessing, no-undo, hard to see), when a covered object counts as tappable, and how many of 10 players should win per tier | `design/pipeline/difficulty-model.md` |
+| `/gd-mechanic-difficulty` | For one mechanic: what it changes, how a good player handles it, which kind of hard it adds. **Run per mechanic** | `design/pipeline/mechanics/<name>.md` |
+| `/gd-mechanic-object-mix` | Which mechanics can sit on the same object at once | `design/pipeline/mechanic-object-mix.md` |
+| `/gd-mechanic-mix` | Which mechanics can appear in the same level, and how many per tier | `design/pipeline/mechanic-mix.md` |
+| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier | `design/pipeline/level-definition.md` |
+| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. **Optional** | `design/pipeline/level-intent.md` + designed curves in `level-curves.md` |
 
 > **Both mix matrices are needed before `/gd-level-definition`** — object scale and level scale
 > answer different questions and neither substitutes for the other.
