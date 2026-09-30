@@ -9,11 +9,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
 Every mechanic creates difficulty in **its own way**. This skill names that way, and produces
 the bot rule branch that keeps the bot from playing ignorantly on levels containing it.
 
-**In**: the mechanic GDD + `gdd-difficulty-model.md` · **Out**: `design/gdd/gdd-mechanics/<name>.md`
+**In**: the mechanic GDD + `gd-difficulty-model.md` · **Out**: `design/gdd/gd-mechanics/<name>.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** "Legal move
 > set", "GOAL structure", "attachment slot", "state dimension", "loading factor" are words
-> for the file. Use the object names from `gdd-flow-map.md` and the mechanic's own name.
+> for the file. Use the object names from `gd-flow-map.md` and the mechanic's own name.
 
 > **Base rule (frame section 5)**: you may not call a level "easy" or "hard" until every
 > mechanic cluster in it is defined. And a mechanic must be defined on **both halves —
@@ -23,11 +23,11 @@ the bot rule branch that keeps the bot from playing ignorantly on levels contain
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 4, 5**.
-2. Read `design/gdd/gdd-flow-map.md`, `gdd-difficulty-model.md`. Missing → stop, point at the
+2. Read `design/gdd/gd-flow-map.md`, `gd-difficulty-model.md`. Missing → stop, point at the
    earlier skill.
 3. Find the mechanic's GDD: `design/dev-system/dev-*<name>*.md`. If present, read it — **take the
    mechanism from there, do not re-ask the designer**. If absent, interview both halves.
-4. `all` → list every mechanic with no file in `design/gdd/gdd-mechanics/`, ask which to do
+4. `all` → list every mechanic with no file in `design/gdd/gd-mechanics/`, ask which to do
    first, then loop through them.
 
 ## 1. Half one — the mechanism
@@ -107,7 +107,7 @@ Include the **ignorant-bot trap warning** (frame section 5.4), in plain words:
 ## 5. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/gdd/gdd-mechanics/<name>.md`?"
+> "Write this to `design/gdd/gd-mechanics/<name>.md`?"
 
 Structure: mechanism (and which GDD it came from) · attachment profile · play · primary +
 secondary factors · bot rule branch · `scored` / `unscored` status · date + who was interviewed.

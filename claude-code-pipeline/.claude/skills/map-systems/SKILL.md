@@ -25,12 +25,12 @@ Read the game concept and any existing design work. This provides the raw materi
 for systems decomposition.
 
 **Required:**
-- Read `design/gdd/gdd-game-concept.md` — **fail with a clear message if missing**:
-  > "No game concept found at `design/gdd/gdd-game-concept.md`. Run `/brainstorm` first
+- Read `design/gdd/gd-game-concept.md` — **fail with a clear message if missing**:
+  > "No game concept found at `design/gdd/gd-game-concept.md`. Run `/brainstorm` first
   > to create one, then come back to decompose it into systems."
 
 **Optional (read if they exist):**
-- Read `design/gdd/gdd-game-pillars.md` — pillars constrain priority and scope
+- Read `design/gdd/gd-game-pillars.md` — pillars constrain priority and scope
 - Read `design/dev-system/dev-map-systems.md` — if exists, **resume** from where it left off
   (update, don't recreate from scratch)
 - Glob `design/dev-system/dev-*.md` — check which system GDDs already exist

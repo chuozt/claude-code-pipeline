@@ -103,13 +103,13 @@
         <div class="d">Đã có code sẵn thì dựng lại docs từ code</div></div>
     </div>
     <div class="card gd"><div class="who">GD</div><span class="t">Viết concept</span>
-      <div class="sk"><div class="top"><span class="c">/brainstorm</span><span class="f">design/gdd/gdd-game-concept.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/brainstorm</span><span class="f">design/gdd/gd-game-concept.md</span></div>
         <div class="d">Từ ý tưởng thành concept — hoặc tự viết tay</div></div>
       <div class="sk nonum"><div class="top"><span class="c">.xlsx</span><span class="f">gdd-sync → design/gdd/</span></div>
         <div class="d">Workbook của GD — nguồn sự thật, để đâu tuỳ dự án</div></div>
     </div>
   </div>
-  <div class="arrow">↓ cả hai duyệt <b>gdd-game-concept.md</b> mới sang Phase 1</div>
+  <div class="arrow">↓ cả hai duyệt <b>gd-game-concept.md</b> mới sang Phase 1</div>
 
   <h2 style="margin-top:0">Phase 1 · 1A ∥ 1B — không ai chờ ai</h2>
   <div class="grid g2">
@@ -126,18 +126,18 @@
       <div class="note">Chỉ dev chạy. Số liệu lấy từ docs của GD; chưa có thì ghi <span class="c">[PLACEHOLDER]</span> để GD chốt sau.</div>
     </div>
     <div class="card gd"><div class="who">1B · GD · bật /gd-mode</div><span class="t">Định nghĩa độ khó</span>
-      <div class="dir">File vào <span class="c">design/gdd/</span> · tiền tố <span class="c">gdd-</span></div>
-      <div class="sk"><div class="top"><span class="c">/gd-map-flow</span><span class="f">gdd-flow-map.md</span></div>
+      <div class="dir">File vào <span class="c">design/gdd/</span> · tiền tố <span class="c">gd-</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-map-flow</span><span class="f">gd-flow-map.md</span></div>
         <div class="d">GIVEN / BUFFER / GOAL — <b style="color:var(--text)">luôn chạy đầu tiên</b></div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-core-difficulty</span><span class="f">gdd-difficulty-model.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-core-difficulty</span><span class="f">gd-difficulty-model.md</span></div>
         <div class="d">Game khó vì đâu, win rate mục tiêu</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-difficulty</span><span class="f">gdd-mechanics/ice-block.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-difficulty</span><span class="f">gd-mechanics/ice-block.md</span></div>
         <div class="d">Chạy một lần cho mỗi mechanic</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-object-mix</span><span class="f">gdd-mechanic-object-mix.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-object-mix</span><span class="f">gd-mechanic-object-mix.md</span></div>
         <div class="d">Một vật mang được những mechanic nào</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">gdd-mechanic-mix.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">gd-mechanic-mix.md</span></div>
         <div class="d">Mechanic nào đi chung một level</div></div>
-      <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">gdd-level-definition.md</span></div>
+      <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">gd-level-definition.md</span></div>
         <div class="d">Máy được tự sinh những gì</div></div>
     </div>
   </div>
@@ -146,7 +146,7 @@
   <div class="sync">
     <span>Model không dính <span class="c">UnityEngine</span></span>
     <span>GD ký duyệt file độ khó</span>
-    <span>Mỗi mechanic có file trong <span class="c">gdd-mechanics/</span></span>
+    <span>Mỗi mechanic có file trong <span class="c">gd-mechanics/</span></span>
   </div>
 
   <h2>4 luật thứ tự</h2>
@@ -224,7 +224,7 @@
 
   <h2>Ai ghi file nào</h2>
   <div class="grid g4">
-    <div class="card gd"><div class="who">GD</div><span class="c">gdd-game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/gdd/gdd-*</span></div>
+    <div class="card gd"><div class="who">GD</div><span class="c">gd-game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/gdd/gd-*</span></div>
     <div class="card dev"><div class="who">DEV</div><span class="c">design/dev-system/dev-*</span><br><span class="c">design/dev-system/*</span><br><span class="c">Assets/**</span></div>
     <div class="card"><div class="who" style="color:var(--muted)">CẢ HAI</div><span class="c">level-curves.md</span><br><span class="sub">GD ghi ● · dev ghi ○</span></div>
     <div class="card"><div class="who" style="color:var(--muted)">KHÔNG BAO GIỜ</div><span class="sub">Dev quyết độ khó, giá, màu · GD sửa code</span></div>

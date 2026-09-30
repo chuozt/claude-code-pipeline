@@ -27,7 +27,7 @@ Analyze project structure and content:
 
 **Design Documentation** (`design/`):
 - Count GDD files in `design/dev-system/dev-*.md`
-- Check for gdd-game-concept.md, gdd-game-pillars.md, dev-map-systems.md
+- Check for gd-game-concept.md, gd-game-pillars.md, dev-map-systems.md
 - If dev-map-systems.md exists, count total systems vs. designed systems
 - Analyze completeness (Overview, Detailed Design, Edge Cases, etc.)
 - Count narrative docs in `design/narrative/`

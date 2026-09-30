@@ -20,7 +20,7 @@ Before asking anything, silently gather context so you can tailor your guidance.
 
 Check:
 - **Engine configured?** Read `.claude/docs/technical-preferences.md`. If the Engine field is still `<...>`, the project has not been set up yet.
-- **Game concept exists?** Check for `design/gdd/gdd-game-concept.md`.
+- **Game concept exists?** Check for `design/gdd/gd-game-concept.md`.
 - **Source code exists?** Glob for `*.cs` under the code root in `CLAUDE.md` §1 (default `Assets/`).
 - **Prototypes exist?** Check for subdirectories in `prototypes/`.
 - **Design docs exist?** Count markdown files in `design/dev-system/`.
@@ -174,7 +174,7 @@ Verdict: **COMPLETE** — user oriented and handed off to next step.
 
 - **User picks D but project is empty**: Gently redirect — "It looks like the project is a fresh template with no artifacts yet. Would Path A or B be a better fit?"
 - **User picks A but project has code**: Mention what you found — "I noticed there's already code in `src/`. Did you mean to pick D (existing work)?"
-- **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/gdd-game-concept.md`. Want to pick up where you left off? Try `/gd-workflow-help` or just tell me what you'd like to work on."
+- **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/gd-game-concept.md`. Want to pick up where you left off? Try `/gd-workflow-help` or just tell me what you'd like to work on."
 - **User doesn't fit any option**: Let them describe their situation in their own words and adapt.
 
 ---

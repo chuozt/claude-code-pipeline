@@ -39,13 +39,13 @@ because the two never meet**.
 is stamped *"PROTOTYPE - NOT FOR PRODUCTION"*, hardcodes freely, and copies instead of
 importing. Take the **conclusions**, not the code.
 
-**In**: GDD + `gdd-flow-map.md` + `gdd-difficulty-model.md` + `bot-playstyle.md` ·
+**In**: GDD + `gd-flow-map.md` + `gd-difficulty-model.md` + `bot-playstyle.md` ·
 **Out**: the simulation assembly + bots + solver API, runnable from tests
 
 ## 0. Load context and check preconditions
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 1, 2, 6, 7**.
-2. Read `design/gdd/gdd-flow-map.md`, `design/gdd/gdd-difficulty-model.md` and
+2. Read `design/gdd/gd-flow-map.md`, `design/gdd/gd-difficulty-model.md` and
    `design/bot/bot-playstyle.md`. Any missing → stop, point at `/gd-map-flow`,
    `/gd-core-difficulty` or `/gd-bot-playstyle`.
 3. Read the gameplay GDDs in `design/dev-system/` — the source of the detailed rules.
@@ -63,7 +63,7 @@ Those are expensive conclusions just bought with a whole prototype round; skippi
 the simulation may be written **contradicting exactly what the prototype learned**, with nobody
 noticing because the two never meet.
 
-- Contradicts `gdd-flow-map.md` / the GDD → **stop, ask the developer**, never pick a side yourself.
+- Contradicts `gd-flow-map.md` / the GDD → **stop, ask the developer**, never pick a side yourself.
 - The report says `Recommendation: PIVOT` or `KILL` → stop. Building a simulation for a design
   that was just rejected is doing the work twice.
 - 🚫 **Do not carry code** across from `prototypes/`: those files are stamped *"NOT FOR
@@ -123,7 +123,7 @@ this is exactly where a review round is worth paying for.
 
 The prompt for both must include:
 - excerpts from **sections 1, 2, 6, 7** of `resource-flow-difficulty-framework.md`
-- `gdd-flow-map.md`, `gdd-difficulty-model.md`, `bot-playstyle.md`, and the architecture table above
+- `gd-flow-map.md`, `gd-difficulty-model.md`, `bot-playstyle.md`, and the architecture table above
 - `.claude/docs/technical-preferences.md`
 
 Their individual requests:

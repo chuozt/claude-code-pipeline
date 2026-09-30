@@ -245,7 +245,7 @@ Agent: ✅ Written to design/dev-system/dev-[system-name].md
        Next steps:
        - Update [formula] to [corrected scaling]
        - Run /gd-balance-analyst to validate [curve]
-       - Document [mechanic] as core pillar in gdd-game-pillars.md
+       - Document [mechanic] as core pillar in gd-game-pillars.md
 ```
 
 ---

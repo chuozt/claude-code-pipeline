@@ -67,7 +67,7 @@ Scope: [full | since-last-review | entity:name]
 Glob pattern="design/dev-system/dev-*.md"
 ```
 
-Exclude: `gdd-game-concept.md`, `dev-map-systems.md`, `gdd-game-pillars.md` — these are
+Exclude: `gd-game-concept.md`, `dev-map-systems.md`, `gd-game-pillars.md` — these are
 not system GDDs.
 
 For `since-last-review` mode:

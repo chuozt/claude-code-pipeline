@@ -36,7 +36,7 @@ comes from arriving informed.
 
 ### 2a: Required Reads
 
-- **Game concept**: Read `design/gdd/gdd-game-concept.md` — if missing, warn:
+- **Game concept**: Read `design/gdd/gd-game-concept.md` — if missing, warn:
   > "No game concept found. Run `/brainstorm` first to establish the game's
   > foundation before designing UX."
   > Continue anyway if the user asks.

@@ -11,7 +11,7 @@ Different from `gd-mechanic-mix` (**level** scale — which mechanics may appear
 A pair can be forbidden here yet allowed at level scale: Key and Lock are forbidden on the
 same object, but of course a level must contain both.
 
-**In**: `design/gdd/gdd-mechanics/*.md` · **Out**: `design/gdd/gdd-mechanic-object-mix.md`
+**In**: `design/gdd/gd-mechanics/*.md` · **Out**: `design/gdd/gd-mechanic-object-mix.md`
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** The three
 > checks are **run by you, not asked**. The designer sees each verdict as one plain sentence
@@ -22,7 +22,7 @@ same object, but of course a level must contain both.
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **section 5.3, especially
    5.3a** — the three checks are the law for this skill.
-2. Read every `design/gdd/gdd-mechanics/*.md`. Each must have an **attachment profile**
+2. Read every `design/gdd/gd-mechanics/*.md`. Each must have an **attachment profile**
    (host · slot · what it hides/locks). If one is missing, ask the three questions from
    `/gd-mechanic-difficulty` §1 (host / slot / state rows) and offer to update that file.
 3. Grep the source GDD for combination bans the designer wrote by hand. **Separate the scale
@@ -89,7 +89,7 @@ is wrong, or the old rule is a leftover) — never silently side with one:
 ## 4. Write the file
 
 Present the draft, then ask:
-> "Write this to `design/gdd/gdd-mechanic-object-mix.md`?"
+> "Write this to `design/gdd/gd-mechanic-object-mix.md`?"
 
 Structure: each mechanic's attachment profile · the matrix per host (each cell: verdict ·
 the check · the plain sentence) · overridden cells + reasons · the agreement/disagreement

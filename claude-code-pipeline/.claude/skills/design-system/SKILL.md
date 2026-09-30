@@ -85,7 +85,7 @@ primary advantage over ad-hoc design — it arrives informed.
 
 ### 2a: Required Reads
 
-- **Game concept**: Read `design/gdd/gdd-game-concept.md` — fail if missing:
+- **Game concept**: Read `design/gdd/gd-game-concept.md` — fail if missing:
   > "No game concept found. Run `/brainstorm` first."
 - **Systems index**: Read `design/dev-system/dev-map-systems.md` — fail if missing:
   > "No systems index found. Run `/map-systems` first to map your systems."
@@ -119,7 +119,7 @@ For each dependency GDD that exists, extract and hold in context:
 
 ### 2c: Optional Reads
 
-- **Game pillars**: Read `design/gdd/gdd-game-pillars.md` if it exists
+- **Game pillars**: Read `design/gdd/gd-game-pillars.md` if it exists
 - **Existing GDD**: Read `design/dev-system/dev-[system-name].md` if it exists (resume, don't
   restart from scratch)
 - **Related GDDs**: Glob `design/dev-system/dev-*.md` and read any that are thematically related
@@ -132,8 +132,8 @@ This skill is run by the **developer alone**; design decisions come from what th
 designer has already written, never from an interview. Search, in this order, for anything
 about this system — rules, numbers, ranges, edge cases, intent:
 
-1. `design/gdd/gdd-*.md` — `gdd-difficulty-model.md`, `gdd-level-definition.md`, `gdd-mechanics/*.md`,
-   `gdd-mechanic-mix.md`, `gdd-mechanic-object-mix.md`, `gdd-level-intent.md`
+1. `design/gdd/gd-*.md` — `gd-difficulty-model.md`, `gd-level-definition.md`, `gd-mechanics/*.md`,
+   `gd-mechanic-mix.md`, `gd-mechanic-object-mix.md`, `gd-level-intent.md`
 2. The designer's `.xlsx` workbook, via `.claude/tools/gdd-sync` (the workbook wins over its
    derived `.md` when they disagree)
 3. `design/gdd/*.md` written by the designer, `docs/features/*.md`
@@ -333,7 +333,7 @@ needs. Anything that is a **design decision** (a rule's intent, a number, a rang
 balance trade-off) follows the **designer-fact rule**:
 
 1. **Found in the designer's docs** (2c-bis) → propose it with its source, e.g.
-   *"`moveLimit = 25` (`gdd-level-definition.md:48`)"*, and ask the developer to confirm.
+   *"`moveLimit = 25` (`gd-level-definition.md:48`)"*, and ask the developer to confirm.
 2. **Not found** → the developer may enter a working value, written **`[PLACEHOLDER]`** in
    the GDD and in the config default, plus an Open Question "confirm [value] — owner: game
    designer". It makes the code run; it is not a design decision (`CLAUDE.md` §10).
@@ -436,8 +436,8 @@ invented in this session.
 
 1. Foundation/Infrastructure layer → write `N/A — infrastructure; players feel what it
    enables: [the systems it serves]`.
-2. Otherwise, find the pillar or core-fantasy line in `design/gdd/gdd-game-concept.md` (or
-   `gdd-game-pillars.md`) that this system serves, and **quote it** with its source.
+2. Otherwise, find the pillar or core-fantasy line in `design/gdd/gd-game-concept.md` (or
+   `gd-game-pillars.md`) that this system serves, and **quote it** with its source.
 3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Fantasy
    for [system] — owner: game designer". Never write a fantasy yourself.
 

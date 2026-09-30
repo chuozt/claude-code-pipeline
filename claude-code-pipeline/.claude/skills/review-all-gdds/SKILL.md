@@ -84,11 +84,11 @@ Run `/consistency-check` after this review to populate the registry."
 
 Full-read the in-scope documents:
 
-1. `design/gdd/gdd-game-concept.md` — game vision, core loop, MVP definition
-2. `design/gdd/gdd-game-pillars.md` if it exists — design pillars and anti-pillars
+1. `design/gdd/gd-game-concept.md` — game vision, core loop, MVP definition
+2. `design/gdd/gd-game-pillars.md` if it exists — design pillars and anti-pillars
 3. `design/dev-system/dev-map-systems.md` — authoritative system list, layers, dependencies, status
 4. **Every in-scope system GDD in `design/dev-system/`** — read completely (skip
-   gdd-game-concept.md and dev-map-systems.md — those are read above)
+   gd-game-concept.md and dev-map-systems.md — those are read above)
 
 Report: "Loaded [N] system GDDs covering [M] systems. Pillars: [list]. Anti-pillars: [list]."
 

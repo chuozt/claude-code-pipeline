@@ -99,7 +99,7 @@ project root, creating each folder the first time it is actually needed.
 
 | Path | Written by | Holds |
 |---|---|---|
-| `design/gdd/` | the designer: `brainstorm`, the phase-1B `gd-*` skills, `gdd-sync` | `gdd-game-concept.md`, `gdd-flow-map.md`, `gdd-difficulty-model.md`, `gdd-mechanics/`, the two mix matrices, `gdd-level-definition.md`, `gdd-level-intent.md` |
+| `design/gdd/` | the designer: `brainstorm`, the phase-1B `gd-*` skills, `gdd-sync` | `gd-game-concept.md`, `gd-flow-map.md`, `gd-difficulty-model.md`, `gd-mechanics/`, the two mix matrices, `gd-level-definition.md`, `gd-level-intent.md` |
 | `design/dev-system/` | the developer: `map-systems`, `design-system`, `create-architecture`, `architecture-decision` | `dev-map-systems.md`, `dev-<system>.md` GDDs, `dev-architecture.md`, `adr/`, reviews |
 | `design/bot/` | `gd-bot-playstyle` (phase 2) | `bot-playstyle.md` |
 | `design/levels/` | `gd-level-intent` (Designed rows), `gd-level-audit` (Measured rows, audit reports) (phase 3) | `level-curves.md`, `level-audit-<date>.md` |

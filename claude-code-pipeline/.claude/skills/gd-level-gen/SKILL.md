@@ -13,14 +13,14 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
 Run the generation formula, filter in two passes, present the best candidates for approval.
 **A human is the final gate — this skill never puts a level into the build.**
 
-**In**: `gdd-level-definition.md` + a working simulation/solver · **Out**: level payloads + a
+**In**: `gd-level-definition.md` + a working simulation/solver · **Out**: level payloads + a
 measurement report
 
 ## 0. Check the preconditions — stop immediately if any is missing
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 8, 9.2, 10**.
-2. Read `design/gdd/gdd-level-definition.md`. Missing → stop, point at `/gd-level-definition`.
-2b. Read `design/gdd/gdd-level-intent.md` **if it exists** (optional — from
+2. Read `design/gdd/gd-level-definition.md`. Missing → stop, point at `/gd-level-definition`.
+2b. Read `design/gdd/gd-level-intent.md` **if it exists** (optional — from
    `/gd-level-intent`): any level present in that table has its tier profile **overridden**;
    absent levels use the default. Check the source hash in its header — if the designer says
    the intent sheet just changed but the hash is stale → tell them to re-run
@@ -28,7 +28,7 @@ measurement report
    own intent rather than the tier default.
 3. **The simulation + solver API must run.** Verify with a compile gate and one test match,
    reporting the real result. Not running → stop, point at `/gd-prototype-sim`.
-4. Read `design/gdd/gdd-mechanics/*.md` — list any mechanic still **`unscored`** (no bot
+4. Read `design/gdd/gd-mechanics/*.md` — list any mechanic still **`unscored`** (no bot
    rule branch yet).
 
 ⚠️ **Hard stop**: if the requested tier uses an `unscored` mechanic → stop.
@@ -37,7 +37,7 @@ measurement report
 
 ## 1. Generate candidates
 
-Per `gdd-level-definition.md`: keep the **identity** part fixed, permute the **free** part
+Per `gd-level-definition.md`: keep the **identity** part fixed, permute the **free** part
 (hidden GIVEN × GOAL order), following the agreed strategy and a **recorded seed**.
 
 Record the seed in the report — without it, a candidate you saw cannot be reproduced.
@@ -73,7 +73,7 @@ curve hits the numeric thresholds; whether it is *elegant or forced* is a pacing
 flow and pacing are this agent's frameworks.
 
 Include in the prompt: an excerpt of **section 8** of
-`resource-flow-difficulty-framework.md`, `gdd-level-definition.md`, and the top-k table above.
+`resource-flow-difficulty-framework.md`, `gd-level-definition.md`, and the top-k table above.
 The request: *"rank by pacing quality and justify; point out candidates that meet the numeric
 thresholds but whose curve feels forced. **Return analysis, DO NOT write files**"*.
 

@@ -9,7 +9,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
 Turn "what playing this game well means" into **rules a machine can run**. Run **once per
 game**, immediately before `/gd-prototype-sim`.
 
-**In**: `gdd-flow-map.md` + `gdd-difficulty-model.md` · **Out**: `design/bot/bot-playstyle.md`
+**In**: `gd-flow-map.md` + `gd-difficulty-model.md` · **Out**: `design/bot/bot-playstyle.md`
 
 > **Why this skill runs late.** Generating levels needs no bot — the layout, the colours, the order
 > pieces arrive in and the difficulty points never ask what a bot thinks. A bot is only needed once
@@ -24,12 +24,12 @@ game**, immediately before `/gd-prototype-sim`.
 ## 0. Load context
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 5.1 and 6.1**.
-2. Read `design/gdd/gdd-flow-map.md`. **Missing → stop**:
+2. Read `design/gdd/gd-flow-map.md`. **Missing → stop**:
    > "There is no flow map. Run `/gd-map-flow` first."
-3. Read `design/gdd/gdd-difficulty-model.md`. **Missing → stop**:
+3. Read `design/gdd/gd-difficulty-model.md`. **Missing → stop**:
    > "There is no difficulty model. Run `/gd-core-difficulty` first — without knowing which
    > factor is High, there is no way to know where the bot must be careful."
-4. Read `design/gdd/gdd-mechanics/*.md` if present — every mechanic needs a **branch** in these rules.
+4. Read `design/gdd/gd-mechanics/*.md` if present — every mechanic needs a **branch** in these rules.
 5. Read the gameplay GDD for concrete situations to use in the questions.
 
 ## 1. The root question

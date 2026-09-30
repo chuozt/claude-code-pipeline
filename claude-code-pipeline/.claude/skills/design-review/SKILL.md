@@ -24,7 +24,7 @@ Read the target design document in full. Read CLAUDE.md to understand project co
 
 **Dependency graph validation:** For every system listed in the Dependencies section, use Glob to check whether its GDD file exists in `design/dev-system/`. Flag any that don't exist yet — these are broken references that downstream authors will hit.
 
-**Lore/narrative alignment:** If `design/gdd/gdd-game-concept.md` or any file in `design/narrative/` exists, read it. Note any mechanical choices in this GDD that contradict established world rules, tone, or design pillars. Pass this context to `game-designer` in Phase 3b.
+**Lore/narrative alignment:** If `design/gdd/gd-game-concept.md` or any file in `design/narrative/` exists, read it. Note any mechanical choices in this GDD that contradict established world rules, tone, or design pillars. Pass this context to `game-designer` in Phase 3b.
 
 **Prior review check:** Check whether `design/dev-system/reviews/[doc-name]-review-log.md` exists. If it does, read the most recent entry — note what verdict was given and what blocking items were listed. This session is a re-review; track whether prior items were addressed.
 
