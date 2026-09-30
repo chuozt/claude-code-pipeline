@@ -20,10 +20,30 @@ ls design/gdd/gd-game-concept.md design/dev-system/dev-map-systems.md design/dev
    design/gdd/gd-level-definition.md design/gdd/gd-level-intent.md \
    design/bot/bot-playstyle.md 2>/dev/null
 ls design/gdd/gd-mechanics/*.md design/calibration/calibration-*.md 2>/dev/null
+ls design/dev-system/dev-*.md 2>/dev/null   # per-system GDDs = every dev-*.md except dev-map-systems / dev-architecture
 ```
 
-`▶ next` is the first command whose output is missing and whose inputs all exist. Phase 1A
-and 1B each start counting from their own first command — see the note below the two tables.
+`▶ next` is the first command whose output is missing and whose inputs all exist.
+
+**Marking rules — apply every one, every time:**
+
+1. **Two tracks, two `▶`.** Phase 1A and 1B each get their own `▶ next`, counted from their
+   own first command. Always print both tables with their marks, even when the question is
+   only about one track — the other person's next step is part of "where are we".
+2. **Out-of-order runs.** A later command can exist while an earlier one is missing (e.g.
+   `gd-mechanic-mix.md` without `gd-mechanic-object-mix.md`). Mark what exists ✅ and the
+   missing earlier one `▶`; say in one line that the later file may need a re-check once
+   the missing step is done.
+3. **Mechanic coverage.** Before marking `/gd-mechanic-difficulty` ✅, list the mechanic files
+   found by name and ask the designer whether any mechanic of the game is still missing a
+   file — the mix matrices only cover mechanics that have one. Never assume the list is complete.
+   Until the designer answers, mark it **❓** (not ✅), and put the question in its own
+   **"Câu hỏi cho bạn"** section directly above the tables, so it is not buried in a note column.
+4. **"Can I run X now?"** Answer yes/no in the first line, name the blocking step, then print
+   the tables.
+5. **Use the game's own nouns** when explaining what a step decides — take mechanic and object
+   names from the files found (e.g. "can one tray be both frozen and hidden?"), not generic
+   wording.
 
 ---
 
