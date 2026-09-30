@@ -78,17 +78,7 @@ If `design/ux/interaction-patterns.md` exists, read the pattern catalog index
 pattern details — just the catalog. This tells you which patterns already exist
 so you can reference them rather than reinvent them.
 
-### 2f: Art Bible
-
-Check for `design/art/art-bible.md`. If found, read the visual direction
-section. UX layout must align with the aesthetic commitments already made.
-
-### 2g: Accessibility Requirements
-
-Check for `design/accessibility-requirements.md`. If found, read it. The spec
-must satisfy the accessibility tier committed to there.
-
-### 2h: Input Method (from Project Config)
+### 2f: Input Method (from Project Config)
 
 Read `.claude/docs/technical-preferences.md` and extract the `## Input & Platform`
 section. Store these values for use throughout the skill — they drive the
@@ -109,7 +99,7 @@ If the section is unconfigured (still `<...>`), ask once:
 Store the answer for the rest of this session. Do **not** ask again per section
 or per screen.
 
-### 2i: Present Context Summary
+### 2g: Present Context Summary
 
 Before any design work, present a brief summary to the user:
 
@@ -119,7 +109,7 @@ Before any design work, present a brief summary to the user:
 > - GDD requirements feeding this spec: [count and names, or "none found"]
 > - Related screens already specced: [list, or "none yet"]
 > - Known patterns available: [count, or "no pattern library yet"]
-> - Accessibility tier: [from requirements doc, or "not yet defined"]
+> - Accessibility tier: [as stated by the developer, or "not yet defined"]
 > - Input methods: [from technical-preferences.md, or "asked above"]
 
 Then ask: "Anything else I should read before we start, or shall we proceed?"
@@ -552,7 +542,7 @@ For each interactive component identified in the Layout Specification, define:
 - The immediate feedback (visual, audio, haptic)
 - The outcome (navigation target, state change, data write)
 
-Use the input methods loaded from `technical-preferences.md` in Phase 2h — do
+Use the input methods loaded from `technical-preferences.md` in Phase 2f — do
 not ask the user again. State them upfront: "Mapping interactions for:
 [Input Methods from tech-prefs]. Covering [Gamepad Support] gamepad support."
 
@@ -621,8 +611,6 @@ Present the data requirements as a table:
 
 #### Section G: Accessibility
 
-Cross-reference `design/accessibility-requirements.md` if it exists.
-
 Walk through the ux-designer agent's standard checklist for this screen:
 - Keyboard-only navigation path through all interactive elements
 - Gamepad navigation order (if applicable)
@@ -633,7 +621,7 @@ Walk through the ux-designer agent's standard checklist for this screen:
 
 Use `AskUserQuestion` to surface any open questions on accessibility tier:
 - "Has the accessibility tier been committed to for this project?"
-  - Options: "Yes, read from requirements doc", "Not yet — let's flag it as a question", "Skip accessibility section for now"
+  - Options: "Yes — state the tier", "Not yet — let's flag it as a question", "Skip accessibility section for now"
 
 ---
 
@@ -846,7 +834,7 @@ it for addition to the pattern library:
 navigation map in any related specs? Flag mismatches.
 
 **4. Accessibility coverage**: Does the spec address the accessibility tier
-committed to in `design/accessibility-requirements.md`? If not, flag open questions.
+committed to for this project (Section G)? If not, flag open questions.
 
 **5. Empty states**: Does every data-dependent element have an empty state defined?
 Flag any that don't.
