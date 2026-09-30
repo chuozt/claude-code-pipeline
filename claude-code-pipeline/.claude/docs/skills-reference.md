@@ -106,10 +106,6 @@ simulate against) finished first.
 | `/gd-systems-interaction` | claude-game-design-suite | Feedback loops and degenerate strategies |
 | `/prompt-master` | nidhinjs/prompt-master (MIT) | Write optimised prompts for other AI tools |
 
-Vietnamese user guide with one example per skill, kit + plugin:
-`Assets/_Project/Docs/HUONG-DAN-SKILL.md` (source) and `HUONG-DAN-SKILL.docx` next to it
-(regenerate the docx from the md after editing).
-
 ---
 
 ## Not in this package
