@@ -37,7 +37,11 @@ measurement report
    `/gd-level-intent` first. In the top-k report, mark which candidates are running on their
    own intent rather than the tier default.
 3. **The simulation + solver API must run.** Verify with a compile gate and one test match,
-   reporting the real result. Not running → stop, point at `/gd-prototype-sim`.
+   reporting the real result. Not running → stop, point at `/gd-prototype-sim`. Also require
+   from `/gd-prototype-sim` §3: the **parity test passed** against the real game, and a
+   **measured throughput** from `BatchRunner` (matches per second). Either missing → stop:
+   numbers from a simulation nobody has compared with the game are fiction. Run all bot
+   matches through `BatchRunner` (parallel), not one by one.
 4. Read `design/gdd/gd-mechanics/*.md` — list any mechanic still **`unscored`** (no bot
    rule branch yet).
 

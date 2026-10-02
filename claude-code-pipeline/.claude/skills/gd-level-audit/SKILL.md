@@ -97,6 +97,8 @@ block's exit with the next block's entry. List a mismatch as a plain sentence fo
 the roadmap. A block-to-block jump the contract did not plan is a finding for the lead, not
 for either owner alone.
 
+All bot matches go through the Sim tools' `BatchRunner` (parallel, seed-deterministic); report matches per second next to the attempt counts.
+
 The report itself is written to `design/levels/level-audit-<date>.md` (ask before writing) —
 one file per run, never overwriting a previous audit.
 
