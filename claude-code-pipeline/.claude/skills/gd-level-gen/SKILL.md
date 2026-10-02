@@ -3,7 +3,7 @@ name: gd-level-gen
 model: claude-opus-5-5
 effort: medium
 description: "Generate levels from the defined formula — produce candidates, filter in two passes (static DIG, then bots), rank them and present them to the designer for approval. Requires a working simulation + solver API. Use when typing /gd-level-gen or saying 'generate levels', 'make new levels', 'add more hard levels'."
-argument-hint: "<tier> [count] — e.g. hard 5"
+argument-hint: "<tier> [count] — e.g. hard 5  |  block <from>-<to> — e.g. block 21-30"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, AskUserQuestion
 ---
@@ -44,6 +44,20 @@ measurement report
 ⚠️ **Hard stop**: if the requested tier uses an `unscored` mechanic → stop.
 > "Mechanic <X> has no bot rule branch. Generating levels with it now would score them
 > wrongly — the bot plays badly because the bot is ignorant, not because the level is hard."
+
+## 0b. Whole-block mode — `/gd-level-gen block 21-30`
+
+Only when `gd-level-roadmap.md` has a block rhythm (the designer's string of tiers, e.g.
+`N N N N H N N N N S`). Expand the range into one request per level: tier from its
+position, mechanics from the roadmap row. Run sections 1–4 for **each level in turn**, with
+its own tier, and present the result as one table per block:
+
+| Level | Position | Tier | Role | Candidates (top-k) |
+|---|---|---|---|---|
+
+The designer approves per level, not per block. A level whose tier needs an `unscored`
+mechanic is skipped with the reason and listed at the end; the rest of the block still runs.
+Never use another block's levels as input. One block per run.
 
 ## 1. Generate candidates
 
