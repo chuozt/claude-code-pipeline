@@ -162,6 +162,7 @@ blueprint → approval → code → verification**
   keep one side wholesale, redo the rest through the Editor — anti-patterns §6), then the
   build gate and tests run before the merge is committed. **Never push or switch branches** —
   the developer does that.
+- **Auto mode is the one exception to "ask first".** Only when the developer typed `auto` for a skill that defines it (`.claude/docs/auto-mode.md`): the argument is the approval for the paths that document lists, and nothing else. Output is marked `Auto-drafted — NOT reviewed`; architecture is proposed, never signed off.
 - An ambiguous request whose two readings give different results → **ASK FIRST**.
 - Bug reported → demand **real logs**, NO GUESSING. With MCP off, ask for pasted
   logs or read `mcp__terminal__read_terminal`; if the Unity console (`console` /

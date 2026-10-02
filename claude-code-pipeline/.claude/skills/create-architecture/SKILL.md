@@ -3,7 +3,7 @@ name: create-architecture
 model: claude-opus-5-5
 effort: medium
 description: "Guided, section-by-section authoring of the master architecture document for the game. Reads all GDDs, the systems index, existing ADRs, and the engine reference library to produce a complete architecture blueprint before any code is written. Engine-version-aware: flags knowledge gaps and validates decisions against the pinned engine version."
-argument-hint: "[focus-area: full | layers | data-flow | api-boundaries | adr-audit]"
+argument-hint: "[focus-area: full | layers | data-flow | api-boundaries | adr-audit | auto]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash, AskUserQuestion, Task
 agent: technical-director
@@ -26,6 +26,19 @@ This skill creates the whole-system blueprint that gives ADRs their context.
 - **`data-flow`**: Focus on data flow between modules only
 - **`api-boundaries`**: Focus on API boundary definitions only
 - **`adr-audit`**: Audit existing ADRs for engine compatibility gaps only
+- **`auto`**: `/create-architecture auto` — all phases without questions, as a **proposal**.
+  **Read `.claude/docs/auto-mode.md` first.** Specifics:
+  - Phases 0–6 run without prompts. Every layer, ownership, data-flow and API-boundary decision
+    is written marked `PROPOSED (auto)` with the GDD requirements (`TR-…`) that justify it; where
+    two reasonable designs exist, write both as an open question and propose one, never present
+    one as the only option. Nothing is "decided".
+  - Phase 7 writes the document with the Status banner of `auto-mode.md` §4.
+  - **Phase 7b is not a sign-off.** Run the self-review, record its verdict as *advisory*, and
+    write `Technical Sign-Off: PENDING — auto-proposed, requires developer sign-off`. Do not ask
+    the user and do not mark APPROVED.
+  - Out-of-scope tabs go to Open Questions as "not covered" (Phase 0b).
+  - Do not write ADR bodies or the control manifest. List the required ADRs (Phase 6) and stop
+    with the final report.
 
 ---
 

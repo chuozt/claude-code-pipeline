@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: "Guided, section-by-section GDD authoring for every undesigned system in the systems index, run back-to-back in one invocation. Gathers context from existing docs, walks through each required section collaboratively, cross-references dependencies, and writes incrementally to file. A single system or a retrofit path can still be targeted explicitly."
-argument-hint: "[all | <system-name> | retrofit <path>]"
+argument-hint: "[all | <system-name> | retrofit <path> | auto [chain]]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion, TodoWrite
 ---
@@ -14,6 +14,30 @@ When this skill is invoked:
 undesigned system in the index, back-to-back, in one run — not one system per invocation.
 A specific `<system-name>` or `retrofit <path>` still targets just that one system, for
 picking up a single gap without running the whole queue.
+
+**`auto`** — `/design-system auto [chain]` runs the whole queue **without questions**. **Read
+`.claude/docs/auto-mode.md` first** (what `auto` authorises, the markers, verification, the
+report). Specifics, overriding the interactive steps below:
+
+- §1: the queue is every in-scope "Not Started" system, in design order, started at once (no
+  queue confirmation).
+- §2: read the system's **source tab** (and `design/gdd/gd-*.md`) with `gdd-sync`; skip the
+  context summary question and the feasibility prompts. The feasibility brief is written from
+  facts only.
+- §3: create the skeleton and write sections directly, with the Status banner of
+  `auto-mode.md` §4 and the `Source tab` line.
+- §4: replace **the Section Cycle** by: draft the section from the source, every value cited and
+  marked per `auto-mode.md` §3, write it. No questions, no approval widgets, no options. Technical
+  choices become rows in the open-questions file with their options and **no choice**. Acceptance
+  Criteria are derived only from stated rules and marked `[INFERRED]`; with no rules, `UNDEFINED`.
+  Registry (§4 step 8 and §5b): append new entries with their source; a value that conflicts with
+  an existing entry is `UNCLEAR` in the document (both values quoted) — never overwritten, never
+  chosen.
+- §5: self-check only; set the index status to `Auto-drafted`, never `Approved`; do not spawn
+  `/design-review`.
+- Between systems: advance the queue without asking. When the queue is empty, run the verification
+  of `auto-mode.md` §6, print the final report, and with `chain` continue to
+  `/create-architecture auto`.
 
 **Where a system's document lives — flat or by tab.** Read the header of
 `design/dev-system/dev-map-systems.md` (written by `/map-systems` Phase 0):

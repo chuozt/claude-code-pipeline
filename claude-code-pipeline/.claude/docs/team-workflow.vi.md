@@ -93,6 +93,14 @@ Designer không tham gia session 1A. Designer xử lý Open Questions của các
 xác nhận hoặc thay từng `[PLACEHOLDER]` trong GDD và field config tương ứng — tốt nhất sau khi
 1B đã có các file độ khó, vì chúng chốt được phần lớn con số.
 
+**Chế độ tự chạy (tùy chọn, dành cho dev).** `/map-systems auto`, `/design-system auto` và
+`/create-architecture auto` (`docs/auto-mode.md`) chạy không hỏi, soạn từ workbook của designer.
+Chỗ nguồn không nói được ghi `UNDEFINED`, chỗ mơ hồ ghi `UNCLEAR`, chỗ AI tự suy ghi `[INFERRED]`,
+mọi giá trị đều có nguồn, và mọi điểm còn mở gom vào một file `dev-open-questions-<ngày>.md`. Nó
+tiết kiệm thời gian chờ, **không** tiết kiệm review: phải dành giờ rà danh sách đó và kiểm mẫu
+vài doc, còn kiến trúc chỉ là **đề xuất**, chỉ dev mới ký duyệt. Việc nào cần người quyết thì dùng
+chế độ tương tác.
+
 **Bàn giao — họp đồng bộ.** Checklist trước phase 2:
 - [ ] Thư mục model không có tham chiếu `UnityEngine` (`architect.md` §1)
 - [ ] `gd-difficulty-model.md` và `gd-level-definition.md` đã có và được designer ký duyệt
