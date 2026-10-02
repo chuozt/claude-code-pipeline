@@ -64,7 +64,7 @@ Scope: [full | since-last-review | entity:name]
 ## Phase 2: Locate In-Scope GDDs
 
 ```
-Glob pattern="design/dev-system/dev-*.md"
+Glob pattern="design/dev-system/**/dev-*.md"
 ```
 
 Exclude: `gd-game-concept.md`, `dev-map-systems.md`, `gd-game-pillars.md` — these are
@@ -96,7 +96,7 @@ each returning ~10 lines on a hit).
 For each entity in entity_map:
 
 ```
-Grep pattern="[entity_name]" glob="design/dev-system/dev-*.md" output_mode="content" -C 3
+Grep pattern="[entity_name]" glob="design/dev-system/**/dev-*.md" output_mode="content" -C 3
 ```
 
 For each GDD hit, extract the values mentioned near the entity name:

@@ -15,6 +15,19 @@ undesigned system in the index, back-to-back, in one run — not one system per 
 A specific `<system-name>` or `retrofit <path>` still targets just that one system, for
 picking up a single gap without running the whole queue.
 
+**Where a system's document lives — flat or by tab.** Read the header of
+`design/dev-system/dev-map-systems.md` (written by `/map-systems` Phase 0):
+
+- `Organisation` absent or flat → each system is `design/dev-system/dev-[system-name].md`.
+- `Organisation: by designer tab` → each system is
+  `design/dev-system/<Tab folder>/dev-[system-name].md`, where `<Tab folder>` is the folder the
+  index lists for that system's tab (for example `Mechanic Overview/`). The folder is created
+  with the skeleton. **Only systems of in-scope tabs are in the queue**; out-of-scope tabs are
+  never designed here. Variants listed inside a main system stay rows or sub-sections of
+  that one document.
+
+Everywhere below, `design/dev-system/dev-[system-name].md` means **this resolved path**.
+
 **Resolve which mode this run is in:**
 
 1. Check if `design/dev-system/dev-map-systems.md` exists. If it does not exist, fail with:
@@ -122,7 +135,7 @@ For each dependency GDD that exists, extract and hold in context:
 - **Game pillars**: Read `design/gdd/gd-game-pillars.md` if it exists
 - **Existing GDD**: Read `design/dev-system/dev-[system-name].md` if it exists (resume, don't
   restart from scratch)
-- **Related GDDs**: Glob `design/dev-system/dev-*.md` and read any that are thematically related
+- **Related GDDs**: Glob `design/dev-system/**/dev-*.md` and read any that are thematically related
   (e.g., if designing a system that overlaps with another in scope, read the related GDD
   even if it's not a formal dependency)
 
@@ -134,7 +147,7 @@ about this system — rules, numbers, ranges, edge cases, intent:
 
 1. `design/gdd/gd-*.md` — `gd-difficulty-model.md`, `gd-level-definition.md`, `gd-mechanics/*.md`,
    `gd-mechanic-mix.md`, `gd-mechanic-object-mix.md`, `gd-level-intent.md`
-2. The designer's `.xlsx` workbook, via `.claude/tools/gdd-sync` (the workbook wins over its
+2. The designer's `.xlsx` workbook, via `.claude/tools/gdd-sync` — **in tab mode, read the system's source tab first** (the workbook wins over its
    derived `.md` when they disagree)
 3. `design/gdd/*.md` written by the designer, `docs/features/*.md`
 
@@ -255,6 +268,8 @@ Use the template structure from `.claude/docs/templates/game-design-document.md`
 > **Author**: [developer] — design values from the designer's docs, `[PLACEHOLDER]` where none exist
 > **Last Updated**: [today's date]
 > **Implements Pillar**: [from context]
+> **Source tab** *(tab mode only)*: [tab name] — workbook `[path]`. Values in this document
+> are quoted from that tab; add nothing the tab does not say without marking it `[PLACEHOLDER]`.
 
 ## Overview
 

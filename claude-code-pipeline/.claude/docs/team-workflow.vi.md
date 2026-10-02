@@ -16,7 +16,7 @@ Developer và designer không bao giờ bàn giao qua chat. Bàn giao bằng fil
 | Thư mục / file | Ai ghi | Ai đọc | Bên còn lại được… |
 |---|---|---|---|
 | `design/gdd/gd-game-concept.md`, workbook `.xlsx` gốc | Designer | Cả hai | góp ý, không sửa |
-| `design/dev-system/dev-<system>.md` (GDD) | Dev, một mình, chạy `/design-system` — giá trị design trích từ docs của designer | Cả hai | sửa các `[PLACEHOLDER]` qua Open Questions |
+| `design/dev-system/dev-<system>.md` (GDD) — hoặc `design/dev-system/<folder tab>/dev-<system>.md` khi tổ chức theo tab của designer (`/map-systems` Phase 0) | Dev, một mình, chạy `/design-system` — giá trị design trích từ docs của designer | Cả hai | sửa các `[PLACEHOLDER]` qua Open Questions |
 | `design/gdd/gd-*.md` (flow map, difficulty model, mix matrix, level definition, level intent) | Designer, qua các skill `gd-*` | Dev, simulation, generator | chỉ đọc |
 | `design/levels/level-curves.md` | Dòng Designed: `/gd-level-intent` · Dòng Measured: `/gd-level-audit` | Cả hai | chỉ dòng của mình |
 | `design/dev-system/`, ADR, code trong `Assets/` | Dev | Designer chỉ qua dev | không bao giờ đụng |

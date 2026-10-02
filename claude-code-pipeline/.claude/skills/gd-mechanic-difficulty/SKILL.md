@@ -25,7 +25,7 @@ the bot rule branch that keeps the bot from playing ignorantly on levels contain
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 4, 5**.
 2. Read `design/gdd/gd-flow-map.md`, `gd-difficulty-model.md`. Missing → stop, point at the
    earlier skill.
-3. Find the mechanic's GDD: `design/dev-system/dev-*<name>*.md`. If present, read it — **take the
+3. Find the mechanic's GDD: `design/dev-system/**/dev-*<name>*.md`. If present, read it — **take the
    mechanism from there, do not re-ask the designer**. If absent, interview both halves.
 4. `all` → list every mechanic with no file in `design/gdd/gd-mechanics/`, ask which to do
    first, then loop through them.

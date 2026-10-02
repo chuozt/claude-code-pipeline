@@ -56,7 +56,7 @@ If the player journey file does not exist, note the gap and proceed:
 
 ### 2c: GDD UI Requirements
 
-Glob `design/dev-system/dev-*.md` and grep for `UI Requirements` sections. Read any GDD whose
+Glob `design/dev-system/**/dev-*.md` and grep for `UI Requirements` sections. Read any GDD whose
 UI Requirements section references this screen by name or category.
 
 These GDD UI Requirements are the **requirements input** to this spec. Collect them

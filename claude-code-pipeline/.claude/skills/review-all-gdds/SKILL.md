@@ -46,7 +46,7 @@ Before reading any full document, use Grep to extract `## Summary` sections
 from all GDD files:
 
 ```
-Grep pattern="## Summary" glob="design/dev-system/dev-*.md" output_mode="content" -A 5
+Grep pattern="## Summary" glob="design/dev-system/**/dev-*.md" output_mode="content" -A 5
 ```
 
 Display a manifest to the user:

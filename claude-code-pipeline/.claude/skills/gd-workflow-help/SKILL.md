@@ -20,7 +20,7 @@ ls design/gdd/gd-game-concept.md design/dev-system/dev-map-systems.md design/dev
    design/gdd/gd-level-definition.md design/gdd/gd-level-roadmap.md design/gdd/gd-level-intent*.md \
    design/bot/bot-playstyle.md 2>/dev/null
 ls design/gdd/gd-mechanics/*.md design/calibration/calibration-*.md 2>/dev/null
-ls design/dev-system/dev-*.md 2>/dev/null   # per-system GDDs = every dev-*.md except dev-map-systems / dev-architecture
+ls design/dev-system/dev-*.md design/dev-system/*/dev-*.md 2>/dev/null   # per-system GDDs (flat or in tab folders) = every dev-*.md except dev-map-systems / dev-architecture*
 ```
 
 `▶ next` is the first command whose output is missing and whose inputs all exist.
@@ -59,8 +59,8 @@ just not part of this pipeline's tracked sequence).
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/map-systems` | Splits the concept into systems, maps dependencies, sets design order | `design/dev-system/dev-map-systems.md` |
-| `/design-system` | Writes every undesigned system's GDD, section by section, back-to-back in one run. `/design-system <name>` targets just one. **Developer only**: design values are taken from the designer's docs, anything missing is marked `[PLACEHOLDER]` and listed as an Open Question for the designer | `design/dev-system/dev-<system>.md` per system |
+| `/map-systems` | Splits the concept (or, with the designer's workbook, the chosen **tabs** — main systems only, no inferred hidden systems) into systems, maps dependencies, sets design order | `design/dev-system/dev-map-systems.md` |
+| `/design-system` | Writes every undesigned in-scope system's GDD, section by section, back-to-back in one run (in tab mode: into one folder per designer tab, main systems only). `/design-system <name>` targets just one. **Developer only**: design values are taken from the designer's docs, anything missing is marked `[PLACEHOLDER]` and listed as an Open Question for the designer | `design/dev-system/dev-<system>.md` per system |
 | `/create-architecture` | Turns the GDDs into a technical blueprint + the required ADR list | `design/dev-system/dev-architecture.md` |
 
 ---

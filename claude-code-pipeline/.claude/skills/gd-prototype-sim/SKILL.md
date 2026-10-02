@@ -79,7 +79,7 @@ the same time**, across every core, not one after another.
 - Throughput is **measured and reported** (matches per second, cores used), never assumed.
 
 **B. Same documents as the game — one source of truth.** The developer's Phase 1A documents
-(`design/dev-system/dev-*.md` — rules, formulas, tuning knobs — and `dev-architecture.md`)
+(`design/dev-system/dev-*.md`, or `design/dev-system/<Tab folder>/dev-*.md` in tab mode — rules, formulas, tuning knobs — and `dev-architecture.md`)
 are what the game builds its **configs, feel and logic** from. The simulation is built from
 those same documents and reads the **same config assets** the game reads:
 
