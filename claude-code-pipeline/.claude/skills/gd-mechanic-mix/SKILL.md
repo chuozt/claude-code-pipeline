@@ -1,6 +1,6 @@
 ---
 name: gd-mechanic-mix
-description: "Derive the LEVEL-scale mechanic combination matrix from loading factors — which pairs are forbidden, which are allowed — and the mixing guidance that produces Normal/Hard/SuperHard levels. Use when typing /gd-mechanic-mix or saying 'which mechanics go together', 'how do I mix for difficulty', 'is this mechanic pair OK'."
+description: "Derive the LEVEL-scale mechanic combination matrix from loading factors — which pairs are forbidden, which are allowed — and what changes between Normal/Hard/SuperHard levels (tension, not mechanic count). Use when typing /gd-mechanic-mix or saying 'which mechanics go together', 'how do I mix for difficulty', 'is this mechanic pair OK'."
 argument-hint: "[empty | <mechanic-A> <mechanic-B> to examine one pair]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion
@@ -88,13 +88,25 @@ designer's accumulated intuition.
 
 ## 4. Mixing guidance per tier
 
+**A tier describes how tense the level is, not how many mechanics it has.** Which mechanics
+a level may use, and how many, comes from two things only: the mechanics already
+introduced at that level (the roadmap, when levels are staged) and the matrix above — no
+forbidden pair in one level. So a Normal level **may** hold two mechanics (say A and B, in a
+pair the matrix allows) and still be easy, because what makes it Normal is how much room and
+how little digging it asks of the player. Early blocks cannot reach "two or three
+mechanics" anyway: block 2 knows only A.
+
 Propose, then confirm with `AskUserQuestion`:
 
-| Tier | Starting proposal (file) | Say to the designer (EN) | Nói với designer (VI) |
+| Tier | What changes (file) | Say to the designer (EN) | Nói với designer (VI) |
 |---|---|---|---|
-| Normal | 0–1 mechanic; wide slack | "At most one mechanic, lots of room in the [waiting spot]" | "Tối đa một mechanic, [chỗ chờ] còn rộng" |
-| Hard | 2 mechanics on **different factors**; medium slack | "Two mechanics that are hard in different ways, less room" | "Hai mechanic khó theo hai kiểu khác nhau, chỗ chờ hẹp hơn" |
-| SuperHard | 2–3 mechanics on different factors + tightened slack + a late commitment point | "Two or three, tight room, and one big can't-undo moment near the end" | "Hai đến ba mechanic, chỗ chờ rất hẹp, và một nước không rút lại được gần cuối" |
+| Normal | wide Buffer Room; shallow DIG; no late commitment | "Lots of room in the [waiting spot], little digging, nothing that can't be undone late on" | "[Chỗ chờ] còn rộng, ít phải đào, không có nước không rút lại được ở cuối" |
+| Hard | medium Buffer Room; deeper DIG; mechanics hard in **different** ways when there are two or more | "Less room, more digging; if there are several mechanics they are hard in different ways" | "Chỗ chờ hẹp hơn, phải đào nhiều hơn; nếu có nhiều mechanic thì chúng khó theo kiểu khác nhau" |
+| SuperHard | tightened Buffer Room; deepest DIG; a late commitment point | "Very little room, deep digging, and one big can't-undo moment near the end" | "Chỗ chờ rất hẹp, phải đào sâu, và một nước không rút lại được gần cuối" |
+
+How many mechanics a level carries is the **roadmap's** call (`gd-level-roadmap.md`, column
+"mechanics allowed"), not the tier's. When the tier pushes toward more mechanics than exist
+yet, tension comes from the slack and the digging instead.
 
 Say clearly that this is a **starting point**; the real win-rate bands in
 `gd-difficulty-model.md` are the arbiter — after mixing, it still has to be measured.

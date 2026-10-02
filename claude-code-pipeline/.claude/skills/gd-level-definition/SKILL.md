@@ -70,7 +70,8 @@ For each tier (Normal / Hard / SuperHard), assemble one profile:
 |---|---|
 | `GreedyBot` win-rate band | `gd-difficulty-model.md` |
 | `pressure` curve shape | frame section 8 |
-| Number and kinds of mechanics | `gd-mechanic-mix.md` section 4 |
+| Tension levers (room, digging, late no-undo) | `gd-mechanic-mix.md` section 4 |
+| Which mechanics, how many | the roadmap row of each level (§6), within the matrices |
 | Target DIG profile | **asked here** |
 
 | Writes to file | Ask (EN) | Hỏi (VI) |
