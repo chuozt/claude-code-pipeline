@@ -100,8 +100,8 @@ produced the difficulty files, since those settle most of the numbers.
 
 | Order | Who | Command |
 |---|---|---|
-| 1 | Designer is interviewed | `/gd-bot-playstyle` → `bot-playstyle.md` |
-| 2 | Developer builds | `/gd-prototype-sim` → the pure-C# simulation, bots, solver API, tests |
+| 1 | Designer alone — needs only 1B, no simulation; can start as soon as `/gd-core-difficulty` is done | `/gd-bot-playstyle` → `bot-playstyle.md` |
+| 2 | Developer — needs 1A and `bot-playstyle.md` | `/gd-prototype-sim` → the pure-C# simulation, bots, solver API, tests |
 
 A mechanic without a bot rule makes its levels `unscored` — generatable, not measurable.
 

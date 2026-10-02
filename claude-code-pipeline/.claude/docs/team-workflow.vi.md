@@ -101,8 +101,8 @@ xác nhận hoặc thay từng `[PLACEHOLDER]` trong GDD và field config tươn
 
 | Thứ tự | Ai | Lệnh |
 |---|---|---|
-| 1 | Designer được phỏng vấn | `/gd-bot-playstyle` → `bot-playstyle.md` |
-| 2 | Dev dựng | `/gd-prototype-sim` → simulation C# thuần, bot, solver API, test |
+| 1 | Designer tự làm — chỉ cần 1B, không cần simulation; làm được ngay sau `/gd-core-difficulty` | `/gd-bot-playstyle` → `bot-playstyle.md` |
+| 2 | Dev — cần 1A và `bot-playstyle.md` | `/gd-prototype-sim` → simulation C# thuần, bot, solver API, test |
 
 Mechanic chưa có bot rule thì level chứa nó là `unscored` — sinh được, không đo được.
 

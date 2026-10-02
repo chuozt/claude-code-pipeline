@@ -76,7 +76,8 @@ Phase 1B  define difficulty          (game designer track — no bot, no code)
 
 Phase 2  teach a bot to play        (optional — only needed to MEASURE)
   gd-bot-playstyle · gd-prototype-sim
-  needs BOTH 1A (a Model/View split to simulate) and 1B (a difficulty model to simulate against)
+  gd-bot-playstyle needs only 1B — the designer does it alone, no simulation needed;
+  gd-prototype-sim needs 1A (a Model/View split to simulate) and the finished playstyle file
 
 Phase 3  generate and measure
   gd-level-gen · gd-level-audit
