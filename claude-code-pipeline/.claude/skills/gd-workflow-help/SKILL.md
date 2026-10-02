@@ -17,7 +17,7 @@ Check which output files already exist, and mark each command **✅ done** / **�
 ls design/gdd/gd-game-concept.md design/dev-system/dev-map-systems.md design/dev-system/dev-architecture.md \
    design/gdd/gd-flow-map.md design/gdd/gd-difficulty-model.md \
    design/gdd/gd-mechanic-object-mix.md design/gdd/gd-mechanic-mix.md \
-   design/gdd/gd-level-definition.md design/gdd/gd-level-intent.md \
+   design/gdd/gd-level-definition.md design/gdd/gd-level-roadmap.md design/gdd/gd-level-intent*.md \
    design/bot/bot-playstyle.md 2>/dev/null
 ls design/gdd/gd-mechanics/*.md design/calibration/calibration-*.md 2>/dev/null
 ls design/dev-system/dev-*.md 2>/dev/null   # per-system GDDs = every dev-*.md except dev-map-systems / dev-architecture
@@ -41,7 +41,11 @@ ls design/dev-system/dev-*.md 2>/dev/null   # per-system GDDs = every dev-*.md e
    **"Câu hỏi cho bạn"** section directly above the tables, so it is not buried in a note column.
 4. **"Can I run X now?"** Answer yes/no in the first line, name the blocking step, then print
    the tables.
-5. **Use the game's own nouns** when explaining what a step decides — take mechanic and object
+5. **Phase 2 has two prerequisites, not one.** `/gd-bot-playstyle` gets `▶` as soon as
+   `gd-flow-map.md` and `gd-difficulty-model.md` exist — even while 1A is unfinished; never
+   tell the designer to wait for the simulation or for the developer. `/gd-prototype-sim`
+   gets `▶` only when `bot-playstyle.md` **and** `dev-architecture.md` exist.
+6. **Use the game's own nouns** when explaining what a step decides — take mechanic and object
    names from the files found (e.g. "can one tray be both frozen and hidden?"), not generic
    wording.
 
@@ -73,8 +77,8 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 | `/gd-mechanic-difficulty` | For one mechanic: what it changes, how a good player handles it, which kind of hard it adds. **Run per mechanic** | `design/gdd/gd-mechanics/<name>.md` |
 | `/gd-mechanic-object-mix` | Which mechanics can sit on the same object at once | `design/gdd/gd-mechanic-object-mix.md` |
 | `/gd-mechanic-mix` | Which mechanics can appear in the same level, and how many per tier | `design/gdd/gd-mechanic-mix.md` |
-| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier | `design/gdd/gd-level-definition.md` |
-| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. **Optional** | `design/gdd/gd-level-intent.md` + designed curves in `level-curves.md` |
+| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier. For staged levels (a new mechanic every N levels) the lead also writes the **roadmap** here: role and allowed mechanics per level, entry/exit contract per block | `design/gdd/gd-level-definition.md` + `gd-level-roadmap.md` (staged levels only) |
+| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. With a range (`21-30`) it writes per-block files, one owner each. **Optional** | `design/gdd/gd-level-intent[-L21-30].md` + designed curves in `level-curves[-L21-30].md` |
 
 > **Both mix matrices are needed before `/gd-level-definition`** — object scale and level scale
 > answer different questions and neither substitutes for the other.
@@ -100,13 +104,18 @@ are needed before phase 2, but neither is an input to the other.
 ## Phase 2 — Teach a bot to play *(optional, unproven)*
 
 Only needed to **measure**. Skip it and levels can still be generated, just not scored.
-Needs both **1A** (a Model/View split to simulate) and **1B** (a difficulty model to
-simulate against) finished first.
+Two steps with **different prerequisites** — do not treat Phase 2 as one block:
+
+- `/gd-bot-playstyle` is the **designer's** step. It needs only **1B** (`gd-flow-map.md` and
+  `gd-difficulty-model.md`). No simulation, no code, no 1A. The designer can finish it alone,
+  right after `/gd-core-difficulty`, while the developer is still on 1A.
+- `/gd-prototype-sim` is the **developer's** step. It needs **1A** (a Model/View split to
+  simulate) and a finished `bot-playstyle.md` — it is built *from* the playstyle file.
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-bot-playstyle` | Turns "what playing well means" into three executable playstyle rules | `design/bot/bot-playstyle.md` |
-| `/gd-prototype-sim` | Builds the pure-C# simulation + bots + solver API. **Needs a developer** | a `<Game>.Sim` assembly + tests |
+| `/gd-bot-playstyle` | Turns "what playing well means" into three executable playstyle rules. **Designer only; finishable without the simulation** | `design/bot/bot-playstyle.md` |
+| `/gd-prototype-sim` | Builds the pure-C# simulation + bots + solver API. **Needs a developer, 1A and `bot-playstyle.md`** | a `<Game>.Sim` assembly + tests |
 
 > Any mechanic without a rule branch makes its levels `unscored` — generatable, but not
 > scorable. That is the honest state, not a failure.
@@ -156,8 +165,8 @@ simulate against) finished first.
 3. **Both mix matrices before `/gd-level-definition`.** Object scale and level scale are
    different questions.
 4. **Phase 2 gates phase 3.** No bot means no measurement — and a number from an ignorant bot
-   is worse than no number at all. Phase 2 itself needs **both** 1A (the Model/View split to
-   simulate) and 1B (the difficulty model to simulate against) done first.
+   is worse than no number at all. In Phase 2, `/gd-bot-playstyle` needs only 1B (the designer
+   can do it alone, early); `/gd-prototype-sim` needs 1A **and** the playstyle file.
 
 Everything else can be reordered or skipped. Say so when the designer asks whether they can
 skip a step.

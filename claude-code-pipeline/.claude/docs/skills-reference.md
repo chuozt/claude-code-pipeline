@@ -37,8 +37,9 @@ standalone commands but are not tracked steps of this sequence.
 
 ### Phase 2 — teach a bot (optional)
 
-Needs both Phase 1A (a Model/View split to simulate) and Phase 1B (a difficulty model to
-simulate against) finished first.
+`/gd-bot-playstyle` is the designer's step and needs only Phase 1B (no simulation, no code,
+no 1A). `/gd-prototype-sim` is the developer's step and needs Phase 1A plus the finished
+playstyle file.
 
 | Command | Purpose |
 |---|---|

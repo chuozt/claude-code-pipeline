@@ -76,7 +76,8 @@ Phase 1B  define difficulty          (game designer track — no bot, no code)
 
 Phase 2  teach a bot to play        (optional — only needed to MEASURE)
   gd-bot-playstyle · gd-prototype-sim
-  needs BOTH 1A (a Model/View split to simulate) and 1B (a difficulty model to simulate against)
+  gd-bot-playstyle needs only 1B — the designer does it alone, no simulation needed;
+  gd-prototype-sim needs 1A (a Model/View split to simulate) and the finished playstyle file
 
 Phase 3  generate and measure
   gd-level-gen · gd-level-audit
@@ -99,7 +100,7 @@ project root, creating each folder the first time it is actually needed.
 
 | Path | Written by | Holds |
 |---|---|---|
-| `design/gdd/` | the designer: `brainstorm`, the phase-1B `gd-*` skills, `gdd-sync` | `gd-game-concept.md`, `gd-flow-map.md`, `gd-difficulty-model.md`, `gd-mechanics/`, the two mix matrices, `gd-level-definition.md`, `gd-level-intent.md` |
+| `design/gdd/` | the designer: `brainstorm`, the phase-1B `gd-*` skills, `gdd-sync` | `gd-game-concept.md`, `gd-flow-map.md`, `gd-difficulty-model.md`, `gd-mechanics/`, the two mix matrices, `gd-level-definition.md`, `gd-level-roadmap.md` (staged levels), `gd-level-intent.md` |
 | `design/dev-system/` | the developer: `map-systems`, `design-system`, `create-architecture`, `architecture-decision` | `dev-map-systems.md`, `dev-<system>.md` GDDs, `dev-architecture.md`, `adr/`, reviews |
 | `design/bot/` | `gd-bot-playstyle` (phase 2) | `bot-playstyle.md` |
 | `design/levels/` | `gd-level-intent` (Designed rows), `gd-level-audit` (Measured rows, audit reports) (phase 3) | `level-curves.md`, `level-audit-<date>.md` |
