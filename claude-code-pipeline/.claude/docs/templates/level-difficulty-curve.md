@@ -4,7 +4,7 @@
 > **Owner**: [game designer]
 > **Last Updated**: [Date]
 > **Written by**: `/gd-level-intent` (designed curve) · `/gd-level-audit` (measured curve)
-> **Project file**: `design/levels/level-curves.md`
+> **Project file**: `design/levels/level-curves.md` (or one shard per block, `level-curves-L21-30.md`, when several designers share the levels)
 > **Links To**: `design/gdd/gd-flow-map.md` (how `pressure(t)` is computed in this game),
 > `design/gdd/gd-level-intent.md` (the designer's words per level)
 

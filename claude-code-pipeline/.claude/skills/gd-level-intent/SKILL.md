@@ -17,6 +17,11 @@ profile).
 **In**: the designer's xlsx / docx / md file · **Out**: `design/gdd/gd-level-intent.md` +
 the **designed** curve per level in `design/levels/level-curves.md`
 
+**With a level range** (`/gd-level-intent <file> 21-30`) the outputs are per block, so several
+owners never write the same file: `design/gdd/gd-level-intent-L21-30.md` and
+`design/levels/level-curves-L21-30.md`. Without a range, the single-file names above are used.
+Only levels inside the range are touched; every other block's files are left alone.
+
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** This skill
 > mostly reads; it asks only when a phrase is unclear or an intent is impossible. The
 > designer's words are kept **verbatim, in the language they wrote them** — the translation
@@ -36,6 +41,9 @@ the **designed** curve per level in `design/levels/level-curves.md`
    - **md/text**: read directly
 3. Record the **md5 hash of the source file** — same sync rule as the GDD xlsx: when the
    source changes, the derived file must be re-synced.
+4. Read `design/gdd/gd-level-roadmap.md` **if it exists** — the lead's per-level role,
+   mechanics allowed, and the block's boundary contract. It is the reference for the checks
+   in section 2; this skill never edits it.
 
 ## 1. Translate designer language → machine profile
 
@@ -63,14 +71,20 @@ understands it next time.
 
 ## 2. Cross-check — is the intent feasible?
 
-For each level with an intent, check three things before writing. Report each conflict in
-plain words and let the designer choose — never silently pick one:
+For each level with an intent, check these before writing. Report each conflict in
+plain words and let the designer choose — never silently pick one. When
+`gd-level-roadmap.md` exists, the last three rows are checked against it too:
 
 | Conflict | Say (EN) | Nói (VI) |
 |---|---|---|
 | tier vs intent | "Level [N] is tagged [SuperHard] but you wrote '[relaxed phrase]'. Change the tier, or change the intent?" | "Level [N] đang gắn [SuperHard] nhưng bạn ghi '[cụm thả lỏng]'. Đổi tier, hay đổi ý định?" |
 | forbidden mechanic pair | "Level [N] wants [X] and [Y] together, but they were banned in the same level because [plain reason from the matrix]. Drop one, or lift the ban?" | "Level [N] muốn có cả [X] và [Y], nhưng hai cái này đã bị cấm chung level vì [lý do]. Bỏ một cái, hay bỏ lệnh cấm?" |
 | `unscored` mechanic | "Level [N] uses [X], which the bot has not been taught yet. The level can be made, but it cannot be scored until then. OK?" | "Level [N] dùng [X], bot chưa được dạy. Level làm ra được nhưng chưa chấm điểm được. Chấp nhận không?" |
+| mechanic not yet introduced | "Level [N] uses [X], but the roadmap introduces [X] at level [M]. Move the level, or ask the lead to change the roadmap?" | "Level [N] dùng [X], nhưng lộ trình giới thiệu [X] ở level [M]. Dời level, hay nhờ lead sửa lộ trình?" |
+| role vs intent | "The roadmap says level [N] is '[role]' but you wrote '[phrase]'. Which one is right?" | "Lộ trình ghi level [N] là '[vai trò]' nhưng bạn ghi '[cụm từ]'. Cái nào đúng?" |
+| block boundary | "The first level of this block should start at [tier / win-rate band] and the last end at [tier / band] (the lead's contract). Your curves start at [..] and end at [..]. Adjust, or ask the lead to change the contract?" | "Level đầu block nên bắt đầu ở [tier / band] và level cuối kết thúc ở [tier / band] (hợp đồng của lead). Đường cong của bạn bắt đầu ở [..] và kết thúc ở [..]. Chỉnh lại, hay nhờ lead đổi hợp đồng?" |
+
+The skill never edits the roadmap or a contract: only the lead does.
 
 ## 3. Write the file
 
@@ -125,7 +139,7 @@ The chart is how the designer catches a translation error before a single level 
 ## 4. Handoff to gd-level-gen
 
 State clearly at the end:
-- `gd-level-gen` reads this file **if it exists**; any level present here has its tier profile
+- `gd-level-gen` reads this file (or every `gd-level-intent-L*.md` shard) **if it exists**; any level present here has its tier profile
   **overridden**; absent levels use the default.
 - If the designer's source changes (different hash) → re-run this skill before the next
   generation batch.

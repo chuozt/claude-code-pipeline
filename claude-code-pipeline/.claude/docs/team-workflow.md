@@ -129,6 +129,38 @@ request.
 Levels are never overwritten: generated and fixed levels go to a separate folder, and the
 designer decides what replaces what (`anti-patterns.md` §5).
 
+### 5b. Several designers, levels in blocks
+
+When the levels come in blocks (for example 50 levels: 1–10 core only, then a new mechanic at
+11, 21, 31, 41, mixed with the older ones afterwards), split the work **by block, one owner
+per block**, plus a **lead designer** who owns the shared files. Splitting by mechanic makes
+two people edit the same mixed level, so do not.
+
+| File | Single writer | Others |
+|---|---|---|
+| `gd-flow-map`, `gd-difficulty-model`, both mix matrices, `gd-level-definition`, **`gd-level-roadmap`**, the Tolerances table | lead | read, raise Open Questions |
+| `gd-mechanics/<name>.md` | the owner of the block that introduces it | read |
+| `gd-level-intent-L<a>-<b>.md`, `level-curves-L<a>-<b>.md`, the block's levels | that block's owner | read only |
+
+**Nobody waits for another block's levels.** The generator does not learn from existing
+levels; a block needs only (1) the roadmap row for each of its levels — role, mechanics
+allowed, tier suggestion — (2) its **boundary contract**: entry and exit tier and win-rate
+band, so level 20 → 21 is checked by numbers, and (3) the mechanics it uses to exist in the
+simulation with a bot rule branch (a developer job, done **before** block 3 starts: it is the
+real critical path). Changing a contract or the roadmap is the lead's decision, announced to
+the affected owners.
+
+If no simulation exists yet, nothing can be generated: levels (at least the anchors) are
+built by hand until phase 2 is done. Optionally each owner finishes 1–2 **anchor levels**
+first (the introducing level + one practice level) so neighbours can see the new mechanic
+early; this is a courtesy, not a dependency.
+
+Weekly rhythm with several owners: each owner updates their intent sheet and runs
+`/gd-level-intent <file> <range>` → the developer's slot generates **one block per run** into
+`<candidates>/L<a>-<b>/` and audits the whole set → each owner approves their block → the
+lead reads the audit's **block boundaries** section and fixes contracts if a jump was not
+planned. Branches: one per designer (`gd/<name>`), merged daily.
+
 ---
 
 ## 6. Decisions And Questions

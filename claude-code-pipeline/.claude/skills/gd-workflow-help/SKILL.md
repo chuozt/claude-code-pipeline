@@ -17,7 +17,7 @@ Check which output files already exist, and mark each command **✅ done** / **�
 ls design/gdd/gd-game-concept.md design/dev-system/dev-map-systems.md design/dev-system/dev-architecture.md \
    design/gdd/gd-flow-map.md design/gdd/gd-difficulty-model.md \
    design/gdd/gd-mechanic-object-mix.md design/gdd/gd-mechanic-mix.md \
-   design/gdd/gd-level-definition.md design/gdd/gd-level-intent.md \
+   design/gdd/gd-level-definition.md design/gdd/gd-level-roadmap.md design/gdd/gd-level-intent*.md \
    design/bot/bot-playstyle.md 2>/dev/null
 ls design/gdd/gd-mechanics/*.md design/calibration/calibration-*.md 2>/dev/null
 ls design/dev-system/dev-*.md 2>/dev/null   # per-system GDDs = every dev-*.md except dev-map-systems / dev-architecture
@@ -73,8 +73,8 @@ Nothing here needs a bot, a single line of code, or anything from Phase 1A.
 | `/gd-mechanic-difficulty` | For one mechanic: what it changes, how a good player handles it, which kind of hard it adds. **Run per mechanic** | `design/gdd/gd-mechanics/<name>.md` |
 | `/gd-mechanic-object-mix` | Which mechanics can sit on the same object at once | `design/gdd/gd-mechanic-object-mix.md` |
 | `/gd-mechanic-mix` | Which mechanics can appear in the same level, and how many per tier | `design/gdd/gd-mechanic-mix.md` |
-| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier | `design/gdd/gd-level-definition.md` |
-| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. **Optional** | `design/gdd/gd-level-intent.md` + designed curves in `level-curves.md` |
+| `/gd-level-definition` | What in a level stays hand-made vs. what the machine may change; the rules a level must never break; the target per tier. For staged levels (a new mechanic every N levels) the lead also writes the **roadmap** here: role and allowed mechanics per level, entry/exit contract per block | `design/gdd/gd-level-definition.md` + `gd-level-roadmap.md` (staged levels only) |
+| `/gd-level-intent` | Reads the per-level intent sheet ("easy start, hard middle…") and draws the intended curve for each level. With a range (`21-30`) it writes per-block files, one owner each. **Optional** | `design/gdd/gd-level-intent[-L21-30].md` + designed curves in `level-curves[-L21-30].md` |
 
 > **Both mix matrices are needed before `/gd-level-definition`** — object scale and level scale
 > answer different questions and neither substitutes for the other.

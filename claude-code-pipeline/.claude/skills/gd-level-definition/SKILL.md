@@ -10,7 +10,7 @@ Define the **generation space** before generating. Without this step the generat
 produces nonsense or destroys the game's artistic identity.
 
 **In**: flow-map · difficulty-model · mechanic-mix · mechanic-object-mix ·
-**Out**: `design/gdd/gd-level-definition.md`
+**Out**: `design/gdd/gd-level-definition.md` (+ `design/gdd/gd-level-roadmap.md` when levels come in blocks)
 
 > **Question style — `gd-mode` §1, §3.1, §3.2, §5, §7 apply, mode on or off.** "Free
 > variable", "constraint", "validator", "DIG profile", "search strategy" are words for the
@@ -99,10 +99,59 @@ Present the draft, then ask:
 
 Structure: the two identity/free lists · constraints + `[DEV DEFAULT]` violation behaviour ·
 the three tier profiles · `[DEV DEFAULT]` search strategy + candidate count · date + who signed off.
+The roadmap (§6) goes in its own file, `gd-level-roadmap.md`.
+
+## 6. Level roadmap — only if levels come in staged blocks
+
+Skip when levels are not staged (one designer, one flat set). Ask once:
+
+| Ask (EN) | Hỏi (VI) |
+|---|---|
+| "Do levels come in blocks, with a new mechanic introduced at set levels (for example every 10 levels)?" | "Level chia theo block không, mỗi block giới thiệu một mechanic mới ở level cố định (ví dụ mỗi 10 level)?" |
+
+If yes, this is the **lead designer's file** — one owner, because several block owners will
+read it. It lets each block owner work alone: they follow the roadmap, they do not need
+anybody else's levels. Nothing here is learned from existing levels; the generator never uses
+other levels as examples.
+
+**One row per level** — role · mechanics allowed · tier suggestion:
+
+| Level | Role | Mechanics allowed | Tier (suggestion) |
+|---|---|---|---|
+| 11 | introduces A | A alone | Normal |
+| 12–14 | practice A | A | Normal |
+| 15–19 | A mixed with core | A | Normal / Hard |
+| 20 | block finale | A | Hard |
+| 21 | introduces B | B alone | Normal |
+| 25 | mix | A + B | Hard |
+
+- "Mechanics allowed" may only contain mechanics already introduced at or before that level,
+  and every pair must be allowed by `gd-mechanic-mix.md`. A conflict is reported, not fixed
+  silently (same rule as `/gd-level-intent` §2).
+- Roles reuse the vocabulary of `/gd-level-intent` ("teaches X", "breather", "combined
+  challenge / boss"). Tier is the designer's call; you only record it.
+
+**One boundary contract per block** — what the block must hand over and receive, so the next
+owner does not wait for this one:
+
+| Ask (EN) | Hỏi (VI) |
+|---|---|
+| "At the first level of block [N], out of 10 players trying it for the first time, how many should win? And at the last level?" | "Ở level đầu block [N], 10 người chơi lần đầu thì mấy người nên thắng? Còn level cuối block?" |
+| "Right after a new mechanic appears, should difficulty drop, or keep climbing?" | "Ngay khi có mechanic mới, độ khó nên thả xuống hay vẫn leo tiếp?" |
+
+Writes to the file as a table: block · entry level + tier + win-rate band · exit level + tier +
+win-rate band. Changing a contract later is the **lead's decision**, announced to the affected
+owners, not agreed between two owners in passing.
+
+Write to `design/gdd/gd-level-roadmap.md` (ask first). Anything undecided → `UNDEFINED`.
+Optional, never required: each owner may finish 1–2 **anchor levels** (the introducing level
+and one practice level) first, so neighbours can eyeball the mechanic early. The generator
+does not need them.
 
 ## Next
 
-- `/gd-level-intent` — **optional**, only if the designer has a per-level intent sheet
+- `/gd-level-intent` — **optional**, only if the designer has a per-level intent sheet.
+  With a roadmap, each block owner runs it for their own range (`/gd-level-intent <file> 21-30`)
 - Then phase 2 (`/gd-bot-playstyle` → `/gd-prototype-sim`) before any generation can be
   measured. Without it, `/gd-level-gen` has nothing to filter or score with.
 

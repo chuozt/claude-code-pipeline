@@ -70,7 +70,8 @@ L29  3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0   hard-locked from 15%             
 
 ### Plot against the designed curve
 
-If `design/levels/level-curves.md` exists (written by `/gd-level-intent`, format in
+If `design/levels/level-curves.md` — or the per-block shards `level-curves-L*.md` — exists
+(each shard belongs to one owner; fill only the shard that contains the level; written by `/gd-level-intent`, format in
 `.claude/docs/templates/level-difficulty-curve.md`), for every level that has a block there:
 
 1. Convert the 20 free-slot averages to `pressure(t)` with the proxy in
@@ -86,6 +87,15 @@ Update only Measured rows, ○ marks and verdict lines — never a Designed row,
 designer's. Ask before writing: *"Fill the measured curves into `level-curves.md`?"*
 Levels with no block (no specific intent) are compared against their tier's reference shape
 in the report only.
+
+### Block boundaries — only if `design/gdd/gd-level-roadmap.md` exists
+
+For each block, compare the measured win rate and pressure of its **first and last level**
+with the block's boundary contract (entry/exit tier and win-rate band), and compare each
+block's exit with the next block's entry. List a mismatch as a plain sentence for the lead —
+*"level 20 ends at ~60% win but block 2's contract says ~50%"* — never edit the contract or
+the roadmap. A block-to-block jump the contract did not plan is a finding for the lead, not
+for either owner alone.
 
 The report itself is written to `design/levels/level-audit-<date>.md` (ask before writing) —
 one file per run, never overwriting a previous audit.

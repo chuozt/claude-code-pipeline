@@ -20,7 +20,17 @@ measurement report
 
 1. Read `.claude/reference/resource-flow-difficulty-framework.md` **sections 8, 9.2, 10**.
 2. Read `design/gdd/gd-level-definition.md`. Missing → stop, point at `/gd-level-definition`.
-2b. Read `design/gdd/gd-level-intent.md` **if it exists** (optional — from
+2a. Read `design/gdd/gd-level-roadmap.md` **if it exists** (levels in staged blocks). For the
+   requested level or block, take **role**, **mechanics allowed** and the block's **boundary
+   contract** from it. Hard stops:
+   - the request needs a mechanic the roadmap has not introduced by that level → stop, point
+     at the lead (the roadmap is theirs; never widen "mechanics allowed" yourself);
+   - the request contradicts the block's entry/exit tier or win-rate band → say so and ask
+     the owner whether to change the request or ask the lead to change the contract.
+   Nothing else is needed from other blocks: **do not read other blocks' levels** and do not
+   use them as examples — the generator works from the formula, the roadmap and the bots only.
+2b. Read `design/gdd/gd-level-intent.md` — or every `gd-level-intent-L*.md` shard — **if it
+   exists** (optional — from
    `/gd-level-intent`): any level present in that table has its tier profile **overridden**;
    absent levels use the default. Check the source hash in its header — if the designer says
    the intent sheet just changed but the hash is stale → tell them to re-run
@@ -41,6 +51,10 @@ Per `gd-level-definition.md`: keep the **identity** part fixed, permute the **fr
 (hidden GIVEN × GOAL order), following the agreed strategy and a **recorded seed**.
 
 Record the seed in the report — without it, a candidate you saw cannot be reproduced.
+
+When several designers share the project, export each block's candidates to its own folder
+(`<candidates root>/L21-30/`) and generate one block per run, so a run only ever touches the
+block of the owner who asked for it.
 
 ## 2. Filter pass 1 — static DIG (cheap)
 

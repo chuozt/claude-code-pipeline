@@ -129,6 +129,35 @@ lượt chạy của dev là **giờ cố định hằng tuần**, không phải
 Level không bao giờ bị ghi đè: level sinh ra và level đã sửa đều vào folder riêng, designer
 quyết cái nào thay cái nào (`anti-patterns.md` §5).
 
+### 5b. Nhiều designer, level chia theo block
+
+Khi level chia theo block (ví dụ 50 level: 1–10 chỉ core, rồi mechanic mới ở 11, 21, 31, 41,
+sau đó mix với mechanic cũ), chia việc **theo block, mỗi block một owner**, thêm một **lead
+designer** giữ các file dùng chung. Không chia theo mechanic vì level mix sẽ bị hai người cùng sửa.
+
+| File | Người duy nhất được ghi | Người khác |
+|---|---|---|
+| `gd-flow-map`, `gd-difficulty-model`, hai ma trận mix, `gd-level-definition`, **`gd-level-roadmap`**, bảng Tolerances | lead | đọc, ghi Open Questions |
+| `gd-mechanics/<tên>.md` | owner của block giới thiệu mechanic đó | đọc |
+| `gd-level-intent-L<a>-<b>.md`, `level-curves-L<a>-<b>.md`, level của block | owner của block đó | chỉ đọc |
+
+**Không ai chờ level của block khác.** Bộ sinh level không học từ level có sẵn; mỗi block chỉ
+cần (1) dòng lộ trình của từng level: vai trò, mechanic được phép, tier gợi ý; (2) **hợp đồng
+biên**: tier và khoảng win rate ở level đầu và cuối block, để chỗ nối level 20 → 21 được kiểm
+bằng số; (3) các mechanic block đó dùng đã có trong simulation kèm nhánh luật cho bot (việc của
+dev, làm **trước** khi block 3 bắt đầu: đây mới là đường găng thật). Đổi hợp đồng hay lộ trình là
+quyết định của lead, báo cho các owner liên quan.
+
+Chưa có simulation thì chưa sinh được: level (ít nhất là level mốc) làm tay cho đến khi xong
+phase 2. Tùy chọn: mỗi owner làm trước 1–2 **level mốc** (level giới thiệu + một level luyện)
+để người bên cạnh xem sớm mechanic mới; chỉ là nhã ý, không phải điều kiện.
+
+Nhịp tuần khi nhiều owner: mỗi owner cập nhật sheet intent và chạy
+`/gd-level-intent <file> <khoảng>` → slot của dev sinh **mỗi lần một block** vào
+`<candidates>/L<a>-<b>/` rồi đo cả bộ → mỗi owner duyệt block mình → lead đọc mục **biên block**
+của báo cáo audit, sửa hợp đồng nếu có bước nhảy không dự tính. Branch: mỗi designer một
+branch (`gd/<tên>`), merge hằng ngày.
+
 ---
 
 ## 6. Quyết định và câu hỏi
