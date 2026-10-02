@@ -148,6 +148,11 @@ bằng số; (3) các mechanic block đó dùng đã có trong simulation kèm n
 dev, làm **trước** khi block 3 bắt đầu: đây mới là đường găng thật). Đổi hợp đồng hay lộ trình là
 quyết định của lead, báo cho các owner liên quan.
 
+**Nhịp block do các designer quyết.** Lead hỏi designer một block level nên chảy thế nào, viết
+thành chuỗi tier (`N` Normal · `H` Hard · `S` SuperHard). `N N N N H N N N N S` là gợi ý thường
+gặp, không phải luật — designer chốt gì thì ghi vào `gd-level-roadmap.md`, tier mỗi level ra
+từ vị trí của nó. `/gd-level-gen block 21-30` mở nhịp thành từng yêu cầu cho từng level.
+
 Chưa có simulation thì chưa sinh được: level (ít nhất là level mốc) làm tay cho đến khi xong
 phase 2. Tùy chọn: mỗi owner làm trước 1–2 **level mốc** (level giới thiệu + một level luyện)
 để người bên cạnh xem sớm mechanic mới; chỉ là nhã ý, không phải điều kiện.

@@ -150,6 +150,12 @@ simulation with a bot rule branch (a developer job, done **before** block 3 star
 real critical path). Changing a contract or the roadmap is the lead's decision, announced to
 the affected owners.
 
+**The block rhythm is the designers' decision.** The lead asks the designers what one block
+of levels should feel like, as a string of tiers (`N` Normal · `H` Hard · `S` SuperHard).
+`N N N N H N N N N S` is a common starting suggestion, not a rule — whatever the designers
+settle goes into `gd-level-roadmap.md`, and every level's tier then follows from its position.
+`/gd-level-gen block 21-30` expands the rhythm into one request per level.
+
 If no simulation exists yet, nothing can be generated: levels (at least the anchors) are
 built by hand until phase 2 is done. Optionally each owner finishes 1–2 **anchor levels**
 first (the introducing level + one practice level) so neighbours can see the new mechanic

@@ -70,7 +70,8 @@ For each tier (Normal / Hard / SuperHard), assemble one profile:
 |---|---|
 | `GreedyBot` win-rate band | `gd-difficulty-model.md` |
 | `pressure` curve shape | frame section 8 |
-| Number and kinds of mechanics | `gd-mechanic-mix.md` section 4 |
+| Tension levers (room, digging, late no-undo) | `gd-mechanic-mix.md` section 4 |
+| Which mechanics, how many | the roadmap row of each level (§6), within the matrices |
 | Target DIG profile | **asked here** |
 
 | Writes to file | Ask (EN) | Hỏi (VI) |
@@ -114,22 +115,51 @@ read it. It lets each block owner work alone: they follow the roadmap, they do n
 anybody else's levels. Nothing here is learned from existing levels; the generator never uses
 other levels as examples.
 
-**One row per level** — role · mechanics allowed · tier suggestion:
+### 6a. First, the block rhythm — the designer defines it, not you
 
-| Level | Role | Mechanics allowed | Tier (suggestion) |
-|---|---|---|---|
-| 11 | introduces A | A alone | Normal |
-| 12–14 | practice A | A | Normal |
-| 15–19 | A mixed with core | A | Normal / Hard |
-| 20 | block finale | A | Hard |
-| 21 | introduces B | B alone | Normal |
-| 25 | mix | A + B | Hard |
+Before any per-level row, ask the designer what one block of levels should feel like, as a
+string of tiers, one letter per level: **N** = Normal · **H** = Hard · **S** = SuperHard.
+
+| Ask (EN) | Hỏi (VI) |
+|---|---|
+| "How should one block of [10] levels flow, level by level? For example `N N N N H N N N N S`: four easy, one hard, four easy, then the big one. Keep this, or change it?" | "Một block [10] level nên chảy thế nào, từng level một? Ví dụ `N N N N H N N N N S`: bốn dễ, một khó, bốn dễ, rồi level lớn cuối block. Giữ nguyên, hay đổi?" |
+
+- `N N N N H N N N N S` is **only a suggestion** (the usual rhythm), shown as an example so
+  the designer has something to react to. Whatever they answer is what gets written.
+- Then ask, one at a time: "Is every block the same, or does some block differ — the first
+  block with no mechanic yet, for instance?" and "Is the new mechanic introduced at position 1
+  of the block, and are positions 2–4 practice with that mechanic alone?" *(Position 1 =
+  introduces, 2–4 = practice alone is the common answer; record whatever they say.)*
+- Tier names mean what `gd-level-definition` §3 and `gd-difficulty-model` say. Do not
+  re-define them here, and do not suggest tiers for the designer.
+
+Writes to the file: the rhythm string, the list of blocks it applies to, per-block overrides,
+and which positions introduce / practise a mechanic. **Every level's tier then comes from its
+position** — it is not written again per level.
+
+### 6b. One row per level — role · mechanics allowed
+
+Tier is read from the rhythm; the row only adds what the rhythm cannot say:
+
+| Level | Position | Tier (from rhythm) | Role | Mechanics allowed |
+|---|---|---|---|---|
+| 11 | 1 | N | introduces A | A alone |
+| 12–14 | 2–4 | N | practice A | A |
+| 15 | 5 | H | first mix | A + core |
+| 20 | 10 | S | block finale | A |
+| 21 | 1 | N | introduces B | B alone |
+| 25 | 5 | H | first mix of A and B | A + B |
+
+*(Illustrative — rows follow the rhythm the designer actually chose.)*
 
 - "Mechanics allowed" may only contain mechanics already introduced at or before that level,
   and every pair must be allowed by `gd-mechanic-mix.md`. A conflict is reported, not fixed
   silently (same rule as `/gd-level-intent` §2).
 - Roles reuse the vocabulary of `/gd-level-intent` ("teaches X", "breather", "combined
-  challenge / boss"). Tier is the designer's call; you only record it.
+  challenge / boss"). Tier and rhythm are the designer's call; you only record them.
+- If the rhythm puts a tier on a position whose role cannot reach it (for example `S` on a
+  level that only allows the core), report it — a tier is a difficulty profile, not a mechanic
+  count — and let the designer decide.
 
 **One boundary contract per block** — what the block must hand over and receive, so the next
 owner does not wait for this one:
@@ -137,7 +167,7 @@ owner does not wait for this one:
 | Ask (EN) | Hỏi (VI) |
 |---|---|
 | "At the first level of block [N], out of 10 players trying it for the first time, how many should win? And at the last level?" | "Ở level đầu block [N], 10 người chơi lần đầu thì mấy người nên thắng? Còn level cuối block?" |
-| "Right after a new mechanic appears, should difficulty drop, or keep climbing?" | "Ngay khi có mechanic mới, độ khó nên thả xuống hay vẫn leo tiếp?" |
+| "Right after a new mechanic appears, should difficulty drop, or keep climbing?" (the rhythm usually answers this: first level of a block = N) | "Ngay khi có mechanic mới, độ khó nên thả xuống hay vẫn leo tiếp?" (nhịp block thường đã trả lời: level đầu block = N) |
 
 Writes to the file as a table: block · entry level + tier + win-rate band · exit level + tier +
 win-rate band. Changing a contract later is the **lead's decision**, announced to the affected
