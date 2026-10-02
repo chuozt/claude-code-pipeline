@@ -20,6 +20,7 @@ Developer và designer không bao giờ bàn giao qua chat. Bàn giao bằng fil
 | `design/gdd/gd-*.md` (flow map, difficulty model, mix matrix, level definition, level intent) | Designer, qua các skill `gd-*` | Dev, simulation, generator | chỉ đọc |
 | `design/levels/level-curves.md` | Dòng Designed: `/gd-level-intent` · Dòng Measured: `/gd-level-audit` | Cả hai | chỉ dòng của mình |
 | `design/dev-system/`, ADR, code trong `Assets/` | Dev | Designer chỉ qua dev | không bao giờ đụng |
+| `Assets/_Tools/LevelSim/` (simulation level: bot, solver, runner song song) | Dev | Chỉ dev; designer chỉ thấy kết quả (bảng `/gd-level-gen`, `level-audit-*.md`). Chỉ chạy trong Editor, không vào build; chạy trên Model thật của game và cùng tài liệu 1A và config với gameplay, hàng nghìn ván song song | không bao giờ đụng — `gd-mode` cấm và `validate-commit.sh` chặn trên branch `gd` |
 | `docs/_session/active.md` | Người chạy session | Chính người đó, sau khi compact | — |
 
 Hai luật suy ra từ đây, vốn đã là luật của dự án:
@@ -161,7 +162,7 @@ Nhịp tuần khi nhiều owner: mỗi owner cập nhật sheet intent và chạ
 `/gd-level-intent <file> <khoảng>` → slot của dev sinh **mỗi lần một block** vào
 `<candidates>/L<a>-<b>/` rồi đo cả bộ → mỗi owner duyệt block mình → lead đọc mục **biên block**
 của báo cáo audit, sửa hợp đồng nếu có bước nhảy không dự tính. Branch: mỗi designer một
-branch (`gd/<tên>`), merge hằng ngày.
+branch (`gd-<tên>`; không dùng `gd/<tên>` vì git không cho tồn tại cùng branch `gd`), merge hằng ngày.
 
 ---
 

@@ -115,7 +115,7 @@ Two steps with **different prerequisites** — do not treat Phase 2 as one block
 | Command | What it does | Produces |
 |---|---|---|
 | `/gd-bot-playstyle` | Turns "what playing well means" into three executable playstyle rules. **Designer only; finishable without the simulation** | `design/bot/bot-playstyle.md` |
-| `/gd-prototype-sim` | Builds the pure-C# simulation + bots + solver API. **Needs a developer, 1A and `bot-playstyle.md`** | a `<Game>.Sim` assembly + tests |
+| `/gd-prototype-sim` | Builds the level-generation tooling on the game's Model: bots + solver + parallel batch runner, checked against the real game. **Needs a developer, 1A and `bot-playstyle.md`** | `<Game>.Sim` — Editor-only tooling under `Assets/_Tools/LevelSim/`, never shipped, developer-only; runs thousands of matches in parallel on the game's own Model and docs; + `dev-sim-conformance.md` |
 
 > Any mechanic without a rule branch makes its levels `unscored` — generatable, but not
 > scorable. That is the honest state, not a failure.

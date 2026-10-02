@@ -19,6 +19,7 @@ The developer and the designer never hand work over in chat. They hand it over a
 | `design/gdd/gd-*.md` (flow map, difficulty model, mix matrices, level definition, level intent) | Designer, through the `gd-*` skills | Developer, the simulation, the generator | read only |
 | `design/levels/level-curves.md` | Designed row: `/gd-level-intent` · Measured row: `/gd-level-audit` | Both | only their own rows |
 | `design/dev-system/`, ADRs, code under `Assets/` | Developer | Designer only through the developer | never touch |
+| `Assets/_Tools/LevelSim/` (the level simulation: bots, solver, parallel runner) | Developer | Developer only; the designer sees only its results (`/gd-level-gen` tables, `level-audit-*.md`). Editor-only, never in the player build; runs on the game's own Model and the same phase-1A docs and configs as the gameplay, thousands of matches in parallel | never touch — `gd-mode` forbids it and `validate-commit.sh` rejects it on `gd` branches |
 | `docs/_session/active.md` | Whoever runs the session | That person, after a compaction | — |
 
 Two rules follow from this and are already project law:
@@ -165,7 +166,7 @@ Weekly rhythm with several owners: each owner updates their intent sheet and run
 `/gd-level-intent <file> <range>` → the developer's slot generates **one block per run** into
 `<candidates>/L<a>-<b>/` and audits the whole set → each owner approves their block → the
 lead reads the audit's **block boundaries** section and fixes contracts if a jump was not
-planned. Branches: one per designer (`gd/<name>`), merged daily.
+planned. Branches: one per designer (`gd-<name>`; not `gd/<name>`, which git refuses while a `gd` branch exists), merged daily.
 
 ---
 

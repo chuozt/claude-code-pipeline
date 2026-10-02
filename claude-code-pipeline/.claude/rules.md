@@ -66,7 +66,7 @@ Unity stores scenes/prefabs as YAML and auto-merge breaks them often.
 main                      ← released builds only, nobody codes directly here
  └── <integration branch> ← integration branch, owned by the lead developer
       ├── feature/<name>  ← one branch per developer, created when work is split
-      ├── gd              ← designers push levels/data, NO .cs files (if the team has one)
+      ├── gd              ← designers push levels/data, NO .cs files and NOT Assets/_Tools/LevelSim/ — enforced by validate-commit.sh; per-designer branches are `gd-<name>`
       └── art             ← artists push assets, NO .cs files (if the team has one)
 ```
 

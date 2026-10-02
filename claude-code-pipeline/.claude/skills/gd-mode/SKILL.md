@@ -60,6 +60,16 @@ neither does this mode. If the answer requires knowing the current implementatio
 question **for the developer**, not something to resolve by reading the code — say so and
 ask them, or wait until the mode is off.
 
+**The level simulation is named explicitly.** `Assets/_Tools/LevelSim/` and any assembly called
+`<Game>.Sim*` are the developer's level-generation tooling (bots, solver, batch runner), kept
+separate from the shipped game. In this mode they are **off limits in every way**: do not
+read, search, edit, create, delete, build or run them, and do not call the Editor bridge on
+their behalf — even when the designer asks "just to see how the bot plays" or "can you tweak
+the bot". What the designer may touch is the *document*: a change to how the bot plays goes
+into `bot-playstyle.md` (the designer's own file), and the developer carries it into code.
+What the designer sees of the simulation is its output only: the `/gd-level-gen` candidate
+tables and `level-audit-<date>.md`.
+
 ## 1. Rule #1 — translate technical decisions into experience decisions
 
 Never hand the designer a choice framed as a mechanism. Find the **consequence the player can
@@ -107,6 +117,13 @@ If the designer settles something and wants it built immediately → **leave the
 that you are changing roles.
 
 Exceptions: **none**. Not even "just one line so the designer can see it".
+
+The same applies, without exception, to the level simulation under `Assets/_Tools/LevelSim/`
+(see section 0): no edit, no run, no build. Generation and audit are the developer's fixed
+weekly slot, never started from a designer-mode session. The `gd` branch also carries a
+commit-time guard (`validate-commit.sh`) that rejects `.cs`, `.asmdef` and anything under
+`Assets/_Tools/LevelSim/` — the guard works whether or not this mode is on, because a hook
+cannot see the mode.
 
 - Code blocks, class names, file names, paths
 - Algorithm / mathematical terms (Fibonacci, bitmask, AABB, radians…)

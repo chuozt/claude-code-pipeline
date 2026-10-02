@@ -26,6 +26,20 @@ printf '%s' "$COMMAND" \
 STAGED=$(git diff --cached --name-only 2>/dev/null)
 [ -z "$STAGED" ] && exit 0
 
+# Designer branches (`gd`, `gd-<name>`) carry levels and data, never code. The level simulation
+# (Assets/_Tools/LevelSim/) is the developer's tooling. A hook cannot see whether gd-mode is on,
+# so this guard is by branch name and holds either way (rules.md s.4, gd-mode s.3.0).
+case "$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" in
+    gd|gd-*|gd/*)
+        FORBIDDEN=$(printf '%s\n' "$STAGED" \
+            | grep -E '\.(cs|asmdef)(\.meta)?$|^Assets/_Tools/LevelSim/' | head -10)
+        if [ -n "$FORBIDDEN" ]; then
+            printf 'BLOCKED: designer branch commits code or the level simulation (designers push levels and data only):\n%s\nUnstage these files. Code and Assets/_Tools/LevelSim/ belong to a feature/* branch, committed by the developer.\n' \
+                "$(printf '%s\n' "$FORBIDDEN" | sed 's/^/  /')" >&2
+            exit 2
+        fi ;;
+esac
+
 # New assets missing their .meta. Only ADDED files: a modified asset already has its .meta
 # in the repo and does not need it staged again.
 MISSING=$(git diff --cached --name-only --diff-filter=A 2>/dev/null \
