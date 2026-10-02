@@ -17,7 +17,7 @@ standalone commands but are not tracked steps of this sequence.
 | Command | Purpose |
 |---|---|
 | `/map-systems` | Decompose a game concept into individual systems, map dependencies, prioritize design order, and create the… |
-| `/design-system` | Guided, section-by-section GDD authoring for every undesigned system in the index, back-to-back in one run (or a single named system) |
+| `/design-system` | Guided, section-by-section GDD authoring for every undesigned system in the index, back-to-back in one run (or a single named system). `auto` = no questions, see `docs/auto-mode.md` |
 | `/create-architecture` | Guided, section-by-section authoring of the master architecture document for the game |
 
 ### Phase 1B — define difficulty *(game designer track)*

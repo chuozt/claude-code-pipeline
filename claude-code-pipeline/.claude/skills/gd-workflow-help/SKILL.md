@@ -53,6 +53,11 @@ ls design/dev-system/dev-*.md design/dev-system/*/dev-*.md 2>/dev/null   # per-s
 
 ## Phase 1A — From idea to architecture *(developer track)*
 
+> `auto` exists on `/map-systems`, `/design-system` and `/create-architecture`: no questions,
+> drafted from the designer's workbook, unreviewed (`.claude/docs/auto-mode.md`). In auto mode a
+> command is ✅ when its output exists, but say "auto-drafted, not reviewed" next to it, and the
+> architecture's sign-off stays `PENDING` until the developer gives it.
+
 Assumes a game concept already exists (`design/gdd/gd-game-concept.md` — written however the
 team produces one; `/brainstorm` and `/start` can still be run standalone if useful, they are
 just not part of this pipeline's tracked sequence).

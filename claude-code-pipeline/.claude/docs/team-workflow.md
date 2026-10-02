@@ -92,6 +92,14 @@ The designer is not in the 1A session. They clear the GDDs' Open Questions async
 confirm or replace each `[PLACEHOLDER]` in the GDD and its config field — ideally once 1B has
 produced the difficulty files, since those settle most of the numbers.
 
+**Auto mode (optional, developer).** `/map-systems auto`, `/design-system auto` and
+`/create-architecture auto` (`docs/auto-mode.md`) run without questions, drafting from the
+designer's workbook. They mark what the source does not say `UNDEFINED`, what is ambiguous
+`UNCLEAR`, and what they derived `[INFERRED]`, cite a source for every value, and collect every
+open point into one `dev-open-questions-<date>.md`. It saves waiting, not review: budget the
+review of that list and a sample of documents, and treat the architecture as a **proposal** that
+only the developer signs off. Use the interactive mode for anything a person must decide.
+
 **Hand-over — the sync meeting.** Checklist before phase 2:
 - [ ] The model folder has no `UnityEngine` reference (`architect.md` §1)
 - [ ] `gd-difficulty-model.md` and `gd-level-definition.md` exist and the designer signs them off

@@ -27,4 +27,4 @@ the developer docs follow the designer's tabs, inside a tab folder
 (`design/dev-system/Mechanic Overview/dev-<system>.md`). These are **not** system GDDs and are
 skipped by every skill that scans GDDs: `dev-map-systems.md`, `dev-architecture*.md`,
 `dev-control-manifest.md`, `dev-tr-registry.yaml`, `dev-requirements-traceability.md`,
-`dev-sim-conformance.md`, and anything under `reviews/` or `adr/`.
+`dev-sim-conformance.md`, `dev-open-questions-*.md`, `dev-auto-verification-*.md`, and anything under `reviews/` or `adr/`.

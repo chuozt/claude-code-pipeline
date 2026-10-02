@@ -48,7 +48,7 @@ If you find a real contradiction, fix the lower document rather than adding a th
 | `.claude/agents/` | Specialist agent role definitions. |
 | `.claude/rules/` | Path-scoped rules (gameplay, UI, editor tools, data, tests, docs). |
 | `.claude/kb/` | Unity 6 + middleware reference. `kb/unity/` is the main set, `kb/goc/` the studio's own notes. |
-| `.claude/docs/` | Phase guides, templates, hook reference, workflow catalogue. |
+| `.claude/docs/` | Phase guides, templates, hook reference, auto-mode rules, workflow catalogue. |
 | `.claude/templates/` | Short project-local templates (bug report, mechanic GDD, session state). |
 | `.claude/hooks/` | Safety hooks wired in `settings.json` (`docs/hooks-reference.md`). All hooks are plain bash — no Python or `jq` needed. |
 | `.claude/tools/` | Tools the kit ships with (currently the xlsx→markdown parser). |

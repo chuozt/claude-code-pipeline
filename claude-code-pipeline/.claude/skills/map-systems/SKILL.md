@@ -1,7 +1,7 @@
 ---
 name: map-systems
 description: "Break a game concept into its individual systems, map the dependencies between them, set the design order, and write the systems index that the GDDs follow. Use when typing /map-systems or saying 'what systems does this game need', 'break the concept down', 'systems list'."
-argument-hint: "[next | system-name]"
+argument-hint: "[next | system-name | auto tabs=\"Tab A, Tab B\" [chain]]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, TodoWrite, Task
 ---
@@ -16,6 +16,21 @@ Two modes:
   to create or update the systems index.
 - **`next`**: `/map-systems next` — Pick the highest-priority undesigned system
   from the index and hand off to `/design-system` (Phase 6).
+- **`auto`**: `/map-systems auto tabs="Tab A, Tab B" [chain]` — the whole skill without
+  questions. **Read `.claude/docs/auto-mode.md` first** (what `auto` authorises, the markers, the
+  report). Specifics:
+  - Needs the exported `.xlsx` and `tabs=`; asks once if either is missing, then never again.
+  - Phase 0 in tab mode runs without prompts: in-scope tabs from `tabs=`, every other tab out of
+    scope, folder names by the Phase 0 rule.
+  - Phase 2: main systems from each tab's top-level headings (system names and boundaries are
+    `[INFERRED]`; list the heading each came from). No implicit systems. Skip 2c.
+  - Phase 3: dependencies only where a tab states or clearly references them (quote it);
+    otherwise `UNDEFINED`. A cycle is `UNCLEAR`, listed, not resolved.
+  - Phase 4: a system is `MVP` only if its tab says so; otherwise priority is `UNDEFINED`. Design
+    order = dependency order.
+  - Phase 5: write the index without asking (Status line: `Auto-drafted — NOT reviewed`).
+    Phases 6–7 do not ask; with `chain` go on to `/design-system auto chain`, otherwise print
+    the final report and stop.
 
 ---
 
