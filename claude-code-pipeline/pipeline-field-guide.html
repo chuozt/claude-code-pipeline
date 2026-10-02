@@ -138,7 +138,7 @@
       <div class="sk"><div class="top"><span class="c">/gd-mechanic-mix</span><span class="f">gd-mechanic-mix.md</span></div>
         <div class="d">Mechanic nào đi chung một level</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-definition</span><span class="f">gd-level-definition.md</span></div>
-        <div class="d">Máy được tự sinh những gì</div></div>
+        <div class="d">Máy được tự sinh những gì · lộ trình + nhịp block (GD chốt)</div></div>
     </div>
   </div>
 
@@ -169,16 +169,16 @@
     <div class="card opt"><div class="who">PHASE 2</div><span class="t">Dạy bot chơi</span>
       <div class="dir">File vào <span class="c">design/bot/</span></div>
       <div class="sk"><div class="top"><span class="c">/gd-bot-playstyle</span><span class="f">bot-playstyle.md</span></div>
-        <div class="d">GD mô tả thế nào là "chơi giỏi"</div></div>
+        <div class="d">GD làm một mình, chỉ cần 1B — không cần sim</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-prototype-sim</span><span class="f">&lt;Game&gt;.Sim</span></div>
-        <div class="d">Dev dựng sim C# thuần + test</div></div>
+        <div class="d">Dev: cần 1A + bot-playstyle. Sim C# thuần + test</div></div>
     </div>
     <div class="card opt"><div class="who">PHASE 3</div><span class="t">Sinh &amp; đo level</span>
       <div class="dir">File vào <span class="c">design/levels/</span></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-intent</span><span class="f">level-curves.md ●</span></div>
         <div class="d">GD muốn mỗi level ra sao</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-gen</span><span class="f">folder riêng</span></div>
-        <div class="d">Sinh level JSON, lọc bằng bot</div></div>
+        <div class="d">Sinh level JSON, lọc bằng bot. <span class="c">block 21-30</span> = cả block theo nhịp</div></div>
       <div class="sk"><div class="top"><span class="c">/gd-level-audit</span><span class="f">level-curves.md ○</span></div>
         <div class="d">Đo cả bộ level, báo cáo cần sửa gì</div></div>
     </div>
@@ -199,6 +199,18 @@
       <span class="sub">đọc</span> <span class="c">level-curves.md</span></div>
     <div class="card"><div class="when">Hằng ngày · cả hai</div><div class="what">Merge vào develop</div>
       <span class="c">gd</span> <span class="sub">và</span> <span class="c">feature/*</span></div>
+  </div>
+
+  <h2>Nhiều designer · level chia block (vd 50 level = 5 block × 10)</h2>
+  <div class="grid g3">
+    <div class="card gd"><div class="who">NHỊP BLOCK · GD CHỐT</div>
+      <div class="what" style="font-family:'Cascadia Mono',Consolas,monospace;font-size:8.4pt;letter-spacing:.4px">N N N N H N N N N S</div>
+      <span class="sub">Gợi ý thường gặp, GD sửa được. Tier mỗi level ra từ vị trí. Vị trí 1 = mechanic mới, 2–4 = luyện riêng.</span></div>
+    <div class="card gd"><div class="who">MỘT FILE · MỘT NGƯỜI GHI</div>
+      <span class="sub">Lead:</span> <span class="c">gd-level-roadmap.md</span><br>
+      <span class="sub">Owner block:</span> <span class="c">gd-level-intent-L21-30.md</span></div>
+    <div class="card dev"><div class="who">KHÔNG AI CHỜ BLOCK KHÁC</div>
+      <span class="sub">Hợp đồng biên: tier + win rate đầu/cuối block. Dev đưa mechanic vào sim <b style="color:var(--text)">trước</b> — đường găng thật.</span></div>
   </div>
 
   <h2>Đọc đường độ khó · level-curves.md</h2>
@@ -226,7 +238,7 @@
   <div class="grid g4">
     <div class="card gd"><div class="who">GD</div><span class="c">gd-game-concept.md</span><br><span class="c">.xlsx</span><br><span class="c">design/gdd/gd-*</span></div>
     <div class="card dev"><div class="who">DEV</div><span class="c">design/dev-system/dev-*</span><br><span class="c">design/dev-system/*</span><br><span class="c">Assets/**</span></div>
-    <div class="card"><div class="who" style="color:var(--muted)">CẢ HAI</div><span class="c">level-curves.md</span><br><span class="sub">GD ghi ● · dev ghi ○</span></div>
+    <div class="card"><div class="who" style="color:var(--muted)">CẢ HAI</div><span class="c">level-curves.md</span><br><span class="sub">GD ghi ● · dev ghi ○ · mỗi block một file</span></div>
     <div class="card"><div class="who" style="color:var(--muted)">KHÔNG BAO GIỜ</div><span class="sub">Dev quyết độ khó, giá, màu · GD sửa code</span></div>
   </div>
 
