@@ -11,6 +11,19 @@ description: Measure the difficulty and colour pairing of an entire level set wi
 
 **First principle: measure, do not look.** Humans are extremely good at seeing what they expect to see.
 
+> **Who runs it — the game designer, in `gd-mode`.** No Editor, no `/use-mcp`, no code. The
+> measuring is done by one command, `bash .claude/tools/level-audit/run-audit.sh …`
+> (developer-owned; contract and setup in the README in that folder). This skill asks the
+> questions, runs **that command and nothing else**, **reads the JSON it writes** to
+> `design/levels/audit-data/`, and writes the report. It never writes C#, never calls the
+> Editor bridge, and never opens the code or the level `.json` files behind the runner. A
+> developer may run it too, in a session where `gd-mode` is off.
+>
+> If `run-audit.sh` exits non-zero, say what its exit code means (README table) in the
+> designer's words and **stop** — ask the developer. Do not look for the cause in code, do not
+> retry with other flags to get around it, and do not use `--allow-stale` unless the designer
+> asks for it after you explained that the numbers will describe an older game.
+
 ---
 
 ## SAFETY RULE — read first
@@ -37,19 +50,39 @@ If the developer says *"but the validator is clean"* → repeat exactly this pas
 
 ## Phase 1 — Ask before measuring
 
-1. What skill level does the bot simulate? Does it use boosters? Revives? What misclick rate?
-   *(Suggestion: an average-skill bot, ~25% misclicks, **no revives** — so the numbers reflect
-   the level and not the assistance systems.)*
-2. How many attempts per level is trustworthy? *(Suggestion: 100. Fewer and noise exceeds signal.)*
-3. What win-rate band is wanted per difficulty label?
-   *(Reference: Normal 85–100% · Hard 35–55% · Super hard 20–35%.)*
-4. Which levels may be changed, and which are live and untouchable?
+Ask the designer in their own terms (`gd-mode` §1, §3.1, §5), one at a time, and turn the
+answers into the command's flags. The **suggested** answer is what to use when the designer
+has no view.
+
+| Writes to the command | Ask (EN) | Hỏi (VI) | Suggested |
+|---|---|---|---|
+| `--bot` | "Which kind of player should the test use: a player who taps anything legal, a decent player who follows your playing rule, or a strong player who thinks several moves ahead?" | "Chạy thử với kiểu người chơi nào: bấm bừa mọi thứ hợp lệ, người chơi khá theo luật bạn đã viết, hay người chơi mạnh nghĩ trước nhiều nước?" | `greedy` |
+| `--misclick` | "How often should that player tap the wrong thing — never, 1 in 4, 1 in 10?" | "Người chơi đó nên bấm nhầm bao nhiêu lần: không bao giờ, 1 trên 4, 1 trên 10?" | 0.25 (1 in 4) |
+| *(not a flag)* boosters, revives | "Should the test player use boosters or revive? If yes the numbers describe the helpers as much as the level." | "Người chơi thử có dùng booster hay hồi sinh không? Nếu có thì số đo phản ánh cả các thứ hỗ trợ chứ không chỉ level." | no — and say so in the report |
+| `--attempts` | "How many times should each level be played? More is steadier but slower." | "Mỗi level chơi thử bao nhiêu lần? Nhiều hơn thì ổn định hơn nhưng chậm hơn." | 100 |
+| `--levels` | "Which levels: all, or a range like 21-30?" | "Đo level nào: tất cả, hay một khoảng như 21-30?" | the designer's block |
+| *(not a flag)* band per label | "Out of 10 players on a Normal / Hard / SuperHard level, how many should win?" | "10 người chơi một level Normal / Hard / SuperHard thì mấy người nên thắng?" | from `gd-difficulty-model.md`; reference Normal 85–100% · Hard 35–55% · SuperHard 20–35% |
+| *(not a flag)* touchable levels | "Which levels may we propose changes to, and which are already live and must not be touched?" | "Level nào được đề xuất sửa, level nào đã live và tuyệt đối không đụng?" | ask — no default |
+
+Never ask for a seed: use `--seed 1` and, to see the noise, repeat with `--seed 2`.
 
 ---
 
 ## Phase 2 — Measure difficulty
 
-For **each** level, run N attempts and record 4 metrics:
+**Run the measurement:**
+
+```bash
+bash .claude/tools/level-audit/run-audit.sh --levels <range|all> --bot <…> --attempts <N> --seed 1 [--misclick <p>]
+```
+
+Read the JSON path it prints. The file holds, **for each level**, the 4 metrics below plus the
+colour data of Phase 3 and the run's matches per second, core count and model commit; quote
+those next to the attempt counts in the report. Take the numbers **only from this file** —
+never estimate one, never re-derive it from code. A level marked `"unscored": true` has no win
+rate: list it as *unscored*, not as hard or easy.
+
+Metrics, per level:
 
 | Metric | Meaning |
 |---|---|
@@ -102,16 +135,18 @@ All bot matches go through the Sim tools' `BatchRunner` (parallel, seed-determin
 The report itself is written to `design/levels/level-audit-<date>.md` (ask before writing) —
 one file per run, never overwriting a previous audit.
 
-The efficient way to run this: write **one static method** in the project's editor code that
-returns JSON, then — **once the developer has typed `/use-mcp`** (`CLAUDE.md` §2.1; without it,
-ask) — call it in one line through `eval` (`unity command eval --code "return X.RunToJson();"`),
-writing the output to a file. Do not send long snippets over the bridge repeatedly — it burns tokens.
+Do not write measuring code and do not use the Editor bridge for this: the runner behind
+`run-audit.sh` is the only way numbers enter this skill.
 
 ---
 
 ## Phase 3 — Colour pairing across the play session
 
 **Never judge the level's overall palette.** The player does not see the whole level at once.
+
+The runner computes these from the swatches in the level data and reports, per level, the worst
+pair and where in the level it occurs (`colour` in the JSON). Read and judge them against the
+thresholds below; do not recompute them. What the runner does, per window position:
 
 Slide a **window** along play progress (sized to the number of elements visible on screen at
 once). At each window position, consider only the colours present **simultaneously**, and compute:
@@ -140,7 +175,7 @@ real cause of most dead levels was the **supply order**: resources needed early 
 behind resources needed late. Judged by eye, the conclusion was "too cluttered", mechanics were
 removed — and the levels stayed broken.
 
-Four suspects, in order of frequency:
+Four suspects, in order of frequency. Judge them from the JSON (pressure curve, loss type, share of the level cleared) and the designer's documents. A suspect that needs the level data itself to confirm is written as *"cannot be confirmed from the audit data — needs the developer"*, never guessed:
 1. **Resource ordering** — what is needed first is buried behind what is needed later
 2. **Resources only usable once exposed** — sitting dead and occupying space for the whole match
 3. **A mechanic's simultaneity condition** — several things must be true at once; missing one deadlocks permanently
@@ -154,8 +189,8 @@ Four suspects, in order of frequency:
    (designed vs measured, or vs the tier's reference shape) · worst colour pair · rule violations
 2. **The list of levels needing fixes + their ROOT CAUSE** — not "too hard" but
    *"missing the right resource at the 40–60% stretch"*
-3. **Proposed levels, exported to a separate folder**, with a read-me-first file
-4. **Suggested validator additions** so the same problem is caught earlier next time
+3. **Proposed changes, in words** (which level, which stretch, what to change). In designer mode the skill writes no level files: new candidate levels are produced by `/gd-level-gen`, run by the developer, into a separate folder with a read-me-first file
+4. **Suggested validator additions** for the developer, so the same problem is caught earlier next time
 
 ---
 
