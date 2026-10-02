@@ -19,3 +19,12 @@ Tuning Knobs · Acceptance Criteria
 - **Tuning Knobs** must name the exact config asset that holds each one.
 - Anything the designer has not decided → write `UNDEFINED`. **The AI must not fill it in.**
 - Doc and code disagree → fix the doc in the same change.
+
+## Which files are system GDDs
+
+A **system GDD** is a `dev-*.md` under `design/dev-system/` — flat (`dev-<system>.md`) or, when
+the developer docs follow the designer's tabs, inside a tab folder
+(`design/dev-system/Mechanic Overview/dev-<system>.md`). These are **not** system GDDs and are
+skipped by every skill that scans GDDs: `dev-map-systems.md`, `dev-architecture*.md`,
+`dev-control-manifest.md`, `dev-tr-registry.yaml`, `dev-requirements-traceability.md`,
+`dev-sim-conformance.md`, and anything under `reviews/` or `adr/`.

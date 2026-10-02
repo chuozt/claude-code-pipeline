@@ -40,7 +40,7 @@ Before reading any full document, use Grep to extract `## Summary` sections
 from all GDDs and ADRs:
 
 ```
-Grep pattern="## Summary" glob="design/dev-system/dev-*.md" output_mode="content" -A 4
+Grep pattern="## Summary" glob="design/dev-system/**/dev-*.md" output_mode="content" -A 4
 Grep pattern="## Summary" glob="design/dev-system/adr/adr-*.md" output_mode="content" -A 3
 ```
 

@@ -15,7 +15,7 @@ The developer and the designer never hand work over in chat. They hand it over a
 | Folder / file | Written by | Read by | The other side may… |
 |---|---|---|---|
 | `design/gdd/gd-game-concept.md`, source `.xlsx` workbooks | Designer | Both | comment, never edit |
-| `design/dev-system/dev-<system>.md` (GDDs) | Developer, alone, with `/design-system` — design values quoted from the designer's docs | Both | fixes `[PLACEHOLDER]`s via Open Questions |
+| `design/dev-system/dev-<system>.md` (GDDs) — or `design/dev-system/<Tab folder>/dev-<system>.md` when organised by the designer's tabs (`/map-systems` Phase 0) | Developer, alone, with `/design-system` — design values quoted from the designer's docs | Both | fixes `[PLACEHOLDER]`s via Open Questions |
 | `design/gdd/gd-*.md` (flow map, difficulty model, mix matrices, level definition, level intent) | Designer, through the `gd-*` skills | Developer, the simulation, the generator | read only |
 | `design/levels/level-curves.md` | Designed row: `/gd-level-intent` · Measured row: `/gd-level-audit` | Both | only their own rows |
 | `design/dev-system/`, ADRs, code under `Assets/` | Developer | Designer only through the developer | never touch |

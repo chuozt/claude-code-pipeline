@@ -26,7 +26,7 @@ of artifacts, and gaps that need attention. It's especially useful when:
 Analyze project structure and content:
 
 **Design Documentation** (`design/`):
-- Count GDD files in `design/dev-system/dev-*.md`
+- Count GDD files in `design/dev-system/**/dev-*.md` (system GDDs only: skip `dev-map-systems.md`, `dev-architecture*.md`, `reviews/`, `adr/`)
 - Check for gd-game-concept.md, gd-game-pillars.md, dev-map-systems.md
 - If dev-map-systems.md exists, count total systems vs. designed systems
 - Analyze completeness (Overview, Detailed Design, Edge Cases, etc.)

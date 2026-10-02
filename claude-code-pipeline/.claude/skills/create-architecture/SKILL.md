@@ -61,13 +61,18 @@ Read all approved design documents and extract technical requirements from each:
 2. `design/dev-system/dev-map-systems.md` — all systems, dependencies, priority tiers
 3. `.claude/docs/technical-preferences.md` — naming conventions, performance budgets,
    allowed libraries, forbidden patterns
-4. **Every GDD in `design/dev-system/`** — for each, extract technical requirements:
+4. **Every GDD under `design/dev-system/`** (flat files or tab folders, skipping `reviews/` and `adr/`) — for each, extract technical requirements:
    - Data structures implied by the game rules
    - Performance constraints stated or implied
    - Engine capabilities the system requires
    - Cross-system communication patterns (what talks to what, how)
    - State that must persist (save/load implications)
    - Threading or timing requirements
+
+**Tab mode** (`Organisation: by designer tab` in the index header): the **Out of scope tabs**
+listed there are not designed and have no GDD. Do not invent requirements for them. Record each
+under the architecture's Open Questions as *"not covered: [tab] — owner: developer + game
+designer"*, so the architecture's coverage is never mistaken for the whole game's.
 
 Build a **Technical Requirements Baseline** — a flat list of all extracted
 requirements across all GDDs, numbered `TR-[gdd-slug]-[NNN]`. This is the

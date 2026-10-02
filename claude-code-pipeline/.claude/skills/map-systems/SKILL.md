@@ -19,6 +19,41 @@ Two modes:
 
 ---
 
+## Phase 0: Source and organisation — flat or by the designer's tabs
+
+Decide how the developer documents are organised **before** enumerating anything.
+
+1. Look for the designer's workbook: `Glob` for `*.xlsx` under `docs/` and the project root
+   (parser and procedure: `.claude/tools/gdd-sync/README.md`). List its **tab names** with
+   `gdd-sync`. A GDD that only exists as a web sheet must first be exported to `.xlsx` into the
+   project — without it nothing in the tabs can be quoted (`/design-system` §4 designer-fact
+   rule). No workbook found → **flat mode**, skip the rest of this phase.
+2. Workbook found → ask once with `AskUserQuestion`: "The designer's GDD has [N] tabs:
+   [list]. Organise the developer docs **by tab** — one folder per tab — and design only the
+   tabs I pick?" Options: `By tab — I choose the tabs` / `Flat — one doc per system (default
+   behaviour)`.
+3. **By tab** → ask which tabs are **in scope** (multi-select); every other tab is recorded as
+   **out of scope** (not designed now, listed in the index so nobody assumes it is covered).
+   Propose one **folder name per in-scope tab** and let the developer correct them in the same
+   step. Rule: the tab name without its trailing ` - <owner>` suffix, with characters illegal in
+   folder names (`/ \ : * ? " < > |`) replaced by `-` — `Mechanic Overview - ThangNT` →
+   `Mechanic Overview`, `UI/UX - DuyTA` → `UI-UX`.
+4. Record in the index header (Phase 5): `Organisation: by designer tab`, `Source workbook:
+   <path>`, `In scope: <tabs → folders>`, `Out of scope: <tabs>`. `/design-system` and
+   `/create-architecture` read these lines; this is the only place the choice is stored.
+
+**In tab mode the workbook is the required source** (the concept document in Phase 1 becomes
+optional — read it if it exists, never stop for it).
+
+**Main systems, not small systems.** In each in-scope tab a *main system* is a top-level
+heading of that tab that owns rules or state of its own (for example the headings of an
+"Overall Rule / Elements" tab). Step 2b (implicit systems) is **skipped**: do not infer hidden
+systems. Variants — each mechanic, booster or screen listed inside a main system — are **rows
+or sub-sections of that system's document**, never documents of their own. Propose the list
+per tab and let the developer merge or split it in Step 2c.
+
+---
+
 ## Phase 1: Read Concept (Required Context)
 
 Read the game concept and any existing design work. This provides the raw material
@@ -33,7 +68,7 @@ for systems decomposition.
 - Read `design/gdd/gd-game-pillars.md` — pillars constrain priority and scope
 - Read `design/dev-system/dev-map-systems.md` — if exists, **resume** from where it left off
   (update, don't recreate from scratch)
-- Glob `design/dev-system/dev-*.md` — check which system GDDs already exist
+- Glob `design/dev-system/**/dev-*.md` — check which system GDDs already exist
 
 **If the systems index already exists:**
 - Read it and present current status to the user
@@ -59,7 +94,7 @@ Scan the game concept for directly mentioned systems and mechanics:
 - Technical Considerations section (networking, procedural generation, etc.)
 - MVP Definition section (required features = required systems)
 
-### Step 2b: Identify Implicit Systems
+### Step 2b: Identify Implicit Systems *(flat mode only — skipped in tab mode, see Phase 0)*
 
 For each explicit system, identify the **hidden systems** it implies. Games always
 need more systems than the concept doc mentions. Use this inference pattern:
@@ -194,6 +229,10 @@ systems index with all data from Phases 2-4:
 - Fill the recommended design order
 - Fill the high-risk systems
 - Fill progress tracker (all systems "Not Started" initially, unless GDDs already exist)
+- **Tab mode**: add the header lines from Phase 0, a `Tab` and a `Folder` column to the
+  enumeration table (`design/dev-system/<Folder>/dev-<system>.md` is each system's document), and
+  an **Out of scope tabs** section. Out-of-scope tabs are not systems and never enter the
+  design queue.
 
 ### Step 5b: Approval
 
