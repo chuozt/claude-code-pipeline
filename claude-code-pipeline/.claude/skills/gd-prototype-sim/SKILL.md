@@ -178,6 +178,8 @@ Present this table for approval:
 | Parallel runner | `BatchRunner` | Sim tools — all cores, per-thread accumulators, deterministic, reports matches/second; the developer states the target throughput here |
 | State hash | `SimSnapshot.Hash()` | Model — used by the parity test against the real game |
 | Conformance matrix | `design/dev-system/dev-sim-conformance.md` | developer-owned: GDD section → Model type → config asset → test |
+| **Audit runner** *(the designer's way in)* | `Tools/LevelSim.Runner/` + `.claude/tools/level-audit/runner.conf` | plain .NET console, **no Unity**, links the Model and Sim tools **sources** (one copy of the rules), reads an exported config JSON and the level files **read-only**, writes the audit JSON of `.claude/tools/level-audit/README.md`. The designer runs it only through `run-audit.sh` (`/gd-level-audit`), never opens it |
+| Config export | an Editor menu item (developer-owned) | writes the game's config assets as one JSON; re-run after any config change — `run-audit.sh` refuses a stale export |
 | Tests | `<Game>.Sim.Tests` | EditMode, no scene |
 
 **Spawn `lead-programmer` and `unity-specialist` in parallel** (Task) to challenge it
@@ -253,6 +255,11 @@ Then three verification questions, answered with evidence rather than assumption
    Report matches per second for each, and the core count. No number measured = not verified.
 8. Does it match the real game? → run the parity test (section B above) and report how many
    sequences and moves were compared. State plainly if it was not run.
+9. Can the designer run it alone? → set up `runner.conf`, then from a shell **with the Unity
+   Editor closed** run `bash .claude/tools/level-audit/run-audit.sh --levels 1-3 --attempts 10`:
+   exit 0 and a JSON that matches the contract. Run it twice with the same arguments: the level
+   results must be identical. Run it once more with the Editor **open** (it must not touch
+   `Library/`). Change a config asset without re-exporting and confirm exit 4. Report each result.
 
 ## 4. The boundary with the View
 

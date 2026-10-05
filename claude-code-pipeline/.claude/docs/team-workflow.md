@@ -127,13 +127,18 @@ mandatory 20% holdout. New weights → back to phase 3.
 |---|---|---|---|
 | Start of week | Designer | Updates the intent sheet → `/gd-level-intent` → **approves the designed curves** (●) | `gd-level-intent.md`, Designed rows in `level-curves.md` |
 | Once, before the first audit | Designer | Fills the **Tolerances** table in `level-curves.md` | no verdicts are possible without it |
-| Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` → `/gd-level-audit` | candidates exported to a separate folder; Measured rows (○) + verdicts |
+| Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` | candidates exported to a separate folder |
+| After generation, any time | Designer (`gd-mode`) | `/gd-level-audit` | Measured rows (○) + verdicts + `level-audit-<date>.md` |
 | End of week | Designer | Reads `level-curves.md`: keep / revise / replace each level | decisions recorded next to each level |
 | Daily | Both | Merge `gd` and `feature/*` into the integration branch | — |
 
-The designer cannot run generation or audit alone — both need the Editor bridge, which only
-the developer enables. That is why the developer's run is a **fixed weekly slot**, not a
-request.
+The designer **can run the audit alone**, in `gd-mode`: `/gd-level-audit` runs one developer-owned
+command (`.claude/tools/level-audit/run-audit.sh`) that needs no Editor and no bridge, and reads its
+JSON. **Generation** still needs the developer (the bridge, and a level written into the project),
+which is why it is a **fixed weekly slot**, not a request. The audit is only as good as the
+developer's setup: it needs the runner, a fresh config export and the parity test
+(`/gd-prototype-sim`); if the command reports any of them missing, the designer asks the
+developer and never works around it.
 
 Levels are never overwritten: generated and fixed levels go to a separate folder, and the
 designer decides what replaces what (`anti-patterns.md` §5).

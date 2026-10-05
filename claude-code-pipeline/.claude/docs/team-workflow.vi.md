@@ -128,12 +128,17 @@ buộc. Weights mới → quay lại phase 3.
 |---|---|---|---|
 | Đầu tuần | Designer | Cập nhật sheet intent → `/gd-level-intent` → **duyệt đường thiết kế** (●) | `gd-level-intent.md`, dòng Designed trong `level-curves.md` |
 | Một lần, trước audit đầu tiên | Designer | Điền bảng **Tolerances** trong `level-curves.md` | thiếu nó thì không ra được verdict |
-| Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` → `/gd-level-audit` | candidate export ra folder riêng; dòng Measured (○) + verdict |
+| Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` | candidate export ra folder riêng |
+| Sau khi sinh, lúc nào cũng được | Designer (`gd-mode`) | `/gd-level-audit` | dòng Measured (○) + verdict + `level-audit-<ngày>.md` |
 | Cuối tuần | Designer | Đọc `level-curves.md`: giữ / sửa / thay từng level | quyết định ghi cạnh từng level |
 | Hằng ngày | Cả hai | Merge `gd` và `feature/*` vào integration branch | — |
 
-Designer không tự chạy được gen hay audit — cả hai cần Editor bridge, mà chỉ dev bật. Vì vậy
-lượt chạy của dev là **giờ cố định hằng tuần**, không phải yêu cầu đột xuất.
+Designer **tự chạy được audit**, trong `gd-mode`: `/gd-level-audit` chạy một lệnh do dev quản lý
+(`.claude/tools/level-audit/run-audit.sh`) không cần Editor và không cần bridge, rồi đọc JSON của
+nó. **Sinh level** thì vẫn cần dev (bridge, level ghi vào project) nên là **giờ cố định hằng tuần**,
+không phải yêu cầu đột xuất. Audit chỉ tốt bằng phần dev dựng sẵn: cần runner, bản export config
+mới và test parity (`/gd-prototype-sim`); lệnh báo thiếu cái nào thì designer hỏi dev, không tự
+vòng qua.
 
 Level không bao giờ bị ghi đè: level sinh ra và level đã sửa đều vào folder riêng, designer
 quyết cái nào thay cái nào (`anti-patterns.md` §5).

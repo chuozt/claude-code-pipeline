@@ -30,8 +30,9 @@ On entering, print one line: `🎮 Designer mode — discussing experience, not 
 3. **`.xlsx` design workbooks in the project** — the designer's own workbook. Read it via the
    `.claude/tools/gdd-sync` extraction procedure (`.claude/tools/gdd-sync/README.md`) rather
    than re-inventing xlsx parsing. `Bash` in this mode is for that extraction only — `md5sum`,
-   `mktemp`, `tar`, `perl`, `parse-sheet.sh` — never for `unity`/`dotnet`/git-mutating
-   commands. Treat the workbook as source of truth over the derived `.md` copies when the two
+   `mktemp`, `tar`, `perl`, `parse-sheet.sh`, and the one sanctioned audit command
+   `.claude/tools/level-audit/run-audit.sh` (what `/gd-level-audit` runs; see section 0) — never for
+   `unity`/`dotnet`/git-mutating commands called directly. Treat the workbook as source of truth over the derived `.md` copies when the two
    disagree (`gdd-sync`'s own rule).
 4. **The designer's own recorded thinking** — prior decisions, open questions, and the
    reasoning behind them, as already written in the docs above. This is what "thinking like
@@ -63,12 +64,19 @@ ask them, or wait until the mode is off.
 **The level simulation is named explicitly.** `Assets/_Tools/LevelSim/` and any assembly called
 `<Game>.Sim*` are the developer's level-generation tooling (bots, solver, batch runner), kept
 separate from the shipped game. In this mode they are **off limits in every way**: do not
-read, search, edit, create, delete, build or run them, and do not call the Editor bridge on
+read, search, edit, create, delete, build or run them (the single exception is below), and do not call the Editor bridge on
 their behalf — even when the designer asks "just to see how the bot plays" or "can you tweak
 the bot". What the designer may touch is the *document*: a change to how the bot plays goes
 into `bot-playstyle.md` (the designer's own file), and the developer carries it into code.
 What the designer sees of the simulation is its output only: the `/gd-level-gen` candidate
-tables and `level-audit-<date>.md`.
+tables, `level-audit-<date>.md`, and the audit results in `design/levels/audit-data/*.json`
+(readable in this mode: they are results, not code).
+
+**The one exception — `/gd-level-audit`.** The designer may run the audit from this mode. It
+works through a single developer-owned command, `bash .claude/tools/level-audit/run-audit.sh …`,
+which needs no Editor and no bridge and writes only under `design/levels/audit-data/`. Running
+that command, and nothing behind it, is allowed; opening, editing or rebuilding the runner
+is not. If the command fails, report its exit code in the designer's words and ask the developer.
 
 ## 1. Rule #1 — translate technical decisions into experience decisions
 
@@ -119,8 +127,9 @@ that you are changing roles.
 Exceptions: **none**. Not even "just one line so the designer can see it".
 
 The same applies, without exception, to the level simulation under `Assets/_Tools/LevelSim/`
-(see section 0): no edit, no run, no build. Generation and audit are the developer's fixed
-weekly slot, never started from a designer-mode session. The `gd` branch also carries a
+(see section 0): no edit, no build, and no run except the audit command above. Level
+**generation** (`/gd-level-gen`) is still the developer's fixed weekly slot, never started from a
+designer-mode session; the audit is the designer's. The `gd` branch also carries a
 commit-time guard (`validate-commit.sh`) that rejects `.cs`, `.asmdef` and anything under
 `Assets/_Tools/LevelSim/` — the guard works whether or not this mode is on, because a hook
 cannot see the mode.
