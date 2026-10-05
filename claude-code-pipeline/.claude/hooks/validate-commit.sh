@@ -32,9 +32,9 @@ STAGED=$(git diff --cached --name-only 2>/dev/null)
 case "$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" in
     gd|gd-*|gd/*)
         FORBIDDEN=$(printf '%s\n' "$STAGED" \
-            | grep -E '\.(cs|asmdef)(\.meta)?$|^Assets/_Tools/LevelSim/' | head -10)
+            | grep -E '\.(cs|asmdef)(\.meta)?$|^Assets/_Tools/(LevelSim|LevelPlayer)/' | head -10)
         if [ -n "$FORBIDDEN" ]; then
-            printf 'BLOCKED: designer branch commits code or the level simulation (designers push levels and data only):\n%s\nUnstage these files. Code and Assets/_Tools/LevelSim/ belong to a feature/* branch, committed by the developer.\n' \
+            printf 'BLOCKED: designer branch commits code or the level simulation (designers push levels and data only):\n%s\nUnstage these files. Code and Assets/_Tools/LevelSim/ and LevelPlayer/ belong to a feature/* branch, committed by the developer.\n' \
                 "$(printf '%s\n' "$FORBIDDEN" | sed 's/^/  /')" >&2
             exit 2
         fi ;;

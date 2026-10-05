@@ -20,6 +20,7 @@ The developer and the designer never hand work over in chat. They hand it over a
 | `design/levels/level-curves.md` | Designed row: `/gd-level-intent` · Measured row: `/gd-level-audit` | Both | only their own rows |
 | `design/dev-system/`, ADRs, code under `Assets/` | Developer | Designer only through the developer | never touch |
 | `Assets/_Tools/LevelSim/` (the level simulation: bots, solver, parallel runner) | Developer | Developer only; the designer sees only its results (`/gd-level-gen` tables, `level-audit-*.md`). Editor-only, never in the player build; runs on the game's own Model and the same phase-1A docs and configs as the gameplay, thousands of matches in parallel | never touch — `gd-mode` forbids it and `validate-commit.sh` rejects it on `gd` branches |
+| `Assets/_Tools/LevelPlayer/` (the Level Player: the window in which the designer plays, watches bots, fast-forwards, runs many bots; spec `.claude/tools/level-player/README.md`) | Developer builds it | The designer **uses** it as a Unity window and never opens its code; Claude in `gd-mode` cannot launch it, only reads the play records | never touch the code — `gd-mode` forbids it and `validate-commit.sh` rejects it on `gd` branches |
 | `docs/_session/active.md` | Whoever runs the session | That person, after a compaction | — |
 
 Two rules follow from this and are already project law:
@@ -129,6 +130,7 @@ mandatory 20% holdout. New weights → back to phase 3.
 | Once, before the first audit | Designer | Fills the **Tolerances** table in `level-curves.md` | no verdicts are possible without it |
 | Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` | candidates exported to a separate folder |
 | After generation, any time | Designer (`gd-mode`) | `/gd-level-audit` | Measured rows (○) + verdicts + `level-audit-<date>.md` |
+| After generation, any time | Designer (Unity) | **Level Player** (`Tools ▸ Level Player`): play the new levels by hand, watch a bot, run many bots on one level | play records in `design/levels/play-records/`; read by `/gd-level-audit` (Human check) and `/gd-calibrate` |
 | End of week | Designer | Reads `level-curves.md`: keep / revise / replace each level | decisions recorded next to each level |
 | Daily | Both | Merge `gd` and `feature/*` into the integration branch | — |
 

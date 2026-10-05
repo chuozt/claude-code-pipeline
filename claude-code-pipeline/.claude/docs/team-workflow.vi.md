@@ -21,6 +21,7 @@ Developer và designer không bao giờ bàn giao qua chat. Bàn giao bằng fil
 | `design/levels/level-curves.md` | Dòng Designed: `/gd-level-intent` · Dòng Measured: `/gd-level-audit` | Cả hai | chỉ dòng của mình |
 | `design/dev-system/`, ADR, code trong `Assets/` | Dev | Designer chỉ qua dev | không bao giờ đụng |
 | `Assets/_Tools/LevelSim/` (simulation level: bot, solver, runner song song) | Dev | Chỉ dev; designer chỉ thấy kết quả (bảng `/gd-level-gen`, `level-audit-*.md`). Chỉ chạy trong Editor, không vào build; chạy trên Model thật của game và cùng tài liệu 1A và config với gameplay, hàng nghìn ván song song | không bao giờ đụng — `gd-mode` cấm và `validate-commit.sh` chặn trên branch `gd` |
+| `Assets/_Tools/LevelPlayer/` (Level Player: cửa sổ để designer tự chơi, xem bot, chạy nhanh, chạy nhiều bot; spec `.claude/tools/level-player/README.md`) | Dev dựng | Designer **dùng** nó như một cửa sổ Unity, không mở code; Claude trong `gd-mode` không mở được, chỉ đọc bản ghi lượt chơi | không đụng code — `gd-mode` cấm và `validate-commit.sh` chặn trên branch `gd` |
 | `docs/_session/active.md` | Người chạy session | Chính người đó, sau khi compact | — |
 
 Hai luật suy ra từ đây, vốn đã là luật của dự án:
@@ -130,6 +131,7 @@ buộc. Weights mới → quay lại phase 3.
 | Một lần, trước audit đầu tiên | Designer | Điền bảng **Tolerances** trong `level-curves.md` | thiếu nó thì không ra được verdict |
 | Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` | candidate export ra folder riêng |
 | Sau khi sinh, lúc nào cũng được | Designer (`gd-mode`) | `/gd-level-audit` | dòng Measured (○) + verdict + `level-audit-<ngày>.md` |
+| Sau khi sinh, lúc nào cũng được | Designer (Unity) | **Level Player** (`Tools ▸ Level Player`): tự chơi level mới, xem bot chơi, chạy nhiều bot trên một level | bản ghi lượt chơi trong `design/levels/play-records/`; `/gd-level-audit` (Human check) và `/gd-calibrate` đọc |
 | Cuối tuần | Designer | Đọc `level-curves.md`: giữ / sửa / thay từng level | quyết định ghi cạnh từng level |
 | Hằng ngày | Cả hai | Merge `gd` và `feature/*` vào integration branch | — |
 
