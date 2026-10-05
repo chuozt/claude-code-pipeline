@@ -70,6 +70,7 @@ playstyle file.
 | `/commit` | Commit the current changes in this Unity repo, including a review pass for unexpected changes and a commit … |
 | `/consistency-check` | Scan all GDDs against the entity registry to detect cross-document inconsistencies: same entity with differ… |
 | `/create-control-manifest` | After architecture is complete, produces a flat actionable rules sheet for programmers — what you must do, … |
+| `/deconstruct-game` | Tear down ANOTHER game to extract design insight (why, trade-off, lesson), not a feature list; report to `design/research/` |
 | `/dev-brief` | Switch replies to short, dense output for a developer — every point kept, fewer words, sharper word choice |
 | `/design-review` | Reviews a game design document for completeness, internal consistency, implementability, and adherence to p… |
 | `/gd-bug` | The mandatory 4-step Unity debugging procedure - collect evidence, narrow down, hypothesise, fix and re-verify |
