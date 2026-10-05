@@ -52,7 +52,11 @@ Runnable **as soon as the simulation exists**, with no player data.
    reproducibility of contract rule 1 is lost and nobody can debug a losing match.
 2. Take the sample level set already generated, plus their bot numbers.
 3. **The designer replays each level** and scores it easy/hard. Record labels on the same
-   scale as the tiers (Normal / Hard / SuperHard) so they compare against predictions.
+   scale as the tiers (Normal / Hard / SuperHard) so they compare against predictions. The
+   designer plays in the Level Player (`.claude/tools/level-player/README.md`); read the play
+   records in `design/levels/play-records/` for the evidence behind each label (result, moves,
+   invalid taps, restarts, time) and ignore records whose `modelCommit` is older than the
+   simulation being calibrated.
 4. For each mismatched level, the designer states the direction: needs to be **easier** or **harder**.
 5. Fit a crude `w` on those labels, then iterate.
 

@@ -61,7 +61,7 @@ neither does this mode. If the answer requires knowing the current implementatio
 question **for the developer**, not something to resolve by reading the code — say so and
 ask them, or wait until the mode is off.
 
-**The level simulation is named explicitly.** `Assets/_Tools/LevelSim/` and any assembly called
+**The level simulation is named explicitly.** `Assets/_Tools/LevelSim/`, `Assets/_Tools/LevelPlayer/` and any assembly called
 `<Game>.Sim*` are the developer's level-generation tooling (bots, solver, batch runner), kept
 separate from the shipped game. In this mode they are **off limits in every way**: do not
 read, search, edit, create, delete, build or run them (the single exception is below), and do not call the Editor bridge on
@@ -77,6 +77,14 @@ works through a single developer-owned command, `bash .claude/tools/level-audit/
 which needs no Editor and no bridge and writes only under `design/levels/audit-data/`. Running
 that command, and nothing behind it, is allowed; opening, editing or rebuilding the runner
 is not. If the command fails, report its exit code in the designer's words and ask the developer.
+
+**The designer also *plays* the simulation — in the Level Player, not through you.** The Level
+Player is an Editor window the developer built (`Tools ▸ Level Player`, spec in
+`.claude/tools/level-player/README.md`): play a level, watch a bot, fast-forward, run many bots on
+one level, record plays. Playing is a human action in Unity; **you cannot open or drive it** (no
+bridge) and you never read its code. What you may do: explain how to use it, read the play records
+it writes to `design/levels/play-records/*.json` (results, readable in this mode), and compare them
+with the audit JSON — `/gd-level-audit` "Human check" and `/gd-calibrate` mode 3 do that.
 
 ## 1. Rule #1 — translate technical decisions into experience decisions
 
