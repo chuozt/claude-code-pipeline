@@ -57,21 +57,6 @@ There is **one** copy of the rules, shared. Separating the *tooling* from the sh
 free; separating the *rules* would create two sources of truth that drift apart (section 0b).
 Dependency points one way only: `Sim tools → Model`, never the reverse, never from the game.
 
-### The Level Player — how the designer *plays* it ⭐
-
-The designer never opens the simulation's code, but must be able to **play** it. So the
-developer also builds the **Level Player**: an Editor-only window (`Assets/_Tools/LevelPlayer/`,
-menu `Tools ▸ Level Player`) that runs the real game's View over the same Model. Spec, play-record
-format and the developer's checks: `.claude/tools/level-player/README.md`. It offers: play a level
-by hand · watch a bot play it (pick bot and seed, pause, step) · fast-forward (up to 100×, picture
-only — outcomes never depend on speed) · many bots on one level at once (a live grid of up to 16
-real boards, and a mass run of thousands in parallel with a live win-rate panel) · record the
-designer's plays under `design/levels/play-records/`.
-
-It is part of this skill's deliverable, with its own verification (item 10 in section 3). Like the
-Sim tools it never ships and is developer-owned; the designer uses it as a window, never as code.
-Claude in `gd-mode` cannot open it; it reads the play records it writes.
-
 ### Built for thousands of parallel matches, from the developer's own documents ⭐
 
 **A. Parallel by design.** Generation and audit run thousands of matches; they must run **at
@@ -195,7 +180,6 @@ Present this table for approval:
 | Conformance matrix | `design/dev-system/dev-sim-conformance.md` | developer-owned: GDD section → Model type → config asset → test |
 | **Audit runner** *(the designer's way in)* | `Tools/LevelSim.Runner/` + `.claude/tools/level-audit/runner.conf` | plain .NET console, **no Unity**, links the Model and Sim tools **sources** (one copy of the rules), reads an exported config JSON and the level files **read-only**, writes the audit JSON of `.claude/tools/level-audit/README.md`. The designer runs it only through `run-audit.sh` (`/gd-level-audit`), never opens it |
 | Config export | an Editor menu item (developer-owned) | writes the game's config assets as one JSON; re-run after any config change — `run-audit.sh` refuses a stale export |
-| **Level Player** *(the designer's way to play)* | `Assets/_Tools/LevelPlayer/` | Editor-only window over the real View and the same Model: play, watch a bot, fast-forward, many bots at once, record plays. Spec: `.claude/tools/level-player/README.md` |
 | Tests | `<Game>.Sim.Tests` | EditMode, no scene |
 
 **Spawn `lead-programmer` and `unity-specialist` in parallel** (Task) to challenge it
@@ -276,10 +260,6 @@ Then three verification questions, answered with evidence rather than assumption
    exit 0 and a JSON that matches the contract. Run it twice with the same arguments: the level
    results must be identical. Run it once more with the Editor **open** (it must not touch
    `Library/`). Change a config asset without re-exporting and confirm exit 4. Report each result.
-10. Can the designer play it? → run the seven checks of `.claude/tools/level-player/README.md`
-    (hand play to a win and a loss, same seed twice, 100× equals 1×, live grid independence, a
-    10,000-match mass run identical on 1 thread and all cores, agreement with `run-audit.sh`, no
-    LevelPlayer/Sim assembly in a player build). Report each result; a check not run is stated.
 
 ## 4. The boundary with the View
 

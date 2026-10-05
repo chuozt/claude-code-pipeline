@@ -121,23 +121,6 @@ designer's. Ask before writing: *"Fill the measured curves into `level-curves.md
 Levels with no block (no specific intent) are compared against their tier's reference shape
 in the report only.
 
-### Human check — only if `design/levels/play-records/` has records for the level
-
-Designers play levels in the Level Player (`.claude/tools/level-player/README.md`) and each play is
-saved as a record. For every audited level that has records, set the human beside the bot:
-
-| Compare | Say |
-|---|---|
-| human result and moves vs the bot's win rate and typical moves | "You won this level on your 2nd try; the bot wins 14% of the time" |
-| human pressure curve vs the bot's mean curve | where they diverge (the bot is squeezed at 40%, the human never was) |
-| `invalidTaps`, `restarts`, `seconds` | signs of a level that is hard to *read*, which a bot cannot feel |
-
-Caveats to state every time: **N is tiny** (a few plays, not a win rate); the designer is **the
-best player of this game** (expert blindness); a **replay is not a first impression** (`attempt`
-> 1 inflates wins); a record made on an older model commit than the audit's `modelCommit` is
-stale — say so and do not compare. A large gap is a finding to investigate (a bot rule that does not
-match how people play, or a level that plays differently by hand), never a verdict.
-
 ### Block boundaries — only if `design/gdd/gd-level-roadmap.md` exists
 
 For each block, compare the measured win rate and pressure of its **first and last level**
