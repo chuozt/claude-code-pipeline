@@ -28,3 +28,8 @@ the developer docs follow the designer's tabs, inside a tab folder
 skipped by every skill that scans GDDs: `dev-map-systems.md`, `dev-architecture*.md`,
 `dev-control-manifest.md`, `dev-tr-registry.yaml`, `dev-requirements-traceability.md`,
 `dev-sim-conformance.md`, `dev-open-questions-*.md`, `dev-auto-verification-*.md`, and anything under `reviews/` or `adr/`.
+
+## Exemption: research reports
+
+Reports under `design/research/` (from `/deconstruct-game`) study other games. They are not
+mechanic documents: the 8-section rule above does not apply to them.

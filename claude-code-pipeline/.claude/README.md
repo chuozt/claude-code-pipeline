@@ -106,6 +106,7 @@ project root, creating each folder the first time it is actually needed.
 | `design/levels/` | `gd-level-intent` (Designed rows), `gd-level-audit` (Measured rows, audit reports) (phase 3) | `level-curves.md`, `level-audit-<date>.md` |
 | `design/calibration/` | `gd-calibrate` (phase 4) | `calibration-<date>.md` |
 | `design/ux/` | `ux-design` | UX specs, HUD, interaction patterns |
+| `design/research/` | `deconstruct-game` | teardown reports of other games (research, not GDDs) |
 | `production/` | `playtest-report`, QA agents; `stage.txt` by hand | project stage, playtest reports, QA evidence |
 | `docs/` | developers | research, engine reference |
 | `docs/features/` | developers | living feature docs next to the code |
