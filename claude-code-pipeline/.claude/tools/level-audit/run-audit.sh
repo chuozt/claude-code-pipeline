@@ -6,6 +6,7 @@
 #
 #   bash .claude/tools/level-audit/run-audit.sh --levels 21-30 --bot greedy --attempts 100 \
 #        [--seed 1] [--misclick 0.25] [--allow-stale]
+#   -> design/levels/audit-data/audit-level-<N>.json (latest per level) + runs/audit-<ts>.json (log)
 #
 # Pure bash, no jq. Writes ONLY under design/levels/audit-data/. Never touches Assets/ or levels.
 # Exit codes: 0 ok · 2 runner not set up · 3 dotnet missing · 4 config export stale
@@ -27,7 +28,7 @@ while [ $# -gt 0 ]; do
 done
 
 case "$BOT" in greedy|random|lookahead) ;; *) echo "--bot must be greedy, random or lookahead" >&2; exit 6 ;; esac
-[[ $LEVELS =~ ^(all|[0-9]+(-[0-9]+)?)$ ]] || { echo "--levels must be all, N or N-M" >&2; exit 6; }
+[[ $LEVELS =~ ^(all|[0-9]+(-[0-9]+)?|[0-9]+_c[0-9]+)$ ]] || { echo "--levels must be all, N, N-M or a candidate N_cK" >&2; exit 6; }
 [[ $ATTEMPTS =~ ^[0-9]+$ && $SEED =~ ^[0-9]+$ ]] || { echo "--attempts and --seed must be whole numbers" >&2; exit 6; }
 [[ $MISCLICK =~ ^[0-9]*\.?[0-9]+$ ]] || { echo "--misclick must be a number between 0 and 1" >&2; exit 6; }
 
@@ -39,7 +40,7 @@ if [ ! -f "$CONF" ]; then
     exit 2
 fi
 
-RUNNER_PROJECT=""; LEVELS_DIR=""; CONFIG_JSON=""; CONFIG_SOURCE_DIR=""
+RUNNER_PROJECT=""; LEVELS_DIR=""; CANDIDATES_DIR=""; CONFIG_JSON=""; CONFIG_SOURCE_DIR=""
 # shellcheck disable=SC1090
 . "$CONF"
 if [ -z "$RUNNER_PROJECT" ] || [ -z "$LEVELS_DIR" ] || [ -z "$CONFIG_JSON" ]; then
@@ -61,14 +62,18 @@ if [ -n "$CONFIG_SOURCE_DIR" ] && [ "$STALE_OK" = 0 ]; then
     fi
 fi
 
+# One file per level (latest numbers, keyed by the level file's hash — README) plus this run's
+# log under runs/ (history, never rewritten).
 OUT_DIR="$ROOT/design/levels/audit-data"
-mkdir -p "$OUT_DIR"
-OUT="$OUT_DIR/audit-$(date +%Y%m%d-%H%M%S).json"
+mkdir -p "$OUT_DIR/runs"
+OUT="$OUT_DIR/runs/audit-$(date +%Y%m%d-%H%M%S).json"
+CAND_ARGS=()
+[ -n "$CANDIDATES_DIR" ] && CAND_ARGS=(--candidates-dir "$ROOT/$CANDIDATES_DIR")
 
 if ! dotnet run -c Release --project "$ROOT/$RUNNER_PROJECT" -- \
-        --levels-dir "$ROOT/$LEVELS_DIR" --config "$ROOT/$CONFIG_JSON" \
+        --levels-dir "$ROOT/$LEVELS_DIR" "${CAND_ARGS[@]}" --config "$ROOT/$CONFIG_JSON" \
         --levels "$LEVELS" --bot "$BOT" --attempts "$ATTEMPTS" --seed "$SEED" --misclick "$MISCLICK" \
-        --out "$OUT" >/dev/null 2>"$OUT.err"; then
+        --out "$OUT" --per-level-dir "$OUT_DIR" >/dev/null 2>"$OUT.err"; then
     echo "RUNNER FAILED (nothing was changed). Last lines:" >&2
     tail -5 "$OUT.err" >&2
     rm -f "$OUT" "$OUT.err"
@@ -81,7 +86,8 @@ if ! grep -q '"schemaVersion"' "$OUT" 2>/dev/null; then
     exit 5
 fi
 
-echo "OK $OUT"
+echo "OK run log: $OUT"
+echo "per-level files: $OUT_DIR/audit-level-<N>.json (read these)"
 echo "levels measured: $(grep -o '"level"[[:space:]]*:' "$OUT" | wc -l)"
 grep -o '"matchesPerSecond"[[:space:]]*:[[:space:]]*[0-9.]*' "$OUT" | head -1
 [ "$STALE_OK" = 1 ] && echo "WARNING: measured with --allow-stale; say so in the report."

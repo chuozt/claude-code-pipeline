@@ -128,7 +128,7 @@ buộc. Weights mới → quay lại phase 3.
 |---|---|---|---|
 | Đầu tuần | Designer | Cập nhật sheet intent → `/gd-level-intent` → **duyệt đường thiết kế** (●) | `gd-level-intent.md`, dòng Designed trong `level-curves.md` |
 | Một lần, trước audit đầu tiên | Designer | Điền bảng **Tolerances** trong `level-curves.md` | thiếu nó thì không ra được verdict |
-| Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` | candidate export ra folder riêng |
+| Giữa tuần, giờ cố định | Dev | `/use-mcp on` → `/gd-level-gen` (chạy static-only khi chưa có simulation) | file ứng viên trong `design/levels/candidates/<folder>/` + `READ-ME-FIRST.md`; không duyệt trong chat — designer confirm trong level tool |
 | Sau khi sinh, lúc nào cũng được | Designer (`gd-mode`) | `/gd-level-audit` | dòng Measured (○) + verdict + `level-audit-<ngày>.md` |
 | Cuối tuần | Designer | Đọc `level-curves.md`: giữ / sửa / thay từng level | quyết định ghi cạnh từng level |
 | Hằng ngày | Cả hai | Merge `gd` và `feature/*` vào integration branch | — |

@@ -131,7 +131,7 @@ Two steps with **different prerequisites** — do not treat Phase 2 as one block
 
 | Command | What it does | Produces |
 |---|---|---|
-| `/gd-level-gen` | Generates candidates, filters by static DIG then by bots, presents the top-k for approval | approved level payloads + measurements |
+| `/gd-level-gen` | Generates candidates, filters by static DIG then by bots (static-only when no simulation is usable yet), writes them and reports the files — nothing is approved in the chat, the designer confirms in the level tool | candidate files in `design/levels/candidates/<folder>/` + `READ-ME-FIRST.md` with the measurements |
 | `/gd-level-audit` | **Designer runs it in `gd-mode`** (no Editor, no bridge): one command, `.claude/tools/level-audit/run-audit.sh`, measures the whole level set with bots; the skill reads the JSON: win rates, pressure curves, colour pairing | an audit report + proposed fixes with root causes; measured curves in `level-curves.md` |
 
 > Phase 3 needs phase 2. Without a simulation there is nothing to filter or measure with.
