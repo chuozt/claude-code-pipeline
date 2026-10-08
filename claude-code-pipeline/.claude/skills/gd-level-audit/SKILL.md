@@ -60,7 +60,7 @@ has no view.
 | `--misclick` | "How often should that player tap the wrong thing — never, 1 in 4, 1 in 10?" | "Người chơi đó nên bấm nhầm bao nhiêu lần: không bao giờ, 1 trên 4, 1 trên 10?" | 0.25 (1 in 4) |
 | *(not a flag)* boosters, revives | "Should the test player use boosters or revive? If yes the numbers describe the helpers as much as the level." | "Người chơi thử có dùng booster hay hồi sinh không? Nếu có thì số đo phản ánh cả các thứ hỗ trợ chứ không chỉ level." | no — and say so in the report |
 | `--attempts` | "How many times should each level be played? More is steadier but slower." | "Mỗi level chơi thử bao nhiêu lần? Nhiều hơn thì ổn định hơn nhưng chậm hơn." | 100 |
-| `--levels` | "Which levels: all, or a range like 21-30?" | "Đo level nào: tất cả, hay một khoảng như 21-30?" | the designer's block |
+| `--levels` | "Which levels: all, a range like 21-30, or one candidate like 5_c2?" | "Đo level nào: tất cả, một khoảng như 21-30, hay một ứng viên như 5_c2?" | the designer's block |
 | *(not a flag)* band per label | "Out of 10 players on a Normal / Hard / SuperHard level, how many should win?" | "10 người chơi một level Normal / Hard / SuperHard thì mấy người nên thắng?" | from `gd-difficulty-model.md`; reference Normal 85–100% · Hard 35–55% · SuperHard 20–35% |
 | *(not a flag)* touchable levels | "Which levels may we propose changes to, and which are already live and must not be touched?" | "Level nào được đề xuất sửa, level nào đã live và tuyệt đối không đụng?" | ask — no default |
 
@@ -76,30 +76,42 @@ Never ask for a seed: use `--seed 1` and, to see the noise, repeat with `--seed 
 bash .claude/tools/level-audit/run-audit.sh --levels <range|all> --bot <…> --attempts <N> --seed 1 [--misclick <p>]
 ```
 
-Read the JSON path it prints. The file holds, **for each level**, the 4 metrics below plus the
-colour data of Phase 3 and the run's matches per second, core count and model commit; quote
-those next to the attempt counts in the report. Take the numbers **only from this file** —
-never estimate one, never re-derive it from code. A level marked `"unscored": true` has no win
-rate: list it as *unscored*, not as hard or easy.
+The numbers are in **one file per level**, `design/levels/audit-data/audit-level-<N>.json`
+(`schemaVersion` 2: the latest entry per bot; contract in the README). Read the file of each
+level measured; the run's own log in `audit-data/runs/` is history, not the source. Each entry
+holds the 5 metrics below plus the colour data of Phase 3 and the run's matches per second,
+core count and model commit; quote those next to the attempt counts in the report. Take the
+numbers **only from these files** — never estimate one, never re-derive it from code. A level
+marked `"unscored": true` has no win rate: list it as *unscored*, not as hard or easy.
+
+**An entry is valid only for the file it measured.** Compare the entry's `sourceHash` with the
+level file as it is now (`sha1sum` / `git hash-object` through `Bash` — reading the level file
+itself stays off limits). A mismatch means the level was regenerated or edited since: the entry
+is **`unmeasured`**, say so, and measure again before quoting anything. A candidate overwritten
+by `/gd-level-gen` (§4c there) always lands here.
 
 Metrics, per level:
 
 | Metric | Meaning |
 |---|---|
 | **Win rate** | **How** hard the level is |
-| **Pressure curve** | **Where** it is hard — average free resource remaining at each 5% progress mark → 20 numbers |
+| **Difficulty curve** (`pressure`) | **Where** it is hard — at each 5 % progress mark, the share of BUFFER capacity held by resources that **cannot progress** towards the GOAL right now → 20 numbers, 0..1. A resource that is progressing, or done, was the right pick and counts 0; **1 = the loss state** (README, "The two curves") |
+| **Stuck curve** (`stuckRate`) | second curve, same 20 marks: share of attempts in which the player is **stuck for a way** — something is left to do, no legal action helps now, nothing is progressing. 0 = nobody stuck; a rise shows where players hit a dead end. Read next to the difficulty curve, never merged |
 | **% of content cleared on a loss** | A level that hard-locks early shows up here immediately |
 | **Dominant loss type** | Points at which mechanic is killing the player |
 
-**The pressure curve matters more than the win rate.** A win rate is one number; the pressure
-curve shows the level's *shape*. Good levels usually have one clear bottleneck and then open
-up, rather than being uniformly tight from start to finish.
+**The curves matter more than the win rate.** A win rate is one number; the difficulty curve
+shows the level's *shape*, and the stuck curve shows whether the tight stretch is still
+solvable. Good levels usually have one clear bottleneck and then open up, rather than being
+uniformly tight from start to finish — and their stuck curve stays near 0.
 
-Reading a pressure curve (average free slots, 20 marks):
+Reading a difficulty curve (mean share of blocked BUFFER, 20 marks, 1 = loss):
 ```
-L10  5 4 3 3 3 3 3 3 3 2 2 2 1 1 1 2 3 3 4 4   easy → tight at 50-70% → opens up   ✅
-L29  3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0   hard-locked from 15%                ❌
+L10  .1 .2 .3 .3 .3 .3 .3 .4 .4 .5 .5 .6 .7 .7 .6 .4 .3 .2 .1 .1   easy → tight at 55-70% → opens up   ✅
+L29  .4 .6 .8 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9 .9   hard-locked from 15%                ❌
 ```
+With the stuck curve beside it: L10 `stuckRate` peaking at .1 around 65 % is tension; L29
+`stuckRate` at .9 from 15 % is a dead end, not difficulty.
 
 ### Plot against the designed curve
 
@@ -107,8 +119,9 @@ If `design/levels/level-curves.md` — or the per-block shards `level-curves-L*.
 (each shard belongs to one owner; fill only the shard that contains the level; written by `/gd-level-intent`, format in
 `.claude/docs/templates/level-difficulty-curve.md`), for every level that has a block there:
 
-1. Convert the 20 free-slot averages to `pressure(t)` with the proxy in
-   `design/gdd/gd-flow-map.md` (with a BUFFER: `pressure = 1 − free ÷ capacity`), one decimal.
+1. The 20 `pressure` numbers are already `pressure(t)` (0..1, 1 = loss) — round to one decimal.
+   The proxy in `design/gdd/gd-flow-map.md` is the designer's and may be defined differently
+   (for example `occupancy ÷ capacity`); say which definition the comparison uses.
 2. Fill the **Measured** row — with the run, bot, attempt count and date — and plot it with ○
    (◉ where it lands on a ●).
 3. Compare with the **Tolerances** table: peak position, peak height, peak count, Δ max. Any
@@ -189,7 +202,7 @@ Four suspects, in order of frequency. Judge them from the JSON (pressure curve, 
    (designed vs measured, or vs the tier's reference shape) · worst colour pair · rule violations
 2. **The list of levels needing fixes + their ROOT CAUSE** — not "too hard" but
    *"missing the right resource at the 40–60% stretch"*
-3. **Proposed changes, in words** (which level, which stretch, what to change). In designer mode the skill writes no level files: new candidate levels are produced by `/gd-level-gen`, run by the developer, into a separate folder with a read-me-first file
+3. **Proposed changes, in words** (which level, which stretch, what to change). This skill writes no level files: new candidate levels are produced by `/gd-level-gen` into `design/levels/candidates/<folder>/` with a `READ-ME-FIRST.md`, and the designer confirms them in the level tool
 4. **Suggested validator additions** for the developer, so the same problem is caught earlier next time
 
 ---

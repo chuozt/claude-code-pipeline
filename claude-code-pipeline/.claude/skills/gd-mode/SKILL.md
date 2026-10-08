@@ -69,7 +69,7 @@ their behalf — even when the designer asks "just to see how the bot plays" or 
 the bot". What the designer may touch is the *document*: a change to how the bot plays goes
 into `bot-playstyle.md` (the designer's own file), and the developer carries it into code.
 What the designer sees of the simulation is its output only: the `/gd-level-gen` candidate
-tables, `level-audit-<date>.md`, and the audit results in `design/levels/audit-data/*.json`
+tables, `level-audit-<date>.md`, and the audit results in `design/levels/audit-data/` (`audit-level-<N>.json`, run logs in `runs/`)
 (readable in this mode: they are results, not code).
 
 **The one exception — `/gd-level-audit`.** The designer may run the audit from this mode. It

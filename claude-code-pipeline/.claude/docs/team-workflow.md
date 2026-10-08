@@ -127,7 +127,7 @@ mandatory 20% holdout. New weights → back to phase 3.
 |---|---|---|---|
 | Start of week | Designer | Updates the intent sheet → `/gd-level-intent` → **approves the designed curves** (●) | `gd-level-intent.md`, Designed rows in `level-curves.md` |
 | Once, before the first audit | Designer | Fills the **Tolerances** table in `level-curves.md` | no verdicts are possible without it |
-| Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` | candidates exported to a separate folder |
+| Mid-week, fixed slot | Developer | `/use-mcp on` → `/gd-level-gen` (static-only until the simulation is usable) | candidate files in `design/levels/candidates/<folder>/` + `READ-ME-FIRST.md`; nothing approved in the chat — the designer confirms in the level tool |
 | After generation, any time | Designer (`gd-mode`) | `/gd-level-audit` | Measured rows (○) + verdicts + `level-audit-<date>.md` |
 | End of week | Designer | Reads `level-curves.md`: keep / revise / replace each level | decisions recorded next to each level |
 | Daily | Both | Merge `gd` and `feature/*` into the integration branch | — |
