@@ -2,7 +2,7 @@
 name: init-unity-cli
 model: claude-opus-5-5
 effort: medium
-description: First-time setup of the Unity Editor bridge on this machine and project — install the Unity CLI, install com.unity.pipeline into the project, register the CLI's MCP server for Claude Code (unity mcp configure claude-code), retire the old in-Editor MCP (unity-mcp / relay_win.exe), optionally remove the com.unity.ai.assistant package (asked every run, default keep), verify, then update CLAUDE.md, settings.json and the /use-mcp, /mcp-check and related rule files so the agent uses the Unity CLI + pipeline. Guides the developer and asks before every change. Use when the developer types /init-unity-cli or says "set up the Unity CLI", "install unity pipeline", "configure unity mcp", "replace the Unity MCP server", "unity command not found".
+description: First-time setup of the Unity Editor bridge on this machine and project — install the Unity CLI, install com.unity.pipeline into the project, register the CLI's MCP server for the AI clients the developer picks (Claude Desktop by default, plus Claude Code, Codex or others — multi-select; unity mcp configure <client>), retire the old in-Editor MCP (unity-mcp / relay_win.exe) in those clients, optionally remove the com.unity.ai.assistant package (asked every run, default keep), verify, then update CLAUDE.md, settings.json and the /use-mcp, /mcp-check and related rule files so the agent uses the Unity CLI + pipeline. Guides the developer and asks before every change. Use when the developer types /init-unity-cli or says "set up the Unity CLI", "install unity pipeline", "configure unity mcp", "replace the Unity MCP server", "unity command not found".
 ---
 
 # /init-unity-cli — set up the Unity CLI bridge
@@ -129,22 +129,50 @@ Check `Packages/manifest.json` for `"com.unity.pipeline"` (Grep, no bridge neede
 - Also check `com.unity.ai.assistant`: if present it must be **≥ 2.13** (older versions conflict
   with the CLI). Lower → report it and ask whether to update; never update it silently.
 
-## Step 4 — register the CLI's MCP server for Claude Code
+## Step 4 — register the CLI's MCP server for the developer's AI clients
+
+**Ask first which clients to set up — multi-select** (AskUserQuestion with `multiSelect: true`),
+every run, also in teammate mode (registrations are per machine):
+
+| Option | Client id | Default |
+|---|---|---|
+| Claude Desktop | `claude` | **pre-selected / recommended** — listed first |
+| Claude Code | `claude-code` | off — select it to give Claude Code sessions the `mcp__unity-editor-mcp__*` tools |
+| Codex (OpenAI Codex CLI / app) | `codex` | off |
+| Other… | any id from `unity mcp configure --list` (cursor, vscode, windsurf, …) | off |
+
+No answer → Claude Desktop only. Put one line under the question: Claude Code sessions (the
+CLI, the IDE extensions and the desktop app's Code tab) read `~/.claude.json`, not
+`claude_desktop_config.json` — without `claude-code` selected they still drive the Editor
+through Bash `unity command` (the preferred form anyway), only the `mcp__unity-editor-mcp__*`
+tools are missing. Before asking, run the read-only listing so the question can say
+which ones are already configured:
 
 ```bash
 unity mcp configure --list --no-banner
-unity mcp configure claude-code --dry-run --no-banner
 ```
 
-The client name for Claude Code is **`claude-code`** (`claude` is Claude Desktop). The dry run
-prints what it will do — on this CLI version
-`claude mcp add --scope user --transport stdio unity-editor-mcp unity mcp`. Show it, ask, then
-run without `--dry-run` (add `--yes` only if an entry already exists and the developer agreed to
-replace it).
+Then, **for each selected client, one at a time**: dry run → show the output → ask → run without
+`--dry-run` (add `--yes` only when an entry exists and the developer agreed to replace it).
 
-**If the `claude` command is not on `PATH`** (common with the Claude desktop app), the delegation
-fails. Fallback, with the developer's OK: back up `~/.claude.json` to the session scratchpad,
-then add under its top-level `"mcpServers"` (a JSON edit that keeps every other key):
+```bash
+unity mcp configure <client-id> --dry-run --no-banner
+```
+
+What each one writes `[VERIFIED 2026-10-20: dry runs with unity 1.0.0-beta.13 on Windows]`:
+
+| Client | Where | Server name → tool prefix | How |
+|---|---|---|---|
+| `claude-code` | user's `~/.claude.json` (user scope) | `unity-editor-mcp` → `mcp__unity-editor-mcp__*` | delegates to `claude mcp add --scope user --transport stdio unity-editor-mcp unity mcp` |
+| `claude` (Desktop) | `%APPDATA%\Claude\claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/…`) | `unity` | writes the JSON file directly, `command` = full path of `unity.exe`, `args ["mcp"]` |
+| `codex` | `~/.codex/config.toml` | `[mcp_servers.unity]` | writes the TOML directly, same command/args |
+
+The client name for Claude Code is **`claude-code`**; `claude` is Claude **Desktop** — never mix
+them up in the question or the commands.
+
+**`claude-code` without the `claude` command on `PATH`** (common with the Claude desktop app):
+the delegation fails. Fallback, with the developer's OK: back up `~/.claude.json` to the session
+scratchpad, then add under its top-level `"mcpServers"` (a JSON edit that keeps every other key):
 
 ```json
 "unity-editor-mcp": { "type": "stdio", "command": "unity", "args": ["mcp"], "env": {} }
@@ -153,23 +181,47 @@ then add under its top-level `"mcpServers"` (a JSON edit that keeps every other 
 Use the full path to the `unity` executable as `command` if `unity` is not on the `PATH` Claude
 Code starts with. Report the backup path.
 
-Optional: `unity skill install claude-code` copies Unity's CLI skill into
-`~/.claude/skills/unity-cli/`. **Skip it when** `.claude/settings.json` enables the plugin
-`unity@claude-plugins-official` — that plugin already ships `unity:unity-cli`, and two copies
-just compete. Mention it, do not run it by default.
+**Desktop and Codex are outside this project's rules.** `CLAUDE.md`, `.claude/settings.json`
+(the deny on the retired door, the read-only allow-list) and `/use-mcp` govern **Claude Code**
+only. Say so when either is selected: Claude Desktop has no project rules at all, and Codex reads
+`AGENTS.md`, not `CLAUDE.md` — if the team drives this project from Codex, an `AGENTS.md` carrying
+the same bridge rules is a separate task to propose, not something this skill writes.
+
+Each client only sees the new server after **it** is restarted — list which ones in the result.
+
+**Optional — Unity's CLI skill per client** (`unity skill install <id>`; ids: `claude-code`,
+`claude-desktop`, `codex`, … — `unity skill install --list` shows what is installed). Offer it only
+for the selected clients and only where it is not installed yet. **Skip `claude-code` when**
+`.claude/settings.json` enables the plugin `unity@claude-plugins-official` — that plugin already
+ships `unity:unity-cli`, and two copies just compete. Never run it by default.
 
 ## Step 5 — retire the old in-Editor MCP
 
-Look for an `mcpServers` entry running `relay_win.exe --mcp` (usually named `unity-mcp`) in the
-user's `~/.claude.json` and the project's `.mcp.json`.
+Look for an entry running `relay_win.exe --mcp` in **every client selected in Step 4, plus Claude
+Code always** (this project's own agent), and the project's `.mcp.json`:
+
+| Client | Where | Old entry usually named |
+|---|---|---|
+| Claude Code | `~/.claude.json` → `mcpServers` | `unity-mcp` |
+| Claude Desktop | `claude_desktop_config.json` → `mcpServers` | `unity-mcp` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.unity_mcp]` |
+
+Match on the command (`relay_win.exe`, `relay_mac`, `relay_linux` + `--mcp`), not on the name.
 
 - None → `⏭`.
-- Found in `~/.claude.json` → it is **user scope, so every project on this machine sees it**.
-  Say so, then ask: `claude mcp remove unity-mcp -s user` (or, without the `claude` command,
-  remove that one key from `mcpServers` after backing the file up). Projects that still use it
-  would lose it — the developer decides.
-- Either way, this project's `.claude/settings.json` already denies `mcp__unity-mcp`, so the
-  retired tools cannot be called here even if the entry stays.
+- Found → each of these files is **per user, so every project on this machine uses it**. Say so,
+  then ask **per client** whether to remove it. Projects that still use the old door would lose
+  it — the developer decides.
+  - Claude Code: `claude mcp remove unity-mcp -s user`, or without the `claude` command remove
+    that one key from `mcpServers` after backing the file up.
+  - Claude Desktop: back up the JSON file, remove that one key from `mcpServers`, keep the rest.
+  - Codex: back up `config.toml`, remove only that `[mcp_servers.<name>]` table (its header and
+    its `command` / `args` / `env` lines — plus a `[mcp_servers.<name>.env]` sub-table if present),
+    keep everything else byte for byte.
+  Report each backup path; ask the developer to restart the clients that changed.
+- Whatever stays, this project's `.claude/settings.json` denies `mcp__unity-mcp`, so the retired
+  tools cannot be called **from Claude Code** here. Desktop and Codex have no such guard — say so
+  if their relay entry is kept.
 - Optionally the developer can switch off the MCP server in the Editor (Assistant / AI
   settings). That writes `ProjectSettings/` — the developer does it by hand, never the AI.
 
@@ -227,9 +279,11 @@ unity mcp configure --list --no-banner
 
 Expected: one `ready` Editor whose `Project` is this checkout and whose version matches
 `CLAUDE.md` §1; `editor_status` answers (`compiling: false`, `playMode: stopped`);
-`claude-code` listed as configured. The `mcp__unity-editor-mcp__*` tools only appear in a
-**new** Claude Code session — tell the developer to restart it; this session keeps going with
-Bash `unity command` meanwhile.
+every client chosen in Step 4 listed as `✓ configured`, and no relay entry left in the clients
+where the developer asked to remove it. New servers only appear after each client restarts:
+the `mcp__unity-editor-mcp__*` tools in a **new** Claude Code session, the `unity` server in a
+restarted Claude Desktop / Codex. Tell the developer which to restart; this session keeps going
+with Bash `unity command` meanwhile.
 
 ## Step 8 — teach the agent: update `CLAUDE.md` and the `/use-mcp` family
 
@@ -275,10 +329,13 @@ Unity CLI bridge — <project>, branch <branch> — mode: first setup | teammate
   1 CLI ............ ✅/⏭/⛔ <version>
   2 Editor ......... ✅/⏭/⛔ <ready on this checkout | what is wrong>
   3 Pipeline pkg ... ✅/⏭/⛔ <version> (ai.assistant <version>)
-  4 MCP (claude-code) ✅/⏭/⛔ unity-editor-mcp
-  5 Old relay MCP .. ✅ removed / ⏭ none / kept (denied in this project)
+  4 MCP clients .... claude (Desktop) ✅/⏭/⛔ · claude-code ✅/⏭/— · codex ✅/⏭/— · <other> …
+                     (— = not selected)
+  5 Old relay MCP .. per client: ✅ removed / ⏭ none / kept (Claude Code: denied in this project;
+                     Desktop/Codex: no guard)
   6 AI Assistant pkg  kept (default) / ✅ removed / ⏭ not installed / ⛔ <references found>
   7 Verify ......... ✅/⛔
   8 Agent rules .... ✅ migrated (<n> files) / ⏭ already migrated / ⛔ declined — versions recorded ✅/⛔
-Next: restart Claude Code (new rules + mcp__unity-editor-mcp__*) · the bridge stays OFF until /use-mcp
+Next: restart every client changed in 4–5, and Claude Code (new rules; + mcp__unity-editor-mcp__*
+      if claude-code was selected) · the bridge stays OFF until /use-mcp (Claude Code)
 ```
