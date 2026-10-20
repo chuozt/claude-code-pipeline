@@ -37,34 +37,73 @@ Third-party SDK folders are **never** to be edited.
 
 In this order, before answering anything:
 
-1. **Do not touch Unity MCP.** It is OFF by default — see §2.1.
+1. **Do not drive the Unity Editor.** The bridge (Unity CLI, or the MCP) is OFF by default,
+   except for its read-only status commands — see §2.1.
 2. **Read or re-scan** `.claude/`: `workflow.md`, `architect.md`,
    `coding_convention.md`, `rules.md`, `anti-patterns.md`, `project_setup.md`,
    `context.md`.
 3. **Print the confirmation line**: `✅ Rules loaded — project <name>, branch <branch>`
 4. Wait for the developer to assign work.
 
-## 2.1 ⛔ Unity Editor bridge (Unity CLI / MCP) — OFF BY DEFAULT
+## 2.1 ⛔ Unity Editor bridge (Unity CLI first, MCP as fallback) — OFF BY DEFAULT
 
-Up to two bridges can reach the Editor: **Unity CLI** + `com.unity.pipeline`
-(`mcp__unity-editor-mcp__*` tools, `unity command` / `unity eval` in Bash — preferred) and,
-optionally, the in-Editor MCP of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`).
-Record which one(s) this project actually has installed and verified, once confirmed with
-the developer (`/project-overview` does not check this — it never touches the bridge).
-Details and when to use which: `.claude/mcp_unity.md`.
+Two doors reach the Editor. **Prefer the Unity CLI**; use the MCP only for what the CLI lacks.
 
-**All `mcp__unity-editor-mcp__*` and `mcp__unity-mcp__Unity_*` tools and all Bash
-`unity command|eval|test|build|run|open` calls are forbidden** until the developer types
-`/use-mcp on` (whole session) or `/use-mcp once` (exactly one prompt, then off again).
-That includes "just a quick check", bug reports, and wanting to confirm a build. Read-only
-diagnostics (`unity status`, `unity doctor`, bare `unity command` listing), the offline
-API lookup `mcp__unity-api__*`, and the read-only status calls `/mcp-check` makes **when the
-developer types it** are the only exceptions.
+- **Unity CLI** (`unity`) + `com.unity.pipeline` — **preferred**: cheaper on context, Undo-aware
+  commands, extensible with `[CliCommand]`. Two forms, same gate, same rules:
+  - **Bash `unity command <name> --<param> <value>`** — the default form. Pass
+    `--caller plugin --skill <skill>` and `--no-banner` on every call (`--format json` when
+    parsing the result).
+  - **MCP tools `mcp__unity-editor-mcp__<name>`** — the CLI's own MCP server (`unity mcp`),
+    registered per machine by `unity mcp configure claude-code`. The same commands; use them when
+    the Bash form is unavailable.
+- **In-Editor MCP** of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`) — **secondary**, only
+  if this project has it installed and verified: use it for what the CLI does not offer
+  (`Unity_GetUserGuidelines`, structure-aware `Unity_ScriptApplyEdits`, `Unity_AssetGeneration_*`)
+  or when the developer asks for it. Same gate as the CLI.
 
-Without MCP: edit code with `Read`/`Edit`/`Write`, search with `Grep`/`Glob`,
+Never drive the same scene through two doors in one task. Record which door(s) this project has
+installed and verified, once confirmed with the developer (`/project-overview` does not check
+this — it never touches the bridge). Details and when to use which: `.claude/mcp_unity.md`.
+
+**Not set up on this machine** (`unity` not found — the CLI and the MCP registration are per
+machine, not in git, so a teammate who pulled the project often has neither): the developer
+types `/init-unity-cli`. Until then even the read-only commands below are unavailable: ask for
+pasted logs or read `mcp__terminal__read_terminal`, suggest `/init-unity-cli` **once**, and never
+retry the CLI in a loop or ask the developer to open the Editor for it. The full CLI reference is
+the `unity:unity-cli` skill; the project rules on top of it are in `.claude/mcp_unity.md`.
+
+**Always allowed** (read-only, they change nothing in the Editor):
+
+- `unity status`, `unity doctor`, `unity --version`, `unity pipeline list`,
+  `unity mcp configure --list`, bare `unity command` / `unity command --tag <tag>` (the listing)
+- `unity command editor_status`, `console_status`, `console` (always with `--tail` / `--level`),
+  `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` — and their
+  `mcp__unity-editor-mcp__*` twins
+- the offline API lookup `mcp__unity-api__*`
+
+**Everything else is forbidden** — every other `unity command`, `eval` / `eval_file` /
+`run_script`, `recompile`, `run_tests`, `menu`, Play mode, scene / GameObject / asset / prefab
+commands, captures, the inspection commands that flood the context, and every
+`mcp__unity-mcp__Unity_*` tool — **until the developer types `/use-mcp on`** (whole session) or
+**`/use-mcp once`** (exactly one prompt, then off again). That includes "just a quick check", bug
+reports, and wanting to confirm a build.
+
+**Never, even with the bridge on:** `unity build` / `run` / `install` / `uninstall` /
+`upgrade` / `self-uninstall` (the guard hook blocks them), every `set_*_settings` command
+(`ProjectSettings/`, §10), `package_add` / `package_remove` unasked, `delete_asset` or file
+deletion through `eval` without the reference scan.
+
+**Right Editor, right checkout.** `unity status` must show this session's own working directory
+in its `Project` column (never hard-code a path; two Editors listed → every call passes
+`--project-path "<path>"`). A session in a git worktree never uses the bridge. **Safe Mode**
+(compile errors): `unity status` / `unity command` cannot connect — confirm with
+`unity pipeline list`, fix the C# on disk, ask the developer to restart Unity.
+
+Without the bridge: edit code with `Read`/`Edit`/`Write`, search with `Grep`/`Glob`,
 read data by parsing files.
 
-**Compilation IS verifiable without MCP.** Run this with the Unity Editor open —
+**Compilation IS verifiable without the bridge.** Run this with the Unity Editor open —
 it works where `-batchmode -runTests` fails with *"another Unity instance is
 running"*:
 
@@ -120,7 +159,7 @@ developer decide. Never enable it yourself. Details: `.claude/skills/use-mcp/SKI
 | `.claude/coding_convention.md` | **The single source of truth for C# standards** |
 | `.claude/anti-patterns.md` | What is forbidden |
 | `.claude/rules.md` | General rules + Editor-bridge operation |
-| `.claude/mcp_unity.md` | Unity CLI / MCP bridge handbook — **read only after `/use-mcp`** |
+| `.claude/mcp_unity.md` | Unity Editor bridge handbook (Unity CLI first, MCP fallback) — **read only after `/use-mcp`** · first-time machine setup: `/init-unity-cli` |
 | `.claude/context.md` | Context management, surviving compaction |
 | `.claude/verification.md` | Verification-driven: how to prove code works |
 | `.claude/kb/INDEX.md` | **Unity knowledge base index** — look things up, do not read it all |
@@ -164,9 +203,10 @@ blueprint → approval → code → verification**
   the developer does that.
 - **Auto mode is the one exception to "ask first".** Only when the developer typed `auto` for a skill that defines it (`.claude/docs/auto-mode.md`): the argument is the approval for the paths that document lists, and nothing else. Output is marked `Auto-drafted — NOT reviewed`; architecture is proposed, never signed off.
 - An ambiguous request whose two readings give different results → **ASK FIRST**.
-- Bug reported → demand **real logs**, NO GUESSING. With MCP off, ask for pasted
-  logs or read `mcp__terminal__read_terminal`; if the Unity console (`console` /
-  `get_console_logs`) is needed, **ask the developer to type `/use-mcp`** rather than calling it.
+- Bug reported → demand **real logs**, NO GUESSING. Read the Unity console with
+  `unity command console --level error --tail 50` (always allowed, §2.1), ask for pasted logs,
+  or read `mcp__terminal__read_terminal`; if reproducing it needs Play mode or `eval`,
+  **ask the developer to type `/use-mcp`** rather than doing it.
 
 ---
 
@@ -185,7 +225,7 @@ its own `ShowRewarded()` rather than the SDK's method. Say which names were sear
 
 **Never present unverified information as fact.** For Unity APIs specifically:
 if an API may have changed after the training cutoff, warn clearly and
-**propose** a way to check (usually a one-line `eval` probe through the bridge) — propose
+**propose** a way to check (usually a one-line `unity command eval` probe) — propose
 it for the developer to enable, never run it unprompted.
 
 ---

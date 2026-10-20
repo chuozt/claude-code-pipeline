@@ -82,9 +82,10 @@ Details in `verification.md`. In short:
 
 ### When a bug is reported — 4 steps, no skipping
 
-1. **Collect evidence** — real logs with stack traces. With MCP off, ask the developer to
-   paste them, or read `mcp__terminal__read_terminal`; if the Unity console is needed
-   (`console` / `get_console_logs`), ask for `/use-mcp`. Check `git log -5`. **Do not guess.**
+1. **Collect evidence** — real logs with stack traces. Read the console with
+   `unity command console --level error --tail 50` (always allowed), ask the developer to
+   paste them, or read `mcp__terminal__read_terminal`; if reproducing it needs Play mode or
+   `eval`, ask for `/use-mcp`. Check `git log -5`. **Do not guess.**
 2. **Narrow it down** — bisect, add logs at the decision points.
 3. **Hypothesise** — state *"I believe X happens because Y"*, then find a way to prove or disprove it.
 4. **Fix & re-verify** — minimal fix, re-run the check, run regression tests, remove temporary logs.

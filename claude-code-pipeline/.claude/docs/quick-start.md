@@ -101,7 +101,8 @@ only reports whether the tree already exists.
 | Debug something | `/gd-bug` |
 | Review before committing | `/gd-review` |
 | Commit | `/commit` |
-| Enable the Unity Editor bridge (CLI/MCP) for one prompt | `/use-mcp this` |
+| Set up the Unity CLI + pipeline + MCP on this machine (first time) | `/init-unity-cli` |
+| Enable the Unity Editor bridge (CLI first, MCP fallback) for one prompt | `/use-mcp this` |
 
 Full list: `.claude/docs/skills-reference.md`.
 
@@ -109,10 +110,13 @@ Full list: `.claude/docs/skills-reference.md`.
 
 ## 5. Two things that trip people up
 
-**The Unity Editor bridge is OFF by default.** Every `mcp__unity-editor-mcp__*` and
-`mcp__unity-mcp__Unity_*` tool and every Bash `unity command` / `unity eval` is forbidden until you type `/use-mcp on` (whole
-session) or `/use-mcp this` (one prompt). With it off, Claude still checks compilation with
-`dotnet build` but cannot run tests or read the console — it will say so plainly rather than guess.
+**The Unity Editor bridge is OFF by default.** Bash `unity command` / `unity eval` (the preferred
+form), their `mcp__unity-editor-mcp__*` twins and every `mcp__unity-mcp__Unity_*` tool are forbidden
+until you type `/use-mcp on` (whole session) or `/use-mcp this` (one prompt) — except the read-only
+status commands (`unity status`, `editor_status`, `console --tail`, …, listed in `CLAUDE.md` §2.1).
+With it off, Claude still checks compilation with `dotnet build` and can read the console, but cannot
+run tests or touch the scene — it will say so plainly rather than guess. `unity: command not found` →
+type `/init-unity-cli` once on that machine.
 
 **Claude asks before writing.** Every task goes gather → propose options with trade-offs →
 you decide → blueprint → approval → code → verification. If it starts writing files without

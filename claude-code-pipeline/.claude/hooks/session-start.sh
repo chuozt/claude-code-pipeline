@@ -26,6 +26,22 @@ if [ -n "$MISSING" ]; then
     echo "$MISSING" | sed 's/^/  /'
 fi
 
+# Unity CLI bridge readiness on THIS machine. The project's rules and com.unity.pipeline come
+# with git; the CLI binary and the MCP registration do not — a teammate who pulled a project
+# someone else set up has neither. Prints only when something is missing.
+if [ -f Packages/manifest.json ] && grep -q '"com.unity.pipeline"' Packages/manifest.json; then
+    if ! command -v unity >/dev/null 2>&1         && [ ! -x "${LOCALAPPDATA:-/nonexistent}/Unity/bin/unity.exe" ]         && [ ! -x "$HOME/.local/bin/unity" ]; then
+        echo ""
+        echo "!! Unity CLI not installed on this machine — the Editor bridge is unavailable"
+        echo "   (read-only console/status commands too). The project already uses it:"
+        echo "   suggest /init-unity-cli to the developer; until then ask for pasted logs."
+    fi
+elif [ -f Packages/manifest.json ] && grep -q '/init-unity-cli' CLAUDE.md 2>/dev/null; then
+    echo ""
+    echo "!! CLAUDE.md expects the Unity CLI bridge but com.unity.pipeline is not in"
+    echo "   Packages/manifest.json — suggest /init-unity-cli to the developer."
+fi
+
 # Previous session state
 STATE="docs/_session/active.md"
 if [ -f "$STATE" ]; then
