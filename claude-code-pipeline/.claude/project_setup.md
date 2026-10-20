@@ -6,7 +6,7 @@
 
 - **The exact Unity version in `CLAUDE.md` §1 is mandatory.** Before proposing any Unity API,
   check it against that version. If an API may have changed after the training cutoff,
-  **warn clearly** and propose a way to check (a one-line `eval` probe through the bridge,
+  **warn clearly** and propose a way to check (a one-line `unity command eval` probe,
   after `/use-mcp`).
 - Game code and logic live **only in the code root declared in `CLAUDE.md` §1**.
   Third-party SDKs are never modified.
@@ -31,7 +31,7 @@ as `<...>` once the project starts.
 | Reference device | `<...>` | |
 | Target FPS | `<...>` | state the frame budget in ms |
 | Localisation | `<...>` | how many languages; display strings still go through localisation even at one |
-| Editor bridge | `<...>` | `unity` CLI and `com.unity.pipeline` versions pinned, or "not used" — both are beta, re-verify `mcp_unity.md` after an upgrade |
+| Editor bridge | `<...>` | `unity` CLI and `com.unity.pipeline` versions pinned (CLI first), whether the in-Editor MCP of `com.unity.ai.assistant` is also kept, or "not used" — all beta, re-verify `mcp_unity.md` after an upgrade |
 
 > If this project starts from a reusable template/framework layer (a "neutral placeholder
 > game" meant to be replaced piece by piece, or a closed framework folder that must stay
@@ -116,8 +116,9 @@ Assets/_Project/
    asks nothing, touches no Unity Editor bridge, writes nothing)
 4. Fill the `<...>` placeholders in `CLAUDE.md`, `project_setup.md` §1 and `rules.md` §4
    from that snapshot, by hand or by asking Claude to draft them for confirmation
-5. If the Unity Editor bridge will be used: install Unity CLI, run `unity pipeline install`
-   in the project, then `unity mcp configure claude-code`, and confirm with `unity status`
+5. If the Unity Editor bridge will be used: run `/init-unity-cli` (installs the Unity CLI,
+   `unity pipeline install` in the project, `unity mcp configure claude-code`; it asks about
+   the old in-Editor MCP and never removes it unasked), and confirm with `unity status`
    that it lists this project's path and the exact version
 6. Create the `.asmdef` for the code root
 7. Create the `GameDebug` wrapper + the `ENABLE_LOGS` define

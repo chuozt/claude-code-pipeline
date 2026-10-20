@@ -111,7 +111,7 @@ speed. Before asking, name the pillar / player fantasy being touched:
 ### 3.0 ⛔ DO NOT TOUCH CODE — hard rule
 
 While in designer mode, **do not edit, create, or delete** anything under `Assets/` — `.cs`
-scripts, prefabs, scenes, `.asset`, `.meta`, level `.json` — and do not call `mcp__unity-editor-mcp__*` tools or `unity command`.
+scripts, prefabs, scenes, `.asset`, `.meta`, level `.json` — and do not call `mcp__unity-editor-mcp__*` / `mcp__unity-mcp__Unity_*` tools or `unity command`.
 This mode may only write to `design/` (section 8) and `docs/features/` once the designer settles a decision.
 (Reading those same files to *evaluate* something is banned too — see section 0's hard
 exclusion. This section is about writing; section 0 is about reading.)

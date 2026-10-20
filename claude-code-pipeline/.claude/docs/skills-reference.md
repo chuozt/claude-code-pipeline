@@ -79,7 +79,8 @@ playstyle file.
 | `/gd-perf` | Find and rank performance bottlenecks in a Unity mobile project - GC allocation, draw calls, hot paths, lea… |
 | `/gd-review` | Review Unity C# code before a commit or merge against the project's coding convention and anti-patterns |
 | `/gd-workflow-help` | Show the game designer's end-to-end workflow — every phase, every command in order, with one line each on w… |
-| `/mcp-check` | Check whether Unity MCP is attached to the right project and whether the Editor is in a state where files c… |
+| `/init-unity-cli` | First-time setup of the Unity Editor bridge on a machine and project: install the Unity CLI + `com.unity.pipeline`, register its MCP server, then update the agent rules |
+| `/mcp-check` | Check whether the Unity CLI bridge (and the in-Editor MCP, if kept) is attached to the right project and whether the Editor is in a state where files c… |
 | `/playtest-report` | Generates a structured playtest report template or analyzes existing playtest notes into a structured format |
 | `/project-overview` | Read-only snapshot of a Unity project - detected stack, structure, pipeline progress. Asks nothing, never t… |
 | `/project-stage-detect` | Automatically analyze project state, detect stage, identify gaps, and recommend next steps based on existin… |
@@ -87,7 +88,7 @@ playstyle file.
 | `/reverse-document` | Generate design or architecture documents from existing implementation |
 | `/review-all-gdds` | Holistic cross-GDD consistency and game design review |
 | `/track-prompt-duration` | Enable/disable measuring how long each Claude turn takes, from the moment the developer sends a prompt unti… |
-| `/use-mcp` | Controls Unity MCP access |
+| `/use-mcp` | Controls access to the Unity Editor bridge (Unity CLI first, MCP fallback) |
 | `/ux-design` | Guided, section-by-section UX spec authoring for a screen, flow, or HUD |
 
 ---

@@ -2,26 +2,36 @@
 name: use-mcp
 model: claude-opus-5-5
 effort: medium
-description: Controls access to the Unity Editor bridge (Unity CLI + MCP — the mcp__unity-editor-mcp__* tools and Bash `unity command` / `unity eval`). OFF by default for the whole project. /use-mcp on = enabled for the whole session (large, important tasks) · /use-mcp off = disable · /use-mcp this|once|1 = this one prompt only, then off again. Use when the developer types /use-mcp or says "enable MCP", "use the Unity CLI", "use MCP just for this", "turn MCP off".
+description: Controls access to the Unity Editor bridge (Unity CLI first — Bash `unity command` / `unity eval`, or its MCP twins mcp__unity-editor-mcp__*; the in-Editor MCP mcp__unity-mcp__* as a secondary door). OFF by default for the whole project except read-only status commands. /use-mcp on = enabled for the whole session (large, important tasks) · /use-mcp off = disable · /use-mcp this|once|1 = this one prompt only, then off again. Use when the developer types /use-mcp or says "enable MCP", "use the Unity CLI", "use MCP just for this", "turn MCP off".
 ---
 
 > **Coding rule — mandatory.** Every line of C# this skill writes, reviews, or proposes must follow `.claude/coding_convention.md` (Allman braces, §9 script layout, field order and naming, `GameDebug` instead of `Debug.Log`, no `{ get; private set; }`). Where any sample or advice below disagrees with that file, the convention wins.
 
 Controls permission to reach the running Unity Editor **in the running session**, through
-either door (`mcp_unity.md` §0):
+either door (`mcp_unity.md` §0). **Prefer the Unity CLI**; the in-Editor MCP is secondary.
 
-- MCP tools, CLI bridge: `mcp__unity-editor-mcp__*` (`eval`, `console`, `recompile`, `run_tests`, …)
-- MCP tools, in-Editor bridge: `mcp__unity-mcp__Unity_*` (`Unity_RunCommand`, `Unity_ApplyTextEdits`, …)
-- Bash CLI: `unity command …`, `unity eval …`, `unity test …`, `unity build …`,
-  `unity run …`, `unity open …`
+- **Bash CLI (preferred)**: `unity command …` (`eval`, `recompile`, `run_tests`, `menu`,
+  `editor_play`, scene / GameObject / asset commands, …), `unity test …`, `unity open …`
+  — pass `--caller plugin --skill <skill>` and `--no-banner`
+- **MCP tools, CLI bridge**: `mcp__unity-editor-mcp__*` (registered by
+  `unity mcp configure claude-code`) — same commands, same gate; use when Bash is unavailable
+- **MCP tools, in-Editor bridge** *(secondary, only if the project has it)*:
+  `mcp__unity-mcp__Unity_*` (`Unity_RunCommand`, `Unity_ApplyTextEdits`, …) — for what the CLI
+  lacks, or when the developer asks for it
 
-Read-only diagnostics (`unity status`, `unity doctor`, `unity --version`, bare
-`unity command` listing, `unity mcp configure --list`) and the offline API lookup
-`mcp__unity-api__*` never need this skill.
+Not set up on this machine (`unity` not found, no `com.unity.pipeline`, no `ready` Editor
+although Unity is open and not in Safe Mode) → point the developer to `/init-unity-cli`.
+
+Never need this skill (read-only, change nothing): `unity status`, `unity doctor`,
+`unity --version`, `unity pipeline list`, bare `unity command` / `--tag` listings,
+`unity mcp configure --list`, `unity command editor_status` / `console_status` / `console`
+(with `--tail` / `--level`) / `recompile_status` / `test_status` / `list_tests` /
+`list_open_scenes` and their `mcp__unity-editor-mcp__*` twins, and the offline API lookup
+`mcp__unity-api__*` (list: `CLAUDE.md` §2.1).
 
 ## Base Rule: OFF BY DEFAULT ⭐
 
-Until it is enabled, **every call through either door is forbidden** — including "just a
+Until it is enabled, **every other call through either door is forbidden** — including "just a
 quick check", including when a bug is reported, including when confirming a compile seems
 necessary.
 
@@ -45,6 +55,18 @@ No argument → **enables nothing**, just reports the current state and lists th
 
 ### `on` — session-wide
 
+0. **Is this machine set up?** The project's rules and `com.unity.pipeline` come with git; the
+   CLI binary and the MCP registration do not — a teammate who pulled a project someone else
+   set up often has neither. Run `unity --version --no-banner`.
+   - `command not found` → **do not enable.** Say: *"The Unity CLI is not installed on this
+     machine; this project drives the Editor through it."* Print the install command for their
+     OS (Windows `winget install Unity.CLI` · macOS/Linux
+     `curl -fsSL https://unity.com/install.sh | bash`) for the developer to run, and suggest
+     `/init-unity-cli` for the rest of the setup. Never ask them to open the Editor for this.
+   - No `"com.unity.pipeline"` in `Packages/manifest.json` → **do not enable**, suggest
+     `/init-unity-cli`. (A project that deliberately uses only the in-Editor MCP and records
+     that in `project_setup.md` skips this step.)
+   - Both fine → continue.
 1. Verify the bridge is attached to the **right project**: run `unity status --no-banner`
    (or `mcp__unity-editor-mcp__editor_status`).
 2. Compare its `Project` column against the current project's own root (the working
@@ -54,8 +76,10 @@ No argument → **enables nothing**, just reports the current state and lists th
    working directory — the wrong project open means editing the wrong files.
    Two Editors listed → every later call passes `--project-path`.
 3. Match → print `✅ Bridge ON (whole session) — <projectPath> | Unity <version> | port <port>` and proceed.
-4. No `ready` instance → ask the developer to open the Unity Editor, **do not retry in a
-   loop**. If Unity *is* open, suspect Safe Mode (`unity pipeline list`, `mcp_unity.md` §1).
+4. CLI present (step 0) but no `ready` instance → ask the developer to open the Unity Editor,
+   **do not retry in a loop**. If Unity *is* open: `unity pipeline list` — Safe Mode → compile
+   errors (`mcp_unity.md` §1); pipeline not loaded yet → the package is still importing after a
+   pull, ask the developer to focus the Editor and wait; still nothing → `/mcp-check`.
 
 ### `this` / `once` / `1` — single use
 
@@ -80,7 +104,7 @@ treat it as `off` right away without asking again.
 | Find code | `Grep` / `Glob` — **not** `find_assets` / `search` / `Unity_Grep` |
 | Check a Unity API signature | `mcp__unity-api__get_method_signature` — offline, always allowed |
 | Check compilation | **Possible without the bridge** — `dotnet build Assembly-CSharp.csproj --no-restore` with the Editor open (plus `Assembly-CSharp-Editor` and each game `.asmdef`'s `.csproj`, listed in `CLAUDE.md` §2.1). Proves compilation only: say *"compiles, not tested"* |
-| Read error logs | ask the developer to paste them, or use `mcp__terminal__read_terminal` |
+| Read error logs | `unity command console --level error --tail 50` (read-only, always allowed); or ask the developer to paste them, or use `mcp__terminal__read_terminal` |
 | Read level/asset data | parse the JSON/`.asset` file with `node`/`Read` |
 | Run tests | not possible — ask the developer to open the Test Runner (or to type `/use-mcp` for `run_tests`) |
 | Screenshots | not possible — ask the developer |
@@ -92,8 +116,8 @@ either into a guess.
 
 ## Even With The Bridge On — still forbidden
 
-- `unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`
-  (`project_setup.md` §3; machine-level changes)
+- `unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`,
+  `unity upgrade` (`project_setup.md` §3; machine-level changes)
 - `set_player_settings`, `set_quality_settings`, `set_tags_layers`, and every other
   `set_*_settings` — they write `ProjectSettings/` (`CLAUDE.md` §10)
 - `delete_asset` without the `rules.md` §5 dependency scan; `package_add` / `package_remove`
@@ -115,6 +139,8 @@ follows on its own.
 - **Context compaction loses the state.** After a compaction, if there is no trace of
   `/use-mcp on` left in context, treat it as **off** and ask again. Better to ask twice than
   to grant yourself permission. `once` has definitely expired by then.
+- **Two doors, one scene.** Pick the CLI; fall back to the in-Editor MCP only for what the CLI
+  lacks, and never drive the same scene through both in one task.
 - **`/mcp-check` is a different skill** — it diagnoses a broken bridge and only reads state,
   so it runs without enabling.
 - **Editing `.cs` files while the bridge is off**: Unity reloads them on its own when the
@@ -123,3 +149,5 @@ follows on its own.
   after this prompt. Currently `once` and they type `on` → widen to the whole session.
 - **Plugin skills (`unity:*`) call `unity command` too.** They do not bypass this rule:
   running a `unity:*` skill that drives the Editor still requires `/use-mcp` first.
+- **`/init-unity-cli` is setup, not use.** It runs the read-only checks and its confirmed setup
+  steps; it never turns the bridge on.

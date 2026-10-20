@@ -3,8 +3,8 @@
 #
 #   bash .claude/hooks/guard.sh pre-edit    PreToolUse  Edit|Write    -> may BLOCK (exit 2)
 #   bash .claude/hooks/guard.sh post-edit   PostToolUse Edit|Write    -> warnings reach Claude (exit 2)
-#   bash .claude/hooks/guard.sh pre-bash    PreToolUse  Bash          -> may BLOCK (exit 2)
-#   bash .claude/hooks/guard.sh pre-eval    PreToolUse  bridge eval   -> may BLOCK (exit 2)
+#   bash .claude/hooks/guard.sh pre-bash    PreToolUse  Bash|PowerShell -> may BLOCK (exit 2)
+#   bash .claude/hooks/guard.sh pre-eval    PreToolUse  bridge eval / eval_file / run_script -> may BLOCK (exit 2)
 #
 # Pure bash on purpose. The previous version was Python behind a launcher that failed open when
 # no interpreter existed — and on a stock Windows dev machine `python` is only the Microsoft

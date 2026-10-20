@@ -1,47 +1,52 @@
-# Unity Editor Bridge Handbook — Unity CLI + MCP
+# Unity Editor Bridge Handbook — Unity CLI first, MCP as fallback
 
 Operating manual for the AI ↔ Unity Editor bridge. Read before calling any
 `mcp__unity-editor-mcp__*` tool or running `unity command` / `unity eval` in Bash.
 
-> **What bridge(s) this project uses — fill in per project, do not assume the example below.**
-> The usual setup is **Unity CLI** (`unity`) talking to the Editor through the
-> `com.unity.pipeline` package (in `Packages/manifest.json`). The MCP server is `unity mcp`,
-> registered in the user's `~/.claude.json` as `unity-editor-mcp`; its tools appear as
-> `mcp__unity-editor-mcp__<command>`. Docs: https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli
+> **Which door to use.** **Prefer the Unity CLI** (`unity`), talking to the Editor through the
+> `com.unity.pipeline` package (in `Packages/manifest.json`). Two forms, same gate:
+> **Bash `unity command <name> --<param> <value>`** (default; pass `--caller plugin --skill <skill>`
+> and `--no-banner`, `--format json` when parsing) or the CLI's own MCP server `unity mcp`,
+> registered per machine in the user's `~/.claude.json` as `unity-editor-mcp` (tools
+> `mcp__unity-editor-mcp__<command>`) — use that only when Bash is unavailable.
+> **First-time setup of a machine: `/init-unity-cli`.** Docs:
+> https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli
 >
-> Some projects also keep the in-Editor MCP server of `com.unity.ai.assistant` enabled
-> (tools named `mcp__unity-mcp__Unity_*`: `Unity_RunCommand`, `Unity_ApplyTextEdits`,
-> `Unity_GetConsoleLogs`…) alongside the CLI bridge, even though Unity deprecated it in favour
-> of the CLI — confirm with the developer whether this project does. If both are present:
-> same `/use-mcp` gate for both; prefer the CLI bridge (cheaper, Undo-aware commands,
-> `[CliCommand]` extensibility); use `Unity_*` only for what the CLI lacks —
-> `Unity_GetUserGuidelines`, `Unity_ScriptApplyEdits` structure-aware edits, the
-> `Unity_AssetGeneration_*` family. `Unity_RunCommand` needs the `internal class CommandScript
-> : IRunCommand` wrapper and echoes the whole script back; `eval` does not. Never drive the
-> same scene through both bridges in one task.
+> Some projects also keep the **in-Editor MCP** of `com.unity.ai.assistant` (tools named
+> `mcp__unity-mcp__Unity_*`: `Unity_RunCommand`, `Unity_ApplyTextEdits`, `Unity_GetConsoleLogs`…)
+> as a **secondary door**, even though Unity deprecated it in favour of the CLI — confirm with the
+> developer whether this project does. Same `/use-mcp` gate for both; use `Unity_*` only for
+> what the CLI lacks — `Unity_GetUserGuidelines`, `Unity_ScriptApplyEdits` structure-aware edits,
+> the `Unity_AssetGeneration_*` family — or when the developer asks for it. `Unity_RunCommand`
+> needs the `internal class CommandScript : IRunCommand` wrapper and echoes the whole script back;
+> `eval` does not. Never drive the same scene through both doors in one task.
 >
 > The official Unity plugin (`unity@claude-plugins-official`) ships the `unity:unity-cli`
 > skill with the full CLI reference. Open it for CLI details; this file holds the
 > **project rules** that sit on top.
 >
 > **Versions.** The bridge is beta: record in `project_setup.md` the `unity` CLI and
-> `com.unity.pipeline` versions this project pins, and re-verify the behaviour described
-> below on each new project and after every upgrade. Both doors can run side by side.
+> `com.unity.pipeline` versions this project pins (and whether the in-Editor MCP is kept), and
+> re-verify the behaviour described below on each new project and after every upgrade.
 
 ---
 
-## 0. Two doors, one rule
+## 0. Two doors, one rule — the CLI first
 
-There are two ways to reach the Editor, and **both are covered by "MCP OFF by default"**
+There are two ways to reach the Editor, and **both are covered by "bridge OFF by default"**
 (`CLAUDE.md` §2.1, `skills/use-mcp`):
 
 | Door | Looks like | Needs `/use-mcp` |
 |---|---|---|
-| MCP tools (CLI bridge) | `mcp__unity-editor-mcp__eval`, `…__console`, `…__run_tests` | **yes** |
-| MCP tools (in-Editor) | `mcp__unity-mcp__Unity_RunCommand`, `…Unity_ApplyTextEdits`, `…Unity_GetConsoleLogs` | **yes** |
+| MCP tools (CLI bridge) | `mcp__unity-editor-mcp__eval`, `…__console`, `…__run_tests` | **yes** (read-only status twins: no) |
+| MCP tools (in-Editor) — *secondary* | `mcp__unity-mcp__Unity_RunCommand`, `…Unity_ApplyTextEdits`, `…Unity_GetConsoleLogs` | **yes** |
 | API reference MCP | `mcp__unity-api__search_unity_api`, `…get_method_signature`, `…get_deprecation_warnings` | no — offline SQLite lookup of the 6000.3 API docs, touches nothing. **Use it before proposing any Unity API** (`CLAUDE.md` §5) |
-| Bash CLI | `unity command …`, `unity eval …`, `unity test …`, `unity build …`, `unity run …`, `unity open …` | **yes** |
-| Bash CLI, read-only diagnostics | `unity status`, `unity doctor`, `unity --version`, `unity command` (bare list), `unity mcp configure --list` | no — harmless, no Editor mutation |
+| Bash CLI — *preferred* | `unity command …`, `unity eval …`, `unity test …`, `unity open …` | **yes** |
+| Bash CLI, read-only diagnostics | `unity status`, `unity doctor`, `unity --version`, `unity pipeline list`, `unity command` (bare list / `--tag`), `unity mcp configure --list` | no — harmless, no Editor mutation |
+| Bash CLI, read-only Editor state | `unity command editor_status`, `console_status`, `console` (`--tail`/`--level`), `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` (and their `mcp__unity-editor-mcp__*` twins) | no — read state only, small output |
+
+`unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`, `unity upgrade` are
+never run by the AI (`unity build` and `run`: also denied in `settings.json`).
 
 ### The in-Editor door (`mcp__unity-mcp__Unity_*`) — what it can and cannot do `[VERIFIED 2026-09-15]`
 
@@ -94,9 +99,8 @@ Rules learned the hard way:
   and the Bash/Edit/Write hooks then look for `.claude/hooks/guard.sh` under that folder
   and fail — every file tool is dead until the turn ends. Use absolute paths, never `cd`.
 
-`unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`
-are **never** run by the AI (`project_setup.md` §3: no plain CLI builds; the rest change
-the machine). If one seems needed, say so and stop.
+If one of those seems needed, say so and stop (`project_setup.md` §3: no plain CLI builds; the rest
+change the machine).
 
 ---
 
@@ -107,7 +111,8 @@ follow the directory you are chatting in. With several projects open, or the wro
 open, every command runs against the wrong project **silently**. Classic symptom:
 `CS0246: type or namespace not found` for types that certainly exist.
 
-**First thing after `/use-mcp` is granted:**
+**First thing after `/use-mcp` is granted** (the developer's machine must have the CLI —
+`unity --version` fails → `/init-unity-cli`, see `skills/use-mcp` step 0):
 
 ```bash
 unity status --no-banner
@@ -231,8 +236,8 @@ Rules:
 
 ### Checking compilation
 
-- MCP off: `dotnet build Assembly-CSharp.csproj --no-restore` (`CLAUDE.md` §2.1).
-- MCP on: `recompile` → `recompile_status` → `failed == false && errors == []`.
+- Bridge off: `dotnet build Assembly-CSharp.csproj --no-restore` (`CLAUDE.md` §2.1).
+- Bridge on: `recompile` → `recompile_status` → `failed == false && errors == []`.
   Either way report *"compiles, not tested"*.
 
 ---
@@ -248,7 +253,7 @@ unity command test_status
 - `run_tests` is async; poll `test_status`. Quote the pass/fail counts and the failing
   test names, not "tests pass".
 - EditMode for the pure-C# model (`architect.md` §1); PlayMode only for MonoBehaviour lifecycles.
-- With MCP off, tests cannot be run by the AI — ask the developer to open the Test Runner.
+- With the bridge off, tests cannot be run by the AI — ask the developer to open the Test Runner.
 
 ---
 

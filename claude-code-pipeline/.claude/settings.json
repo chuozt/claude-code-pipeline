@@ -28,7 +28,7 @@
         ]
       },
       {
-        "matcher": "Bash",
+        "matcher": "Bash|PowerShell",
         "hooks": [
           {
             "type": "command",
@@ -43,7 +43,7 @@
         ]
       },
       {
-        "matcher": "mcp__unity-editor-mcp__eval|mcp__unity-editor-mcp__run_script|mcp__unity-mcp__Unity_RunCommand",
+        "matcher": "mcp__unity-editor-mcp__eval|mcp__unity-editor-mcp__eval_file|mcp__unity-editor-mcp__run_script|mcp__unity-mcp__Unity_RunCommand",
         "hooks": [
           {
             "type": "command",
@@ -88,6 +88,20 @@
       "Bash(unity pipeline list*)",
       "Bash(unity command)",
       "Bash(unity command --no-banner)",
+      "Bash(unity command --tag *)",
+      "Bash(unity command editor_status*)",
+      "Bash(unity command console_status*)",
+      "Bash(unity command console --*)",
+      "Bash(unity command recompile_status*)",
+      "Bash(unity command test_status*)",
+      "Bash(unity command list_tests*)",
+      "Bash(unity command list_open_scenes*)",
+      "mcp__unity-editor-mcp__editor_status",
+      "mcp__unity-editor-mcp__console_status",
+      "mcp__unity-editor-mcp__recompile_status",
+      "mcp__unity-editor-mcp__test_status",
+      "mcp__unity-editor-mcp__list_tests",
+      "mcp__unity-editor-mcp__list_open_scenes",
       "mcp__unity-api__search_unity_api",
       "mcp__unity-api__get_method_signature",
       "mcp__unity-api__get_namespace",

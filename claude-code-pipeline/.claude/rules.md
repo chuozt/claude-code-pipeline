@@ -12,24 +12,26 @@
 
 ---
 
-## 2. AI Operation — MCP Is OFF By Default
+## 2. AI Operation — The Editor Bridge Is OFF By Default
 
-⛔ **All `mcp__unity-editor-mcp__*` tools, all `mcp__unity-mcp__Unity_*` tools and Bash
-`unity command|eval|test|build|run|open` calls are forbidden** until the developer types
-`/use-mcp` (`CLAUDE.md` §2.1 · `skills/use-mcp/SKILL.md`). Two bridges exist — Unity CLI +
-`com.unity.pipeline` (preferred) and the in-Editor MCP — see `mcp_unity.md` §0. The offline
-`mcp__unity-api__*` lookup is always allowed and should be used before quoting any Unity API.
+⛔ **Bash `unity command|eval|test|open` calls, their `mcp__unity-editor-mcp__*` twins and all
+`mcp__unity-mcp__Unity_*` tools are forbidden** until the developer types `/use-mcp`
+(`CLAUDE.md` §2.1 · `skills/use-mcp/SKILL.md`), except the read-only status commands §2.1 lists.
+`unity build|run|install|uninstall|upgrade` are never run. Two doors exist — the **Unity CLI +
+`com.unity.pipeline` (preferred)** and the in-Editor MCP (secondary, only for what the CLI lacks)
+— see `mcp_unity.md` §0. Machine setup: `/init-unity-cli`. The offline `mcp__unity-api__*`
+lookup is always allowed and should be used before quoting any Unity API.
 
 - **Read the source docs first:** scan the feature's `docs/features/*.md` before editing.
 - **Editing code:** `Edit` directly on disk. Do not rewrite a whole file for a few lines.
-- **Compilation IS checkable while MCP is off.** With the Editor open,
+- **Compilation IS checkable while the bridge is off.** With the Editor open,
   `dotnet build Assembly-CSharp.csproj --no-restore`, plus `Assembly-CSharp-Editor` and one
   `.csproj` per game `.asmdef` (the list and the baseline warning counts live in `CLAUDE.md`
   §2.1, filled in per project). The gate proves
   compilation only, so report *"compiles, not tested"*, never that behaviour was verified.
 
 Once the developer enables it (details in `mcp_unity.md`): check `unity status` /
-`editor_status` first (right project, right version); scripts are still edited **on disk**
+`unity command editor_status` first (right project, right version); scripts are still edited **on disk**
 with `Edit`, then `recompile` → `recompile_status`; verify the Editor is not in Play mode,
 not compiling, and has no modal popup open.
 

@@ -2,23 +2,31 @@
 name: mcp-check
 model: claude-opus-5-5
 effort: medium
-description: Check whether the Unity CLI / MCP bridge is attached to the right project and whether the Editor is in a state where files can be edited. Useful when Claude reports a compile error for a type that certainly exists. Only when the developer types /mcp-check or says "check MCP", "check the Unity bridge", "Claude says it cannot find a type".
+description: Check whether the Unity CLI bridge (and, if the project keeps it, the in-Editor MCP) is attached to the right project and whether the Editor is in a state where files can be edited. Useful when Claude reports a compile error for a type that certainly exists. Only when the developer types /mcp-check or says "check MCP", "check the Unity bridge", "Claude says it cannot find a type".
 ---
 
 > **Coding rule — mandatory.** Every line of C# this skill writes, reviews, or proposes must follow `.claude/coding_convention.md` (Allman braces, §9 script layout, field order and naming, `GameDebug` instead of `Debug.Log`, no `{ get; private set; }`). Where any sample or advice below disagrees with that file, the convention wins.
 
 # /mcp-check — check the Unity bridge
 
-The bridge (`unity` CLI + `com.unity.pipeline`, exposed to Claude as
-`mcp__unity-editor-mcp__*`) follows the **running Editor**, not the chat's working
-directory. With the wrong project open, every command fails silently — the classic symptom
-is `CS0246: type or namespace not found` for types that definitely exist in the project.
+The bridge (`unity` CLI + `com.unity.pipeline`, called as Bash `unity command` or, when
+registered, the `mcp__unity-editor-mcp__*` tools) follows the **running Editor**, not the chat's
+working directory. With the wrong project open, every command fails silently — the classic
+symptom is `CS0246: type or namespace not found` for types that definitely exist in the project.
 
-This skill only reads state. `unity status`, `unity pipeline list` and `unity mcp configure
---list` are always allowed. The bridge status calls (`editor_status`, `recompile_status`) are
-allowed **only because the developer typed `/mcp-check`**, for this prompt only (`CLAUDE.md`
-§2.1). Never run this skill on your own initiative — not at session start, not "to be sure";
-suggest `/mcp-check` to the developer instead.
+This skill only reads state, using only the commands `CLAUDE.md` §2.1 always allows:
+`unity status`, `unity pipeline list`, `unity mcp configure --list`,
+`unity command editor_status` / `recompile_status` / `console_status`. It never calls a
+`mcp__unity-mcp__Unity_*` tool. Never run this skill on your own initiative — not at
+session start, not "to be sure"; suggest `/mcp-check` to the developer instead.
+
+## 0. Is the machine set up?
+
+`unity --version --no-banner` → `command not found` means the CLI is not installed on this
+machine (common for a teammate who pulled a project someone else set up): report it, print
+`winget install Unity.CLI` (Windows) / `curl -fsSL https://unity.com/install.sh | bash`
+(macOS/Linux) for the developer, suggest `/init-unity-cli`, and stop — the remaining checks
+cannot run. No `"com.unity.pipeline"` in `Packages/manifest.json` → same: suggest `/init-unity-cli`.
 
 ## 1. Check the connected Editor
 
@@ -29,7 +37,7 @@ unity status --no-banner
 Expected: exactly one line with state `ready`, `project` matching this project's own root
 (the directory this session is working in, not a value copied from another project), and
 `version` matching the Unity version pinned in `CLAUDE.md` §1. Then
-`mcp__unity-editor-mcp__editor_status` (or `unity command editor_status`) for `compiling`,
+`unity command editor_status` (or `mcp__unity-editor-mcp__editor_status`) for `compiling`,
 `domainReloadInProgress`, `playMode`.
 
 **Project path mismatch → STOP, tell the developer, do nothing else.**
@@ -53,14 +61,21 @@ unity pipeline list
 
 `Editor is in Safe Mode - Pipeline server disabled` means compile errors keep the Pipeline
 package from loading. Read `Logs/Editor.log` filtered on `error CS`, report the errors, and
-ask the developer to fix/restart. Do not "edit blindly" (`mcp_unity.md` §1).
+ask the developer to fix/restart. Do not "edit blindly" (`mcp_unity.md` §1). Package listed
+but not loaded right after a pull → it is still importing; ask the developer to focus the Editor.
 
 ## 5. Check the MCP registration
 
-`unity mcp configure --list` shows which clients are configured. For Claude Code the entry
-lives in the user's `~/.claude.json` (`unity-editor-mcp` → `unity mcp`); if the
-`mcp__unity-editor-mcp__*` tools are absent from the session, that registration is missing
-on this machine — tell the developer to run `unity mcp configure claude-code`.
+Bash `unity command` needs no registration. `unity mcp configure --list` shows which clients
+are configured; for Claude Code the entry lives in the user's `~/.claude.json`
+(`unity-editor-mcp` → `unity mcp`).
+
+- `mcp__unity-editor-mcp__*` tools absent from the session → the registration is missing on this
+  machine: suggest `/init-unity-cli` (or `unity mcp configure claude-code`), then a Claude Code
+  restart. Bash `unity command` keeps working meanwhile.
+- The in-Editor MCP (`unity-mcp` → `relay_win.exe --mcp`) registered → **not a fault**: this kit
+  keeps it as the secondary door (`CLAUDE.md` §2.1). Report which doors are present; only say it
+  is unwanted if `project_setup.md` records the project as CLI-only.
 
 ## Result format
 
