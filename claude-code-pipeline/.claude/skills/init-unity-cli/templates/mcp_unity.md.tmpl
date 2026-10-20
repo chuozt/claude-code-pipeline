@@ -1,0 +1,65 @@
+# Unity Editor Bridge Handbook — Unity CLI
+
+Operating manual for the AI ↔ Unity Editor bridge. Read before running `unity command` in Bash or
+calling any `mcp__unity-editor-mcp__*` tool. The full CLI reference is the `unity:unity-cli` skill
+(plugin `unity@claude-plugins-official`) or `unity skill show`; this file holds the **project
+rules** on top. Unity's migration guide:
+https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli
+
+<!-- /init-unity-cli inserts the "This project (<project>) — read first" section (block D) here. -->
+
+---
+
+## 0. Doors and gates
+
+| Door | Looks like | Needs `/use-mcp` |
+|---|---|---|
+| Bash CLI | `unity command …`, `unity test …`, `unity open …` | **yes** |
+| MCP tools (CLI bridge) | `mcp__unity-editor-mcp__eval`, `…__console`, `…__run_tests` | **yes** |
+| MCP tools (in-Editor) | `mcp__unity-mcp__Unity_*` | **retired in <project> (<date>) — never call, even with `/use-mcp`** |
+| API reference MCP | `mcp__unity-api__*` | no — offline lookup, touches nothing |
+| Bash CLI, read-only diagnostics | `unity status`, `unity doctor`, `unity --version`, `unity pipeline list`, `unity command` (bare list / `--tag`), `unity mcp configure --list` | no — harmless, no Editor mutation |
+| Bash CLI, read-only Editor state | `unity command editor_status`, `console_status`, `console` (`--tail`/`--level`), `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` (and their `mcp__unity-editor-mcp__*` twins) | no — read state only, small output |
+
+`unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`,
+`unity upgrade` are **never** run by the AI. If one seems needed, say so and stop.
+
+## 1. The bridge follows the running Editor
+
+`unity command` discovers the running Editor itself; it does not follow the chat's directory.
+First thing after `/use-mcp`: `unity status --no-banner` — the `Project` column must be this
+checkout and the version the one pinned in `CLAUDE.md`. Mismatch → STOP and tell the developer.
+No `ready` instance → ask the developer to open the Editor, do not loop.
+
+**Safe Mode:** with compile errors the Pipeline package does not load, so every call reports
+"cannot connect" although the Editor is open. Confirm with `unity pipeline list`, read
+`Logs/Editor.log` (grep `error CS`), fix on disk, ask the developer to restart Unity.
+
+## 2. Before editing through the bridge
+
+Not in Play mode · not compiling · no modal popup (`editor_status`). After editing `.cs` on
+disk: `recompile` → poll `recompile_status` until `completed` / `up_to_date` → read `errors[]`.
+
+## 3. `eval`
+
+A statement list compiled in the Editor: `return <value>;` to get a value back. Fully-qualify
+every type (`using` lines do not work). Keep snippets short — heavy logic belongs in a static
+method of the project that the snippet calls in one line. Mutations through `eval` bypass Undo;
+prefer the dedicated, Undo-aware commands. Never delete files/assets or touch `ProjectSettings/`
+through `eval`.
+
+## 4. Tests
+
+`unity command list_tests --mode EditMode` → `run_tests --mode EditMode --filter <name>` → poll
+`test_status`. Quote pass/fail counts and failing names, never "tests pass".
+
+## 5. Context discipline
+
+Always `--tail` / `--level error` on `console`; pass `--path` to `get_scene_hierarchy`; save
+screenshots with `--save_path` and `Read` the file; write long reports to a file.
+
+## 6. Extending
+
+A static method tagged `[CliCommand]` (asmdef referencing `Unity.Pipeline`) shows up as
+`unity command <name>` after the next recompile. `Packages/com.unity.pipeline/` is a third-party
+package folder: never edit it; its own `CLAUDE.md` applies only inside that folder.

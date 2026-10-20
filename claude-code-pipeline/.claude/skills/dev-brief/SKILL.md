@@ -84,6 +84,25 @@ Brevity loses to these every time. If a reply cannot fit them, it is not too lon
 - **Anything waiting on the developer goes last**, in the closing block below — never in the
   body.
 
+### Keyword highlighting — bold for numbers, code for names
+
+Two kinds of emphasis only, so a skimming eye lands on the facts:
+
+| What | Style | Example |
+|---|---|---|
+| Counts, quantities, results, measured values (with unit) | **bold** | **48 skill + 24 agent**, **217/217** files, **0.15 s** |
+| Anything that exists in the repo or terminal — file, path, class, field, skill, command, event, param | `inline code` | `CLAUDE.md`, `/gd-bot-playstyle`, `level_end` |
+| A name that is itself the key point of the sentence | **`bold + code`** | xoá **`gd-bot-policy`** |
+
+> ghi đè **48 skill + 24 agent**, thêm **4 skill**, xoá `gd-bot-policy`, sửa banner ở
+> **36 file**, giữ nguyên `CLAUDE.md`
+
+- **3–5 highlights per paragraph or bullet at most** — when everything is highlighted, nothing is.
+- Bold carries a number or the one deciding fact, never tone: no bold whole sentences, no bold
+  ordinary words ("rất quan trọng"). The bold title of a decision question (below) is the only
+  other bold.
+- No highlighting inside code blocks or table header rows; no colour, HTML or ANSI codes.
+
 ### Status tables and checklists — fixed row order
 
 Any table or checklist of work items (done / not done, spec vs code, audit results) lists its
