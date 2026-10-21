@@ -1,11 +1,11 @@
 # Agent rules for the Unity CLI bridge — reference blocks for /init-unity-cli Step 8
 
-Canonical text that makes a project's agent rules say "one bridge: Unity CLI + `com.unity.pipeline`,
-the in-Editor MCP of `com.unity.ai.assistant` is retired". Reference implementations:
-e92-buzzybus (2026-10-20, keeps the offline `dotnet build` gate) and e88-busin (2026-10-19).
+Canonical text that makes a project's agent rules say "**Unity CLI + `com.unity.pipeline` is the
+preferred door; the in-Editor MCP of `com.unity.ai.assistant` stays as a secondary door**". Nothing
+here removes, denies or retires the in-Editor MCP. Reference implementation: the kit's own
+`CLAUDE.md` §2.1 (block B is a copy of it).
 
-Placeholders: `<project>` = repository folder name · `<date>` = today (YYYY-MM-DD) ·
-`<assistant-sentence>` = see block A. Never put a machine-specific absolute path in any block.
+Placeholders: `<project>` = repository folder name · `<date>` = today (YYYY-MM-DD). Never put a machine-specific absolute path in any block.
 
 **Merge, don't overwrite.** Each block replaces only the passage named in its *Target*. Keep
 everything project-specific around it — especially an offline compile gate (`dotnet build`,
@@ -41,11 +41,11 @@ tested"* only when `console_status` was read after the Editor recompiled the cha
 
 Already migrated when **all** hold (then Step 8 only refreshes versions):
 
-- `CLAUDE.md` contains `/init-unity-cli` and the word `retired` next to `mcp__unity-mcp`
-- `.claude/settings.json` `permissions.deny` contains `"mcp__unity-mcp"` and `allow` contains
-  `"Bash(unity command editor_status*)"`
-- `.claude/skills/use-mcp/SKILL.md` description says the in-Editor MCP is retired **and** its
-  `on` steps contain step `0. **Is this machine set up?**`
+- `CLAUDE.md` contains `/init-unity-cli` and says the Unity CLI is preferred
+- `.claude/settings.json` `permissions.allow` contains `"Bash(unity command editor_status*)"`
+  (nothing about `mcp__unity-mcp` is required — it is neither denied nor allowed here)
+- `.claude/skills/use-mcp/SKILL.md` puts the CLI first **and** its `on` steps contain step
+  `0. **Is this machine set up?**`
 - `.claude/skills/mcp-check/SKILL.md` and `.claude/mcp_unity.md` exist and mention `/init-unity-cli`
 - the session-start hook, if the project has one, contains `Unity CLI bridge readiness`
 
@@ -59,15 +59,9 @@ by an older version of this skill) gets just the missing blocks.
 *Target:* the item saying "Do not touch Unity MCP" (or similar).
 
 ```markdown
-1. **Do not drive the Unity Editor.** The Unity CLI bridge is OFF by default except for the
-   read-only status commands — see §2.1. The old in-Editor MCP (`mcp__unity-mcp__*`) is
-   retired: never call it.
+1. **Do not drive the Unity Editor.** The bridge (Unity CLI, or the MCP) is OFF by default,
+   except for its read-only status commands — see §2.1.
 ```
-
-`<assistant-sentence>` used in block B:
-- package kept → `` `com.unity.ai.assistant` (≥ 2.13, so it does not conflict with the CLI) may stay installed for the Assistant window only. ``
-- package removed in Step 6 → `` `com.unity.ai.assistant` was removed on <date>. ``
-- never installed → drop the sentence.
 
 ## B. `CLAUDE.md` — §2.1 bridge section
 
@@ -77,29 +71,33 @@ by an older version of this skill) gets just the missing blocks.
 If the project had no compile gate, keep its existing "not compiled, not tested" wording.
 
 ```markdown
-## 2.1 ⛔ Unity Editor bridge (Unity CLI) — OFF BY DEFAULT
+## 2.1 ⛔ Unity Editor bridge (Unity CLI first, MCP as fallback) — OFF BY DEFAULT
 
-This project has **one** bridge: the **Unity CLI** (`unity`) talking to the open Editor through
-the `com.unity.pipeline` package. Two ways to call it, same gate, same rules:
+Two doors reach the Editor. **Prefer the Unity CLI**; use the MCP only for what the CLI lacks.
 
-- **Bash `unity command <name> --<param> <value>` — preferred** (cheaper on context). Pass
-  `--caller plugin --skill <skill>` and `--no-banner` on every call (`--format json` when
-  parsing the result).
-- **MCP tools `mcp__unity-editor-mcp__<name>`** — the CLI's own MCP server (`unity mcp`),
-  registered per machine by `unity mcp configure claude-code`. Equivalent to the Bash form;
-  use it when the Bash form is unavailable. Never drive the same scene through both in one task.
+- **Unity CLI** (`unity`) + `com.unity.pipeline` — **preferred**: cheaper on context, Undo-aware
+  commands, extensible with `[CliCommand]`. Two forms, same gate, same rules:
+  - **Bash `unity command <name> --<param> <value>`** — the default form. Pass
+    `--caller plugin --skill <skill>` and `--no-banner` on every call (`--format json` when
+    parsing the result).
+  - **MCP tools `mcp__unity-editor-mcp__<name>`** — the CLI's own MCP server (`unity mcp`),
+    registered per machine by `unity mcp configure claude-code`. The same commands; use them when
+    the Bash form is unavailable.
+- **In-Editor MCP** of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`) — **secondary**, only
+  if this project has it installed and verified: use it for what the CLI does not offer
+  (`Unity_GetUserGuidelines`, structure-aware `Unity_ScriptApplyEdits`, `Unity_AssetGeneration_*`)
+  or when the developer asks for it. Same gate as the CLI.
 
-Not set up on this machine yet → the developer types `/init-unity-cli`. **`unity` not found**
-(common for a teammate who pulled a project someone else set up — the CLI and the MCP
-registration are per machine, not in git) → even the read-only commands below are unavailable:
-ask for pasted logs or read `mcp__terminal__read_terminal`, suggest `/init-unity-cli` **once**,
-and never retry the CLI in a loop or ask the developer to open the Editor for it. The full CLI reference
-is the `unity:unity-cli` skill; the project rules on top of it are in `.claude/mcp_unity.md`.
+Never drive the same scene through two doors in one task. Record which door(s) this project has
+installed and verified, once confirmed with the developer (`/project-overview` does not check
+this — it never touches the bridge). Details and when to use which: `.claude/mcp_unity.md`.
 
-The old in-Editor MCP of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`, server
-`unity-mcp` → `relay_win.exe --mcp`) is **retired** (switched <date>; Unity deprecated it in
-favour of the CLI — https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli).
-**Never call it**, `/use-mcp` or not; `settings.json` denies it. <assistant-sentence>
+**Not set up on this machine** (`unity` not found — the CLI and the MCP registration are per
+machine, not in git, so a teammate who pulled the project often has neither): the developer
+types `/init-unity-cli`. Until then even the read-only commands below are unavailable: ask for
+pasted logs or read `mcp__terminal__read_terminal`, suggest `/init-unity-cli` **once**, and never
+retry the CLI in a loop or ask the developer to open the Editor for it. The full CLI reference is
+the `unity:unity-cli` skill; the project rules on top of it are in `.claude/mcp_unity.md`.
 
 **Always allowed** (read-only, they change nothing in the Editor):
 
@@ -108,13 +106,14 @@ favour of the CLI — https://docs.unity.com/en-us/unity-cli/replace-mcp-server-
 - `unity command editor_status`, `console_status`, `console` (always with `--tail` / `--level`),
   `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` — and their
   `mcp__unity-editor-mcp__*` twins
-- the offline API lookup `mcp__unity-api__*`, if installed
+- the offline API lookup `mcp__unity-api__*`
 
-**Everything else is forbidden until the developer types `/use-mcp on`** (whole session) or
-**`/use-mcp once`** (exactly one prompt, then off again): `eval` / `eval_file` / `run_script`,
-`recompile`, `run_tests`, `menu`, Play mode, scene / GameObject / asset / prefab commands,
-captures, `get_scene_hierarchy` and the other inspection commands that flood the context. That
-includes "just a quick check", bug reports, and wanting to confirm a build.
+**Everything else is forbidden** — every other `unity command`, `eval` / `eval_file` /
+`run_script`, `recompile`, `run_tests`, `menu`, Play mode, scene / GameObject / asset / prefab
+commands, captures, the inspection commands that flood the context, and every
+`mcp__unity-mcp__Unity_*` tool — **until the developer types `/use-mcp on`** (whole session) or
+**`/use-mcp once`** (exactly one prompt, then off again). That includes "just a quick check", bug
+reports, and wanting to confirm a build.
 
 **Never, even with the bridge on:** `unity build` / `run` / `install` / `uninstall` /
 `upgrade` / `self-uninstall` (the guard hook blocks them), every `set_*_settings` command
@@ -123,10 +122,9 @@ deletion through `eval` without the reference scan.
 
 **Right Editor, right checkout.** `unity status` must show this session's own working directory
 in its `Project` column (never hard-code a path; two Editors listed → every call passes
-`--project-path "<path>"`). A session in a git worktree never uses the bridge.
-
-**Editor in Safe Mode** (compile errors): `unity status` / `unity command` cannot connect.
-Confirm with `unity pipeline list`, fix the C# on disk, and ask the developer to restart Unity.
+`--project-path "<path>"`). A session in a git worktree never uses the bridge. **Safe Mode**
+(compile errors): `unity status` / `unity command` cannot connect — confirm with
+`unity pipeline list`, fix the C# on disk, ask the developer to restart Unity.
 
 Without the bridge: edit code with `Read`/`Edit`/`Write`, search with `Grep`/`Glob`,
 read data by parsing files.
@@ -151,10 +149,11 @@ the section below where its HTML comment says; steps 2–3 are then already done
 ```markdown
 ## This project (<project>) — read first
 
-- **One bridge: the Unity CLI** through `com.unity.pipeline`. Switched <date> from the
-  in-Editor MCP of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`, server `unity-mcp` →
-  `relay_win.exe --mcp`), which Unity deprecated: that door is **retired — never call it**;
-  `settings.json` denies `mcp__unity-mcp`. <assistant-sentence>
+- **Two doors, CLI first.** The **Unity CLI** through `com.unity.pipeline` is preferred (set up
+  <date>). The in-Editor MCP of `com.unity.ai.assistant` (`mcp__unity-mcp__Unity_*`, server
+  `unity-mcp` → `relay_win.exe --mcp`) is kept as the **secondary** door — Unity deprecated it, but
+  it still offers what the CLI lacks (`Unity_GetUserGuidelines`, `Unity_ScriptApplyEdits`,
+  `Unity_AssetGeneration_*`). Same `/use-mcp` gate; never both on the same scene in one task.
 - **Machine setup**: the developer types `/init-unity-cli`. Versions in use are recorded in
   `project_setup.md` (row *Editor bridge*); if a command listed here is missing, check the bare
   `unity command` listing before assuming it exists.
@@ -177,18 +176,18 @@ the section below where its HTML comment says; steps 2–3 are then already done
 ```
 
 2. §0 door table: the "MCP tools (in-Editor)" row's last cell →
-   `**retired in <project> (<date>) — never call, even with `/use-mcp`**`. Make the read-only
+   `**secondary door — same `/use-mcp` gate; use for what the CLI lacks**`. Make the read-only
    diagnostics row list `unity pipeline list` and `--tag`, and add the row
    `| Bash CLI, read-only Editor state | `unity command editor_status`, `console_status`, `console` (`--tail`/`--level`), `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` (and their `mcp__unity-editor-mcp__*` twins) | no — read state only, small output |`
 3. Under the "in-Editor door" heading, add:
-   `> **Retired in <project> on <date>** — kept as history. The Play-mode notes below still apply to CLI `eval`; the `Unity_*` tool quirks do not.`
+   `> **Secondary door in <project>** — the CLI is preferred; use this one for what the CLI lacks.`
 
 ## E. `.claude/settings.json` (JSON edit — keep every other key, validate after)
 
 - `hooks.PreToolUse`: the matcher `"Bash"` → `"Bash|PowerShell"` (only the entry that runs
   `guard.sh pre-bash`); the eval matcher →
   `"mcp__unity-editor-mcp__eval|mcp__unity-editor-mcp__eval_file|mcp__unity-editor-mcp__run_script"`
-  (drop `mcp__unity-mcp__Unity_RunCommand`).
+  (keep `mcp__unity-mcp__Unity_RunCommand` in the list if the project keeps the in-Editor MCP).
 - `permissions.allow` — add the missing ones:
   `Bash(unity --version*)`, `Bash(unity status*)`, `Bash(unity doctor*)`,
   `Bash(unity mcp configure --list*)`, `Bash(unity pipeline list*)`, `Bash(unity command)`,
@@ -200,8 +199,8 @@ the section below where its HTML comment says; steps 2–3 are then already done
   `mcp__unity-editor-mcp__console_status`, `mcp__unity-editor-mcp__recompile_status`,
   `mcp__unity-editor-mcp__test_status`, `mcp__unity-editor-mcp__list_tests`,
   `mcp__unity-editor-mcp__list_open_scenes`
-- `permissions.deny` — replace every `mcp__unity-mcp__…` entry with the single `"mcp__unity-mcp"`;
-  make sure `Bash(unity build*)`, `Bash(unity run*)`, `Bash(unity install*)`,
+- `permissions.deny` — **leave every existing `mcp__unity-mcp__…` entry as it is** (the in-Editor
+  MCP is kept; never add a blanket `"mcp__unity-mcp"` deny); make sure `Bash(unity build*)`, `Bash(unity run*)`, `Bash(unity install*)`,
   `Bash(unity uninstall*)`, `Bash(unity self-uninstall*)`, `Bash(unity upgrade*)`, the
   `Bash(unity command set_*_settings*)` family and `Edit(**/Packages/com.unity.pipeline/**)` are there.
 - `permissions.ask` — `Bash(unity command delete_asset*)`, `mcp__unity-editor-mcp__delete_asset`.
@@ -228,12 +227,12 @@ from §2.1, fix the `§` reference while filling it in.
 
 | File | Change |
 |---|---|
-| `.claude/rules.md` "MCP is OFF by default" paragraph | "Bash `unity command|eval|test|open` calls and their `mcp__unity-editor-mcp__*` twins are forbidden until `/use-mcp`, except the read-only status commands `CLAUDE.md` §2.1 lists. The only bridge is the Unity CLI + `com.unity.pipeline`; the in-Editor MCP (`mcp__unity-mcp__Unity_*`) is **retired — never call it**. Machine setup: `/init-unity-cli`." |
+| `.claude/rules.md` "MCP is OFF by default" paragraph | "Bash `unity command|eval|test|open` calls and their `mcp__unity-editor-mcp__*` twins are forbidden until `/use-mcp`, except the read-only status commands `CLAUDE.md` §2.1 lists. The preferred bridge is the Unity CLI + `com.unity.pipeline`; the in-Editor MCP (`mcp__unity-mcp__Unity_*`) is the **secondary** door, same gate. Machine setup: `/init-unity-cli`." |
 | `.claude/project_setup.md` row *Editor bridge* | `**Unity CLI** + `com.unity.pipeline` (decided <date>)` + versions (Step 8 record) |
-| `.claude/project_setup.md` new-project order, the "install Unity CLI…" item | "run `/init-unity-cli` (install Unity CLI, `unity pipeline install`, `unity mcp configure claude-code`, retire the old in-Editor MCP), and confirm with `unity status`…" |
-| `.claude/docs/quick-start.md` | add row `Set up Unity CLI + pipeline + MCP on this machine (first time)` → `/init-unity-cli`; rewrite "bridge is OFF by default" paragraph to the CLI-only wording |
+| `.claude/project_setup.md` new-project order, the "install Unity CLI…" item | "run `/init-unity-cli` (install Unity CLI, `unity pipeline install`, `unity mcp configure claude-code`; the old in-Editor MCP is left alone), and confirm with `unity status`…" |
+| `.claude/docs/quick-start.md` | add row `Set up Unity CLI + pipeline + MCP on this machine (first time)` → `/init-unity-cli`; rewrite "bridge is OFF by default" paragraph to the CLI-first wording |
 | `.claude/docs/skills-reference.md` | add `/init-unity-cli` row; `/mcp-check` and `/use-mcp` rows say "Unity CLI bridge" instead of "Unity MCP" |
-| `.claude/skills/project-overview/SKILL.md` | "No `mcp__unity-editor-mcp__*` tool (the old `mcp__unity-mcp__Unity_*` door is retired anyway)" |
+| `.claude/skills/project-overview/SKILL.md` | "No `mcp__unity-editor-mcp__*` / `mcp__unity-mcp__Unity_*` tool" |
 
 ## I. `.claude/hooks/session-start.sh` (only if the project has this hook)
 
@@ -265,7 +264,7 @@ Detection for this block: the hook file contains `Unity CLI bridge readiness`.
 ## After applying
 
 - `grep -rn "unity-mcp" CLAUDE.md .claude --include=*.md --include=*.json` (skip `.claude/kb/`):
-  every remaining hit must be marked retired / denied / history.
+  every remaining hit must describe it as the secondary door (never as retired or denied).
 - `.claude/settings.json` must still parse as JSON.
 - Edit the files with the `Edit` tool, not a Bash heredoc or script: the guard hook blocks Bash
   command text that quotes the forbidden CLI verbs, and this file quotes them.

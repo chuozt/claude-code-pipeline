@@ -17,7 +17,7 @@ symptom is `CS0246: type or namespace not found` for types that definitely exist
 This skill only reads state, using only the commands `CLAUDE.md` §2.1 always allows:
 `unity status`, `unity pipeline list`, `unity mcp configure --list`,
 `unity command editor_status` / `recompile_status` / `console_status`. It never calls the
-retired `mcp__unity-mcp__Unity_*` tools. Never run this skill on your own initiative — not at
+`mcp__unity-mcp__Unity_*` tool. Never run this skill on your own initiative — not at
 session start, not "to be sure"; suggest `/mcp-check` to the developer instead.
 
 ## 0. Is the machine set up?
@@ -71,8 +71,8 @@ are configured; for Claude Code the entry lives in the user's `~/.claude.json`
 
 - `mcp__unity-editor-mcp__*` tools absent from the session → suggest `/init-unity-cli`, then a
   Claude Code restart.
-- The old `unity-mcp` relay (`relay_win.exe --mcp`) still registered → report it;
-  `/init-unity-cli` offers its removal (this project denies it either way).
+- The in-Editor MCP (`unity-mcp` → `relay_win.exe --mcp`) registered → **not a fault**: it is the
+  secondary door (`CLAUDE.md` §2.1). Report which doors are present.
 
 ## Result format
 

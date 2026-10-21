@@ -2,7 +2,7 @@
 name: use-mcp
 model: claude-opus-5-5
 effort: medium
-description: Controls access to the Unity Editor bridge (Unity CLI — Bash `unity command` / `unity eval`, or its MCP twins mcp__unity-editor-mcp__*; the old in-Editor MCP mcp__unity-mcp__* is retired). OFF by default for the whole project except read-only status commands. /use-mcp on = enabled for the whole session (large, important tasks) · /use-mcp off = disable · /use-mcp this|once|1 = this one prompt only, then off again. Use when the developer types /use-mcp or says "enable MCP", "use the Unity CLI", "use MCP just for this", "turn MCP off".
+description: Controls access to the Unity Editor bridge (Unity CLI — Bash `unity command` / `unity eval`, or its MCP twins mcp__unity-editor-mcp__*; the in-Editor MCP mcp__unity-mcp__*, where the project keeps it, is the secondary door). OFF by default for the whole project except read-only status commands. /use-mcp on = enabled for the whole session (large, important tasks) · /use-mcp off = disable · /use-mcp this|once|1 = this one prompt only, then off again. Use when the developer types /use-mcp or says "enable MCP", "use the Unity CLI", "use MCP just for this", "turn MCP off".
 ---
 
 > **Coding rule — mandatory.** Every line of C# this skill writes, reviews, or proposes must follow the project's C# convention (`.claude/coding_convention.md` when it exists). Where any sample or advice below disagrees with it, the convention wins.
@@ -14,7 +14,9 @@ the Unity CLI (`mcp_unity.md` §0; <project> since <date>):
   `editor_play`, scene / GameObject / asset commands, …), `unity test …`, `unity open …`
 - MCP tools, CLI bridge: `mcp__unity-editor-mcp__*` (registered by
   `unity mcp configure claude-code`) — same commands, same gate
-- The in-Editor MCP `mcp__unity-mcp__Unity_*` is **retired**: this skill never enables it.
+- MCP tools, in-Editor bridge *(secondary, only if the project keeps it)*: `mcp__unity-mcp__Unity_*`
+  (`Unity_RunCommand`, `Unity_ApplyTextEdits`, …) — for what the CLI lacks, or when the developer
+  asks for it; same gate. Never drive the same scene through both doors in one task.
 
 Not set up on this machine (`unity` not found, no `com.unity.pipeline`, no `ready` Editor
 although Unity is open and not in Safe Mode) → point the developer to `/init-unity-cli`.
@@ -113,7 +115,6 @@ compiled — it confirms your change only when read after the Editor recompiled 
 
 - `unity build`, `unity run`, `unity install`, `unity uninstall`, `unity self-uninstall`,
   `unity upgrade` (machine-level changes; builds go through the project's own pipeline)
-- any `mcp__unity-mcp__Unity_*` tool (retired door)
 - `set_player_settings`, `set_quality_settings`, `set_tags_layers`, and every other
   `set_*_settings` — they write `ProjectSettings/`
 - `delete_asset` without a dependency scan (`AssetDatabase.GetDependencies`); `package_add` /

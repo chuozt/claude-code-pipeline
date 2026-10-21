@@ -16,7 +16,7 @@ https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli
 |---|---|---|
 | Bash CLI | `unity command …`, `unity test …`, `unity open …` | **yes** |
 | MCP tools (CLI bridge) | `mcp__unity-editor-mcp__eval`, `…__console`, `…__run_tests` | **yes** |
-| MCP tools (in-Editor) | `mcp__unity-mcp__Unity_*` | **retired in <project> (<date>) — never call, even with `/use-mcp`** |
+| MCP tools (in-Editor) — *secondary* | `mcp__unity-mcp__Unity_*` | **yes** — only if the project keeps it; for what the CLI lacks |
 | API reference MCP | `mcp__unity-api__*` | no — offline lookup, touches nothing |
 | Bash CLI, read-only diagnostics | `unity status`, `unity doctor`, `unity --version`, `unity pipeline list`, `unity command` (bare list / `--tag`), `unity mcp configure --list` | no — harmless, no Editor mutation |
 | Bash CLI, read-only Editor state | `unity command editor_status`, `console_status`, `console` (`--tail`/`--level`), `recompile_status`, `test_status`, `list_tests`, `list_open_scenes` (and their `mcp__unity-editor-mcp__*` twins) | no — read state only, small output |

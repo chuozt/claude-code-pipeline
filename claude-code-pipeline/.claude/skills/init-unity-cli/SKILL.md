@@ -2,17 +2,19 @@
 name: init-unity-cli
 model: claude-opus-5-5
 effort: medium
-description: First-time setup of the Unity Editor bridge on this machine and project — install the Unity CLI, install com.unity.pipeline into the project, register the CLI's MCP server for the AI clients the developer picks (Claude Desktop by default, plus Claude Code, Codex or others — multi-select; unity mcp configure <client>), retire the old in-Editor MCP (unity-mcp / relay_win.exe) in those clients, optionally remove the com.unity.ai.assistant package (asked every run, default keep), verify, then update CLAUDE.md, settings.json and the /use-mcp, /mcp-check and related rule files so the agent uses the Unity CLI + pipeline. Guides the developer and asks before every change. Use when the developer types /init-unity-cli or says "set up the Unity CLI", "install unity pipeline", "configure unity mcp", "replace the Unity MCP server", "unity command not found".
+description: First-time setup of the Unity Editor bridge on this machine and project — install the Unity CLI, install com.unity.pipeline into the project, register the CLI's MCP server for the AI clients the developer picks (Claude Desktop by default, plus Claude Code, Codex or others — multi-select; unity mcp configure <client>), leave the in-Editor MCP (unity-mcp / relay_win.exe) and the com.unity.ai.assistant package untouched — this skill never removes either — verify, then update CLAUDE.md, settings.json and the /use-mcp, /mcp-check and related rule files so the agent prefers the Unity CLI + pipeline and keeps the in-Editor MCP as a secondary door. Guides the developer and asks before every change. Use when the developer types /init-unity-cli or says "set up the Unity CLI", "install unity pipeline", "configure unity mcp", "add the Unity CLI to this project", "unity command not found".
 ---
 
 # /init-unity-cli — set up the Unity CLI bridge
 
-Moves this machine and project from the deprecated in-Editor MCP of `com.unity.ai.assistant`
-(`unity-mcp` → `relay_win.exe --mcp`, tools `mcp__unity-mcp__Unity_*`) to the **Unity CLI**
-(`unity`) + **`com.unity.pipeline`**, following Unity's migration guide
-https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli. Afterwards the agent drives
-the Editor with Bash `unity command` (preferred) or the `mcp__unity-editor-mcp__*` tools, under
-the rules of `CLAUDE.md` §2.1 and `.claude/mcp_unity.md`.
+Sets this machine and project up for the **Unity CLI** (`unity`) + **`com.unity.pipeline`**, Unity's
+replacement for the in-Editor MCP of `com.unity.ai.assistant`
+(https://docs.unity.com/en-us/unity-cli/replace-mcp-server-unity-cli). **It adds; it never
+removes.** The in-Editor MCP (`unity-mcp` → `relay_win.exe --mcp`, tools
+`mcp__unity-mcp__Unity_*`) and the `com.unity.ai.assistant` package stay exactly as they are:
+the CLI is the **preferred** door, the in-Editor MCP the secondary one for what the CLI lacks.
+Afterwards the agent drives the Editor with Bash `unity command` (preferred) or the
+`mcp__unity-editor-mcp__*` tools, under the rules of `CLAUDE.md` §2.1 and `.claude/mcp_unity.md`.
 
 ## Self-contained — drop it into any project
 
@@ -51,9 +53,11 @@ turn the bridge on: `/use-mcp` keeps gating every Editor action.
   set). A "yes" covers that step only.
 - **The AI never installs the CLI itself** (downloading and running an installer is the
   developer's action). It prints the command for the developer to run in their own terminal.
-- **Never** `unity upgrade` / `self-update` / `self-uninstall`, never edit `ProjectSettings/`,
-  never remove `com.unity.ai.assistant` without the explicit "remove" answer of Step 6 (the
-  Assistant window may still be used).
+- **Never** `unity upgrade` / `self-update` / `self-uninstall`, never edit `ProjectSettings/`.
+- **Never remove or disable the old door**: no edit of any client's MCP registration for
+  `unity-mcp` / `relay_win.exe`, no removal of `com.unity.ai.assistant`, no `deny` entry for
+  `mcp__unity-mcp` — the team uses both doors. If the developer asks for a removal, it is a
+  separate request, done by hand or outside this skill.
 - The guard hook blocks Bash command *text* that contains some CLI verbs — run each command on
   its own, never inside a heredoc that quotes docs.
 - Report each step as `✅ done` / `⏭ already OK` / `⛔ needs the developer` — never "probably".
@@ -68,7 +72,7 @@ Decide before Step 1, from files only (Grep, no bridge):
   Say so in one line: *"Project already set up for the Unity CLI — only this machine needs
   setting up."* Then run Steps 1, 2, 4, 5, 7; Step 3 is `⏭` (Unity imports the package on its
   own after the pull — if `pipeline list` shows it not loaded yet, ask the developer to focus
-  the Editor and wait). Step 6 and Step 8 follow their teammate rules below.
+  the Editor and wait). Step 8 follows its teammate rule below.
 - **First setup** — anything else. Run every step.
 
 Work through the steps in order; skip a step whose check already passes.
@@ -182,7 +186,7 @@ Use the full path to the `unity` executable as `command` if `unity` is not on th
 Code starts with. Report the backup path.
 
 **Desktop and Codex are outside this project's rules.** `CLAUDE.md`, `.claude/settings.json`
-(the deny on the retired door, the read-only allow-list) and `/use-mcp` govern **Claude Code**
+(the read-only allow-list, the hook guards) and `/use-mcp` govern **Claude Code**
 only. Say so when either is selected: Claude Desktop has no project rules at all, and Codex reads
 `AGENTS.md`, not `CLAUDE.md` — if the team drives this project from Codex, an `AGENTS.md` carrying
 the same bridge rules is a separate task to propose, not something this skill writes.
@@ -195,81 +199,29 @@ for the selected clients and only where it is not installed yet. **Skip `claude-
 `.claude/settings.json` enables the plugin `unity@claude-plugins-official` — that plugin already
 ships `unity:unity-cli`, and two copies just compete. Never run it by default.
 
-## Step 5 — retire the old in-Editor MCP
+## Step 5 — the old in-Editor MCP stays (report only)
 
-Look for an entry running `relay_win.exe --mcp` in **every client selected in Step 4, plus Claude
-Code always** (this project's own agent), and the project's `.mcp.json`:
+Look for an entry running `relay_win.exe --mcp` (or `relay_mac` / `relay_linux` + `--mcp`) in
+**every client selected in Step 4, plus Claude Code always**, and the project's `.mcp.json`
+(match on the command, not on the name — usually `unity-mcp`):
 
-| Client | Where | Old entry usually named |
-|---|---|---|
-| Claude Code | `~/.claude.json` → `mcpServers` | `unity-mcp` |
-| Claude Desktop | `claude_desktop_config.json` → `mcpServers` | `unity-mcp` |
-| Codex | `~/.codex/config.toml` | `[mcp_servers.unity_mcp]` |
+| Client | Where |
+|---|---|
+| Claude Code | `~/.claude.json` → `mcpServers` |
+| Claude Desktop | `claude_desktop_config.json` → `mcpServers` |
+| Codex | `~/.codex/config.toml` |
 
-Match on the command (`relay_win.exe`, `relay_mac`, `relay_linux` + `--mcp`), not on the name.
+**Read only — change nothing.** The result just says which clients have it (`present` / `none`).
+It is the secondary door (`CLAUDE.md` §2.1): same `/use-mcp` gate as the CLI, used for what the
+CLI lacks. Two registrations side by side (`unity-mcp` and `unity-editor-mcp`) are expected.
 
-- None → `⏭`.
-- Found → each of these files is **per user, so every project on this machine uses it**. Say so,
-  then ask **per client** whether to remove it. Projects that still use the old door would lose
-  it — the developer decides.
-  - Claude Code: `claude mcp remove unity-mcp -s user`, or without the `claude` command remove
-    that one key from `mcpServers` after backing the file up.
-  - Claude Desktop: back up the JSON file, remove that one key from `mcpServers`, keep the rest.
-  - Codex: back up `config.toml`, remove only that `[mcp_servers.<name>]` table (its header and
-    its `command` / `args` / `env` lines — plus a `[mcp_servers.<name>.env]` sub-table if present),
-    keep everything else byte for byte.
-  Report each backup path; ask the developer to restart the clients that changed.
-- Whatever stays, this project's `.claude/settings.json` denies `mcp__unity-mcp`, so the retired
-  tools cannot be called **from Claude Code** here. Desktop and Codex have no such guard — say so
-  if their relay entry is kept.
-- Optionally the developer can switch off the MCP server in the Editor (Assistant / AI
-  settings). That writes `ProjectSettings/` — the developer does it by hand, never the AI.
+## Step 6 — `com.unity.ai.assistant` stays (version check only)
 
-## Step 6 — remove `com.unity.ai.assistant`? (optional, default: KEEP)
+`Packages/manifest.json` has no `"com.unity.ai.assistant"` → `⏭ not installed`. Present → keep it
+(the Assistant window and the in-Editor MCP depend on it); Step 3 already checked it is **≥ 2.13**.
+This skill never removes it, never edits `ProjectSettings/AI.Assistant/`, and does not ask. Wanting
+it gone is the team's separate decision, made in the Package Manager.
 
-Skip silently when `Packages/manifest.json` has no `"com.unity.ai.assistant"` (`⏭ not installed`).
-Otherwise **always ask** — every run, never assume a previous answer — with **Keep** as the
-default/first option. No answer, an unclear answer, or "skip" = keep.
-
-**Teammate mode:** the project was already set up and the package was deliberately kept, so
-removing it is a **team decision**, not this machine's. Ask with that stated up front
-(*"This changes the shared manifest for everyone — has the team agreed?"*); proceed only on
-an explicit "remove" **plus** a confirmation that it was agreed. Otherwise keep.
-
-Put the trade-off in the question:
-
-| | Keep (default) | Remove |
-|---|---|---|
-| Assistant window / Unity AI features in the Editor | still work | gone for everyone on the project |
-| Retired MCP door | already denied in `settings.json`, harmless | cannot come back at all |
-| CLI conflict | none if ≥ 2.13 (Step 3) | none |
-| Team impact | none | a shared `Packages/manifest.json` change — every teammate's Editor drops it on pull |
-
-**Only on an explicit "remove":**
-
-1. **Reference scan first** (Grep, no bridge): `Unity.AI.Assistant`, `Unity.AI.` and
-   `com.unity.ai.assistant` in `Assets/**/*.cs`, `Assets/**/*.asmdef`, `Packages/` (embedded /
-   local packages), and every other package's `dependencies` in `Packages/packages-lock.json`.
-   Do **not** confuse it with `com.unity.ai.navigation` (NavMesh) — that one stays. Any hit →
-   `⛔`, list the hits, keep the package.
-2. **Remove the single line** `"com.unity.ai.assistant": "<version>",` from
-   `Packages/manifest.json` with the `Edit` tool (mind the trailing comma of the line above when
-   it was the last entry). Never rewrite, truncate or regenerate the whole manifest (the guard
-   hook blocks that), and never hand-edit `packages-lock.json` — Unity rewrites it. The developer
-   may prefer to do it themselves: *Window → Package Manager → In Project → AI Assistant →
-   Remove*; that is equally fine. `unity command package_remove` is a bridge mutation — only if
-   the developer has `/use-mcp` on.
-3. Ask the developer to focus the Editor so the Package Manager re-resolves. Then
-   `unity command console_status --caller plugin --skill init-unity-cli --no-banner` →
-   `compilationFailed: false`, and `git diff -- Packages/` must show only the removed manifest
-   line and the matching `packages-lock.json` entry. Compile errors or other changes → restore
-   the line with `Edit`, report, stop.
-4. Leftovers such as `ProjectSettings/AI.Assistant/` (if present) are **not** deleted by the AI
-   (`CLAUDE.md` §10) — mention them; the developer decides.
-5. With the package gone, the old relay MCP of Step 5 has nothing to talk to in this project —
-   if it was kept there, remind the developer it is now dead weight here.
-
-## Step 7 — verify
 
 ```bash
 unity status --no-banner
@@ -279,8 +231,7 @@ unity mcp configure --list --no-banner
 
 Expected: one `ready` Editor whose `Project` is this checkout and whose version matches
 `CLAUDE.md` §1; `editor_status` answers (`compiling: false`, `playMode: stopped`);
-every client chosen in Step 4 listed as `✓ configured`, and no relay entry left in the clients
-where the developer asked to remove it. New servers only appear after each client restarts:
+every client chosen in Step 4 listed as `✓ configured`; any old relay entry still there, untouched. New servers only appear after each client restarts:
 the `mcp__unity-editor-mcp__*` tools in a **new** Claude Code session, the `unity` server in a
 restarted Claude Desktop / Codex. Tell the developer which to restart; this session keeps going
 with Bash `unity command` meanwhile.
@@ -288,12 +239,12 @@ with Bash `unity command` meanwhile.
 ## Step 8 — teach the agent: update `CLAUDE.md` and the `/use-mcp` family
 
 The machine is set up; now the project's own rules must tell every future agent to use the
-Unity CLI + pipeline and never the retired door. The canonical text and the exact targets are in
+Unity CLI + pipeline first, with the in-Editor MCP as the secondary door. The canonical text and the exact targets are in
 [`references/agent-rules.md`](references/agent-rules.md) — open it now.
 
 1. **Detect** with its *Detection* checks. All pass → `⏭ rules already migrated`; go to 4.
 2. **Plan**: list every file and passage the failing checks need (blocks A–I), with
-   `<project>`, `<date>` and `<assistant-sentence>` filled in from Steps 3 and 6. Show the plan
+   `<project>` and `<date>` filled in. Show the plan
    as one change set and ask **once** for the whole set (`CLAUDE.md` §4 — "May I write these
    changes to …?"). No → `⛔ rules not updated`, the result tells the developer the agent will
    keep following the old rules.
@@ -306,10 +257,9 @@ Unity CLI + pipeline and never the retired door. The canonical text and the exac
    `.claude/settings.json` still parses.
 4. **Record versions** (part of the same approved set, or asked separately if 1 skipped
    straight here): `.claude/project_setup.md` row *Editor bridge* — `unity` CLI version,
-   `com.unity.pipeline` version, and either "`com.unity.ai.assistant` <version>: MCP retired,
-   package kept for the Assistant window" or "`com.unity.ai.assistant` removed <date>" — plus
-   the matching line of `.claude/mcp_unity.md` "This project". If the package was removed in
-   Step 6, make sure `CLAUDE.md` §2.1 and `mcp_unity.md` no longer say it "may stay installed".
+   `com.unity.pipeline` version, and "`com.unity.ai.assistant` <version>: kept — in-Editor MCP is
+   the secondary door" (or "not installed") — plus the matching line of `.claude/mcp_unity.md`
+   "This project".
 
 **Teammate mode:** the rules are migrated (1 is `⏭`) and the versions were recorded by whoever
 set the project up. Do **not** rewrite them with this machine's versions. If this machine's CLI
@@ -331,11 +281,10 @@ Unity CLI bridge — <project>, branch <branch> — mode: first setup | teammate
   3 Pipeline pkg ... ✅/⏭/⛔ <version> (ai.assistant <version>)
   4 MCP clients .... claude (Desktop) ✅/⏭/⛔ · claude-code ✅/⏭/— · codex ✅/⏭/— · <other> …
                      (— = not selected)
-  5 Old relay MCP .. per client: ✅ removed / ⏭ none / kept (Claude Code: denied in this project;
-                     Desktop/Codex: no guard)
-  6 AI Assistant pkg  kept (default) / ✅ removed / ⏭ not installed / ⛔ <references found>
+  5 Old relay MCP .. per client: present (untouched) / none
+  6 AI Assistant pkg  ⏭ not installed / kept <version> (never removed)
   7 Verify ......... ✅/⛔
   8 Agent rules .... ✅ migrated (<n> files) / ⏭ already migrated / ⛔ declined — versions recorded ✅/⛔
-Next: restart every client changed in 4–5, and Claude Code (new rules; + mcp__unity-editor-mcp__*
+Next: restart every client changed in 4, and Claude Code (new rules; + mcp__unity-editor-mcp__*
       if claude-code was selected) · the bridge stays OFF until /use-mcp (Claude Code)
 ```
