@@ -9,7 +9,7 @@
 ## 1. Overview
 <One paragraph. What this mechanic is, what the player does with it.>
 
-## 2. Player Fantasy
+## 2. Player Feeling
 <What must the player FEEL? Where is the satisfying moment? Why is it fun?>
 
 ## 3. Detailed Rules

@@ -31,7 +31,7 @@
 **What is this game's relationship with on-screen information?**
 
 [One paragraph. This is a design statement, not a description of features. Consider
-the game's genre, pacing, and player fantasy. A stealth game's HUD philosophy might
+the game's genre, pacing, and player feeling. A stealth game's HUD philosophy might
 be: "The world is the interface. If the player has to look away from the environment
 to survive, the HUD has failed." A tactics game might say: "Complete situational
 awareness is the game. The HUD is not an overlay — it is the battlefield."

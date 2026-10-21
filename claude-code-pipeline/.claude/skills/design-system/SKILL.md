@@ -85,7 +85,7 @@ existing `.md` file in `design/dev-system/`, enter **retrofit mode**:
 
 1. Read the existing GDD file.
 2. Identify which of the 8 required sections are present (scan for section headings).
-   Required sections: Overview, Player Fantasy, Detailed Design/Rules, Formulas,
+   Required sections: Overview, Player Feeling, Detailed Design/Rules, Formulas,
    Edge Cases, Dependencies, Tuning Knobs, Acceptance Criteria.
 3. Identify which sections contain only placeholder text (`[To be designed]` or
    equivalent — blank, a single line, or obviously incomplete).
@@ -299,7 +299,7 @@ Use the template structure from `.claude/docs/templates/game-design-document.md`
 
 [To be designed]
 
-## Player Fantasy
+## Player Feeling
 
 [To be designed]
 
@@ -466,7 +466,7 @@ describes the technical approach used to achieve it.
 
 ---
 
-### Section B: Player Fantasy
+### Section B: Player Feeling
 
 **Goal**: The emotional target — what the player should *feel* — taken from the docs, not
 invented in this session.
@@ -477,8 +477,8 @@ invented in this session.
    enables: [the systems it serves]`.
 2. Otherwise, find the pillar or core-fantasy line in `design/gdd/gd-game-concept.md` (or
    `gd-game-pillars.md`) that this system serves, and **quote it** with its source.
-3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Fantasy
-   for [system] — owner: game designer". Never write a fantasy yourself.
+3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Feeling
+   for [system] — owner: game designer". Never write a feeling yourself.
 
 Show the result with the Section A draft; it needs no approval step of its own.
 

@@ -35,7 +35,7 @@ Read the target design document in full. Read CLAUDE.md to understand project co
 Evaluate against the Design Document Standard checklist:
 
 - [ ] Has Overview section (one-paragraph summary)
-- [ ] Has Player Fantasy section (intended feeling)
+- [ ] Has Player Feeling section (intended feeling)
 - [ ] Has Detailed Rules section (unambiguous mechanics)
 - [ ] Has Formulas section (all math defined with variables)
 - [ ] Has Edge Cases section (unusual situations handled)
@@ -114,7 +114,7 @@ Issue all Task calls simultaneously. Do NOT spawn one at a time.
 
 **Additional instructions per agent type:**
 
-- **`game-designer`**: Anchor your review to the Player Fantasy stated in Section B of this GDD. Does this design actually deliver that fantasy? Would a player feel the intended experience? Flag any rules that serve implementability but undermine the stated feeling.
+- **`game-designer`**: Anchor your review to the Player Feeling stated in Section B of this GDD. Does this design actually deliver that fantasy? Would a player feel the intended experience? Flag any rules that serve implementability but undermine the stated feeling.
 
 - **`systems-designer`**: For every formula in the GDD, plug in boundary values (minimum and maximum plausible inputs). Report whether any outputs go degenerate — negative values, division by zero, infinity, or nonsensical results at the extremes.
 

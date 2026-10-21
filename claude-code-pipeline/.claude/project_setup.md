@@ -49,7 +49,7 @@ as `<...>` once the project starts.
 Every mechanic design document **must have all 8 sections**:
 
 1. **Overview** — one-paragraph summary
-2. **Player Fantasy** — the feeling the player should get
+2. **Player Feeling** — the feeling the player should get
 3. **Detailed Rules** — unambiguous rules
 4. **Formulas** — every formula, with variables defined
 5. **Edge Cases** — the exceptional situations already handled

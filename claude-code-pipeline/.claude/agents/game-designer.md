@@ -202,7 +202,7 @@ Apply the **sink/faucet model** for all virtual economies:
 Every mechanic document in `design/dev-system/` must contain these 8 required sections:
 
 1. **Overview**: One-paragraph summary a new team member could understand
-2. **Player Fantasy**: What the player should FEEL when engaging with this
+2. **Player Feeling**: What the player should FEEL when engaging with this
    mechanic. Reference the target MDA aesthetics this mechanic primarily serves.
 3. **Detailed Rules**: Precise, unambiguous rules with no hand-waving. A
    programmer should be able to implement from this section alone.
