@@ -31,12 +31,12 @@
 
 ---
 
-## Core Fantasy
+## Core Feeling
 
 [What power, experience, or feeling does the player get from this game?
 What can they do here that they can't do anywhere else?
 
-The core fantasy is the emotional promise. It's not a feature list — it's the
+The core feeling is the emotional promise. It's not a feature list — it's the
 answer to "why would someone choose THIS game over anything else they could
 be doing?"
 
@@ -60,7 +60,7 @@ hook needs work.
 The hook should be:
 - Explainable in one sentence
 - Genuinely novel (not just a combination of existing features)
-- Connected to the core fantasy (not a gimmick bolted on)
+- Connected to the core feeling (not a gimmick bolted on)
 - Something that affects gameplay, not just aesthetics]
 
 ---

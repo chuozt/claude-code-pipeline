@@ -16,7 +16,7 @@ decisions must serve.
 
 The four common difficulty philosophies are:
 
-1. **Masochistic challenge as the core fantasy**: Difficulty is the product.
+1. **Masochistic challenge as the core feeling**: Difficulty is the product.
    Overcoming it is the emotional reward. Reducing difficulty removes the
    point. (Dark Souls, Celeste at max assist off)
 2. **Accessible entry, optional depth**: The base experience is completable by

@@ -475,7 +475,7 @@ invented in this session.
 
 1. Foundation/Infrastructure layer → write `N/A — infrastructure; players feel what it
    enables: [the systems it serves]`.
-2. Otherwise, find the pillar or core-fantasy line in `design/gdd/gd-game-concept.md` (or
+2. Otherwise, find the pillar or core-feeling line in `design/gdd/gd-game-concept.md` (or
    `gd-game-pillars.md`) that this system serves, and **quote it** with its source.
 3. Nothing in the docs fits → write `UNDEFINED` and add an Open Question: "Player Feeling
    for [system] — owner: game designer". Never write a feeling yourself.
