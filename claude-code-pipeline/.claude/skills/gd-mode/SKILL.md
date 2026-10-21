@@ -101,7 +101,7 @@ If it cannot be translated, it is a question for the developer. **Do not put it 
 ## 2. Anchor to a pillar before discussing trade-offs
 
 An experience decision always has a price paid **in another pillar**, not in file size or
-speed. Before asking, name the pillar / player fantasy being touched:
+speed. Before asking, name the pillar / player feeling being touched:
 
 > "This goes straight at 'peeking at what is next' — the most satisfying part of the X-ray.
 > Making it easier gives more comfort, but loses the suspense."

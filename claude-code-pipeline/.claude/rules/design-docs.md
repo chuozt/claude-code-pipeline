@@ -7,7 +7,7 @@ paths:
 # Rules For Design Documents
 
 Every mechanic document **must have all 8 sections**:
-Overview · Player Fantasy · Detailed Rules · Formulas · Edge Cases · Dependencies ·
+Overview · Player Feeling · Detailed Rules · Formulas · Edge Cases · Dependencies ·
 Tuning Knobs · Acceptance Criteria
 
 - **Formulas:** define every variable, its unit, and its valid range.

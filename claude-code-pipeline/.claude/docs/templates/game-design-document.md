@@ -19,10 +19,10 @@ exists in this game. Written for tiered context loading — a skill scanning
 [One paragraph that explains this mechanic to someone who knows nothing about
 the project. What is it, what does the player do, and why does it exist?]
 
-## Player Fantasy
+## Player Feeling
 
 [What should the player FEEL when engaging with this mechanic? What is the
-emotional or power fantasy being served? This section guides all detail
+emotional target being served? This section guides all detail
 decisions below.]
 
 ## Detailed Design

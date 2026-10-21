@@ -345,12 +345,12 @@ Every system should clearly serve at least one design pillar. A system that
 serves no pillar is "scope creep by design" — it's in the game but not in
 service of what the game is trying to be.
 
-For each GDD system, check its Player Fantasy section against the design pillars.
+For each GDD system, check its Player Feeling section against the design pillars.
 Flag any system whose stated fantasy doesn't map to any pillar:
 
 ```
 ⚠️  Pillar Drift
-fishing-system.md: Player Fantasy — "peaceful, meditative activity"
+fishing-system.md: Player Feeling — "peaceful, meditative activity"
 Pillars: "Brutal Combat", "Tense Survival", "Emergent Stories"
 → The fishing system serves none of the three pillars. Either add a pillar
   that covers it, redesign it to serve an existing pillar, or cut it.
@@ -366,14 +366,14 @@ main-quest.md: Defines a 12-chapter linear story with mandatory sequence
 → This system directly violates the defined anti-pillar.
 ```
 
-### 3g: Player Fantasy Coherence
+### 3g: Player Feeling Coherence
 
 The player fantasies across all systems should be compatible — they should
 reinforce a consistent identity for what the player IS in this game. Conflicting
 player fantasies create identity confusion.
 
 ```
-⚠️  Player Fantasy Conflict
+⚠️  Player Feeling Conflict
 combat.md: "You are a ruthless, precise warrior — every kill is earned"
 dialogue.md: "You are a charismatic diplomat — violence is always avoidable"
 exploration.md: "You are a reckless adventurer — diving in without a plan"

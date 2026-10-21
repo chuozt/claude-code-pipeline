@@ -160,7 +160,7 @@ new states, list them. If it introduces new parameters, define their ranges.]
 ### For New Small System changes
 
 Use a trimmed GDD structure. Include only the sections that are directly
-necessary — skip Player Fantasy, full Formulas, and Edge Cases unless the
+necessary — skip Player Feeling, full Formulas, and Edge Cases unless the
 system specifically requires them.
 
 ```markdown

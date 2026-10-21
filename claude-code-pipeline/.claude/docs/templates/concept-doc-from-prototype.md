@@ -45,8 +45,8 @@
 - [Feeling 2 — e.g., "Intuitive", "Confusing", "Needs tutorial"]
 - [Feeling 3 — e.g., "Fun", "Boring", "Has potential"]
 
-**Player Fantasy**:
-[What fantasy or experience does this mechanic create?]
+**Player Feeling**:
+[What feeling or experience does this mechanic create?]
 
 **Core Loop** (if applicable):
 ```

@@ -68,7 +68,7 @@ appropriate design or architecture documentation. Use this when:
 - Extract emergent gameplay patterns
 - Note what worked vs what didn't
 - Find technical feasibility insights
-- Document player fantasy / feel
+- Document player feeling / feel
 
 ## Phase 3: Ask Clarifying Questions
 

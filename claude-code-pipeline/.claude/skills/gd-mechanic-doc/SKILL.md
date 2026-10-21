@@ -18,7 +18,7 @@ designer needs to answer. Anything they have not decided stays as `UNDEFINED`.
 ## The 8 required sections
 
 1. **Overview** — what is this mechanic, in one paragraph?
-2. **Player Fantasy** — what must the player *feel*? Where is the satisfying moment?
+2. **Player Feeling** — what must the player *feel*? Where is the satisfying moment?
 3. **Detailed Rules** — exact, unambiguous rules. Who triggers it? Under what conditions? With what result?
 4. **Formulas** — every formula, each variable defined, with units and valid ranges.
 5. **Edge Cases** — see the checklist below.

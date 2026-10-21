@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: "Guided ideation from no idea (or a vague theme) to a structured game concept document — pillars, core loop, player fantasy, scope. Use when typing /brainstorm or saying 'help me come up with a game', 'I have a vague idea', 'develop this concept'."
+description: "Guided ideation from no idea (or a vague theme) to a structured game concept document — pillars, core loop, player feeling, scope. Use when typing /brainstorm or saying 'help me come up with a game', 'I have a vague idea', 'develop this concept'."
 argument-hint: "[genre or theme hint, or 'open']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, WebSearch, Task, AskUserQuestion
