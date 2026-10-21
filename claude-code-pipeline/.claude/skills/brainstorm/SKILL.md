@@ -94,7 +94,7 @@ For each concept, present:
 - **Working Title**
 - **Elevator Pitch** (1-2 sentences — must pass the "10-second test")
 - **Core Verb** (the single most common player action)
-- **Core Fantasy** (the emotional promise)
+- **Core Feeling** (the emotional promise)
 - **Unique Hook** (passes the "and also" test: "Like X, AND ALSO Y")
 - **Primary MDA Aesthetic** (which emotion dominates?)
 - **Estimated Scope** (small / medium / large)
@@ -239,7 +239,7 @@ Ground the concept in reality:
 - Prompt: "Game concept is ready. May I write it to `design/gdd/gd-game-concept.md`?"
 - Options: `[A] Yes — write it` / `[B] Not yet — revise a section first`
 
-If [B]: ask which section to revise using `AskUserQuestion` with options: `Elevator Pitch` / `Core Fantasy & Unique Hook` / `Pillars` / `Core Loop` / `MVP Definition` / `Scope Tiers` / `Risks` / `Something else — I'll describe`
+If [B]: ask which section to revise using `AskUserQuestion` with options: `Elevator Pitch` / `Core Feeling & Unique Hook` / `Pillars` / `Core Loop` / `MVP Definition` / `Scope Tiers` / `Risks` / `Something else — I'll describe`
 
 After revising, show the updated section as a diff or clear before/after, then use `AskUserQuestion` — "Ready to write the updated concept document?"
 Options: `[A] Yes — write it` / `[B] Revise another section`

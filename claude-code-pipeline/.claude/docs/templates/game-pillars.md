@@ -48,10 +48,10 @@ specific effective pillars can be:
 
 ---
 
-## Core Fantasy
+## Core Feeling
 
 > [What power, experience, or feeling does the player get from this game? What
-> can they do here that they can't do anywhere else? The core fantasy is the
+> can they do here that they can't do anywhere else? The core feeling is the
 > emotional promise — the answer to "why would someone choose THIS game?"
 >
 > Strong core fantasies are visceral and immediate:
@@ -207,7 +207,7 @@ could plausibly support it.
 ## Pillar Conflict Resolution
 
 When two pillars conflict (and they will), use this priority order. The ranking
-reflects which aspects of the experience are most essential to the core fantasy.
+reflects which aspects of the experience are most essential to the core feeling.
 
 | Priority | Pillar | Rationale |
 | ---- | ---- | ---- |
@@ -294,7 +294,7 @@ Before finalizing the pillars, verify:
 - [ ] **MDA-aligned**: Pillars collectively deliver the top-ranked target aesthetics
 - [ ] **SDT coverage**: At least one pillar serves Autonomy, one Competence, one Relatedness
 - [ ] **Memorable**: The team can recite all pillars from memory
-- [ ] **Core fantasy served**: Every pillar traces back to the core fantasy promise
+- [ ] **Core feeling served**: Every pillar traces back to the core feeling promise
 
 ---
 
