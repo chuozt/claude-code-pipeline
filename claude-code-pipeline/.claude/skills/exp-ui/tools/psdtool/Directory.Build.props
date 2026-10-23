@@ -1,0 +1,7 @@
+<Project>
+  <!-- Keep bin/obj out of the skill folder. -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(TEMP)\psdtool\obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(TEMP)\psdtool\bin\</BaseOutputPath>
+  </PropertyGroup>
+</Project>
