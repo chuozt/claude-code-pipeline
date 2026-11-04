@@ -829,6 +829,16 @@ Capture the built screen at the mock's exact resolution and blend it with the pr
   bright outline is an error with a direction you can read off. Report the % of pixels over a small
   threshold inside the popup's frame, per region.
 - **Flicker:** toggle the two at the same position; anything that "jumps" is off.
+- **Zoom on every doubt (developer):** whenever it is not clear whether an element is
+  off — a colour bbox says "2 px", a text "looks a bit big", a tag "seems lower" — lay the preview
+  on the capture at ~50 % and **zoom that region 5×–10× (nearest neighbour)**, then look at it. A
+  matching element stays one sharp image; an offset shows as a double edge whose direction and size
+  you can read in pixels. Bbox numbers alone are not a verdict: probes catch other art of the same
+  colour and miss soft offsets. When a whole panel sits at a different y (SandTruck Level Failed 0 Lives:
+  31 px), sample the build shifted by that amount so the panel's own elements line up and only real
+  offsets show. Do the same zoomed overlay again after each fix to prove it. SandTruck Level Failed: the
+  zoom showed the heart count in a different font (the mock's digits wider and rounder than
+  Lilita), which the bbox table had reported only as "−15 px wide".
 Expected unavoidable differences (write them down instead of chasing them): live text that differs
 from the mock's text, dynamic values, particle/Spine frames, the dim (framework shield).
 
