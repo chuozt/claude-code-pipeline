@@ -78,6 +78,11 @@ Brevity loses to these every time. If a reply cannot fit them, it is not too lon
   the first line of the reply, before any heading.
 - **Tables** for comparisons, status across several items, or option trade-offs.
 - **Bullets** of one line each. A bullet needing three lines is two bullets or a table row.
+- **One item per line inside a table cell** (developer 2026-11-06). A cell listing several things — work
+  points, files, names, symbols — never joins them with `,` `;` or `+`: each goes on its own line with
+  `<br>`, every file on its own line. A cell of plain words with no list stays one sentence.
+  > ❌ `| Định dạng: thêm `Tunnel`, `Ambush` | `ElementType.cs`, `TableElement.cs` |`
+  > ✅ `| Định dạng:<br>thêm `Tunnel`<br>thêm `Ambush` | `ElementType.cs`<br>`TableElement.cs` |`
 - **No headings** in a reply under ~10 lines. Headings only when there are 3+ distinct parts.
 - **Code only when it is the point** — a diff the developer must review, a command to run.
   Never paste code the developer can open at the `file:line` given.
@@ -144,6 +149,48 @@ A yes/no question still gets its two lettered lines: the developer answers `2A`,
 Markdown in the terminal has no colour, so bold vs. 🧭-italics is the contrast; do not use
 HTML tags or ANSI codes.
 
+### Decision widget — when the session can draw one
+
+When `mcp__visualize__show_widget` is available (the Claude desktop app), every ❓ of a reply goes
+into **one widget** at the end of the reply instead of the text layout above. The 🔒 and 🛠 lines
+stay in the closing block as text, and the widget's questions are not repeated in text. Without
+that tool (a plain terminal), use the text layout. Load the tool's guide once with
+`mcp__visualize__read_me`, silently.
+
+Each question is one card, holding what the text layout holds:
+
+- the question as the card's title, and who settles it as a small tag ("GD chốt") when it is not
+  the developer
+- one button per option, lettered A / B / C, with an "đề xuất" label on the recommended one and
+  the sheet's choice marked as in the text layout
+- the current state on the last line, "Hiện tại: …", a fact with its source
+
+Lay the options out vertically, one under the other, however many there are. Keep it compact
+without crowding it: text one step smaller than body text (title 14 px, options 12–13 px), the
+current state on one small line, the "Khác" box one line tall and growing as it fills. Cards and
+buttons keep comfortable padding and gaps (about 10 px in a card, 6–8 px between items).
+
+How it behaves:
+
+- **Nothing is selected at first.** The recommendation is only a label.
+- Hovering an option tints it (accent background and border, lighter than a chosen one), dimmed
+  options included, so the pointer shows what a click would pick.
+- A click highlights the choice (accent outline, accent background, a tick), dims the other
+  options and marks the card as answered. A second click on it clears it.
+- **One** free-text box **"Khác"** closes the widget, right above the send button, never one per
+  card: it holds anything the options do not cover, and it can name a question ("câu 3: …").
+- The foot shows `Đã chọn x/n` and a send button. Sending with a card unanswered and "Khác" empty
+  names those questions in an inline error and sends nothing; with text in "Khác" it sends what is
+  there.
+- Send calls `sendPrompt` with the short form, then the box on its own line: `1A 2B` and
+  `Khác: …`.
+  The desktop app may only fill the chat box with it, leaving Enter to the developer; there is no
+  other way out of a widget, so never promise that the button sends by itself.
+- Set every text from data with `textContent`, never by joining it into HTML, so quotes and
+  backticks in a question cannot break the card.
+
+One widget per reply, even for a single question.
+
 ### "Bạn cần làm gì" — one block at the end, only when there is something
 
 Everything waiting on the developer goes into **one** closing block, so nothing has to be
@@ -151,7 +198,7 @@ hunted for in the body. Three kinds, numbered together so a reply can name them:
 
 | Kind | Marker | Shape |
 |---|---|---|
-| Decision | ❓ | the three-part layout above: title, one option per line, `🧭` line |
+| Decision | ❓ | the widget above; without it, the three-part layout: title, one option per line, `🧭` line |
 | Approval | 🔒 | one line: `2. 🔒 Ghi `docs/features/cate-drop-combo.md`?` |
 | Action only the developer can take | 🛠 | one line: `3. 🛠 Mở lại session — hook chỉ nạp khi bắt đầu` |
 
@@ -173,6 +220,7 @@ closing block by number and letter, or with one word, and it is read as the full
 | Developer types | Read as |
 |---|---|
 | `1A 2B` | question 1 → option A, question 2 → option B |
+| `Khác: …` | the widget's "Khác" box: read it as the developer's own words, over the options it contradicts; a question left out stays open |
 | `ok` / `làm đi` | approve every 🔒 in the last block |
 | `giữ` / `đổi` | keep / change the 🧭 current state of the only open ❓ |
 | `1 giữ, 2 đổi` | the same, per question |
